@@ -18,10 +18,6 @@ public class DrinkFactoryMachineControlerInterface implements SCInterfaceListene
 		theGui.doReset();
 	}
 	@Override
-	public void onDoCancelRaised() {
-		
-	}
-	@Override
 	public void onPrepareBoissonRaised() {
 		
 	}

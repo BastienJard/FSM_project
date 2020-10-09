@@ -142,24 +142,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			}
 		}
 		
-		private boolean doCancel;
-		
-		
-		public boolean isRaisedDoCancel() {
-			synchronized(DrinkingMachineStatemachine.this) {
-				return doCancel;
-			}
-		}
-		
-		protected void raiseDoCancel() {
-			synchronized(DrinkingMachineStatemachine.this) {
-				doCancel = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onDoCancelRaised();
-				}
-			}
-		}
-		
 		private boolean prepareBoisson;
 		
 		
@@ -225,7 +207,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		
 		nettoyageText = false;
 		doReset = false;
-		doCancel = false;
 		prepareBoisson = false;
 		enAttente = false;
 		updateBoisson = false;
@@ -240,7 +221,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	public enum State {
 		main_region_Demarrage,
-		main_region_Annul_,
 		main_region_Pr_par_,
 		main_region_En_pr_partation,
 		main_region_GestionCommande,
@@ -257,7 +237,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	private ITimer timer;
 	
-	private final boolean[] timeEvents = new boolean[7];
+	private final boolean[] timeEvents = new boolean[6];
 	
 	private BlockingQueue<Runnable> inEventQueue = new LinkedBlockingQueue<Runnable>();
 	private boolean isRunningCycle = false;
@@ -320,9 +300,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			switch (stateVector[nextStateIndex]) {
 			case main_region_Demarrage:
 				main_region_Demarrage_react(true);
-				break;
-			case main_region_Annul_:
-				main_region_Annul__react(true);
 				break;
 			case main_region_Pr_par_:
 				main_region_Pr_par__react(true);
@@ -408,8 +385,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		switch (state) {
 		case main_region_Demarrage:
 			return stateVector[0] == State.main_region_Demarrage;
-		case main_region_Annul_:
-			return stateVector[0] == State.main_region_Annul_;
 		case main_region_Pr_par_:
 			return stateVector[0] == State.main_region_Pr_par_;
 		case main_region_En_pr_partation:
@@ -493,10 +468,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		return sCInterface.isRaisedDoReset();
 	}
 	
-	public synchronized boolean isRaisedDoCancel() {
-		return sCInterface.isRaisedDoCancel();
-	}
-	
 	public synchronized boolean isRaisedPrepareBoisson() {
 		return sCInterface.isRaisedPrepareBoisson();
 	}
@@ -514,34 +485,29 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		timer.setTimer(this, 0, 50, false);
 	}
 	
-	/* Entry action for state 'Annulé'. */
-	private void entryAction_main_region_Annul_() {
-		timer.setTimer(this, 1, (1 * 1000), false);
-	}
-	
 	/* Entry action for state 'Préparé'. */
 	private void entryAction_main_region_Pr_par_() {
-		timer.setTimer(this, 2, (5 * 1000), false);
+		timer.setTimer(this, 1, (5 * 1000), false);
 	}
 	
 	/* Entry action for state 'Boisson'. */
 	private void entryAction_main_region_GestionCommande__region0_Boisson() {
-		timer.setTimer(this, 3, 50, false);
+		timer.setTimer(this, 2, 50, false);
 	}
 	
 	/* Entry action for state 'Slider'. */
 	private void entryAction_main_region_GestionCommande__region0_Slider() {
-		timer.setTimer(this, 4, 50, false);
+		timer.setTimer(this, 3, 50, false);
 	}
 	
 	/* Entry action for state 'Payé'. */
 	private void entryAction_main_region_GestionCommande__region0_Pay_() {
-		timer.setTimer(this, 5, (2 * 1000), false);
+		timer.setTimer(this, 4, (2 * 1000), false);
 	}
 	
 	/* Entry action for state 'EnAttente'. */
 	private void entryAction_main_region_GestionCommande__region0_EnAttente() {
-		timer.setTimer(this, 6, (45 * 1000), false);
+		timer.setTimer(this, 5, (45 * 1000), false);
 	}
 	
 	/* Exit action for state 'Demarrage'. */
@@ -549,34 +515,29 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		timer.unsetTimer(this, 0);
 	}
 	
-	/* Exit action for state 'Annulé'. */
-	private void exitAction_main_region_Annul_() {
-		timer.unsetTimer(this, 1);
-	}
-	
 	/* Exit action for state 'Préparé'. */
 	private void exitAction_main_region_Pr_par_() {
-		timer.unsetTimer(this, 2);
+		timer.unsetTimer(this, 1);
 	}
 	
 	/* Exit action for state 'Boisson'. */
 	private void exitAction_main_region_GestionCommande__region0_Boisson() {
-		timer.unsetTimer(this, 3);
+		timer.unsetTimer(this, 2);
 	}
 	
 	/* Exit action for state 'Slider'. */
 	private void exitAction_main_region_GestionCommande__region0_Slider() {
-		timer.unsetTimer(this, 4);
+		timer.unsetTimer(this, 3);
 	}
 	
 	/* Exit action for state 'Payé'. */
 	private void exitAction_main_region_GestionCommande__region0_Pay_() {
-		timer.unsetTimer(this, 5);
+		timer.unsetTimer(this, 4);
 	}
 	
 	/* Exit action for state 'EnAttente'. */
 	private void exitAction_main_region_GestionCommande__region0_EnAttente() {
-		timer.unsetTimer(this, 6);
+		timer.unsetTimer(this, 5);
 	}
 	
 	/* 'default' enter sequence for state Demarrage */
@@ -584,13 +545,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		entryAction_main_region_Demarrage();
 		nextStateIndex = 0;
 		stateVector[0] = State.main_region_Demarrage;
-	}
-	
-	/* 'default' enter sequence for state Annulé */
-	private void enterSequence_main_region_Annul__default() {
-		entryAction_main_region_Annul_();
-		nextStateIndex = 0;
-		stateVector[0] = State.main_region_Annul_;
 	}
 	
 	/* 'default' enter sequence for state Préparé */
@@ -657,14 +611,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		exitAction_main_region_Demarrage();
 	}
 	
-	/* Default exit sequence for state Annulé */
-	private void exitSequence_main_region_Annul_() {
-		nextStateIndex = 0;
-		stateVector[0] = State.$NullState$;
-		
-		exitAction_main_region_Annul_();
-	}
-	
 	/* Default exit sequence for state Préparé */
 	private void exitSequence_main_region_Pr_par_() {
 		nextStateIndex = 0;
@@ -721,9 +667,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		switch (stateVector[0]) {
 		case main_region_Demarrage:
 			exitSequence_main_region_Demarrage();
-			break;
-		case main_region_Annul_:
-			exitSequence_main_region_Annul_();
 			break;
 		case main_region_Pr_par_:
 			exitSequence_main_region_Pr_par_();
@@ -802,31 +745,11 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		return did_transition;
 	}
 	
-	private boolean main_region_Annul__react(boolean try_transition) {
-		boolean did_transition = try_transition;
-		
-		if (try_transition) {
-			if (timeEvents[1]) {
-				exitSequence_main_region_Annul_();
-				sCInterface.raiseDoReset();
-				
-				enterSequence_main_region_Demarrage_default();
-				react();
-			} else {
-				did_transition = false;
-			}
-		}
-		if (did_transition==false) {
-			did_transition = react();
-		}
-		return did_transition;
-	}
-	
 	private boolean main_region_Pr_par__react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[2]) {
+			if (timeEvents[1]) {
 				exitSequence_main_region_Pr_par_();
 				sCInterface.raiseNettoyageText();
 				
@@ -866,9 +789,9 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		if (try_transition) {
 			if (sCInterface.cancelButton) {
 				exitSequence_main_region_GestionCommande();
-				sCInterface.raiseDoCancel();
+				sCInterface.raiseDoReset();
 				
-				enterSequence_main_region_Annul__default();
+				enterSequence_main_region_Demarrage_default();
 				react();
 			} else {
 				did_transition = false;
@@ -884,7 +807,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[3]) {
+			if (timeEvents[2]) {
 				exitSequence_main_region_GestionCommande__region0_Boisson();
 				enterSequence_main_region_GestionCommande__region0_EnAttente_default();
 				main_region_GestionCommande_react(false);
@@ -902,7 +825,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[4]) {
+			if (timeEvents[3]) {
 				exitSequence_main_region_GestionCommande__region0_Slider();
 				enterSequence_main_region_GestionCommande__region0_EnAttente_default();
 				main_region_GestionCommande_react(false);
@@ -920,7 +843,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[5]) {
+			if (timeEvents[4]) {
 				exitSequence_main_region_GestionCommande();
 				sCInterface.raisePrepareBoisson();
 				
@@ -957,7 +880,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 						enterSequence_main_region_GestionCommande__region0_Boisson_default();
 						main_region_GestionCommande_react(false);
 					} else {
-						if (timeEvents[6]) {
+						if (timeEvents[5]) {
 							exitSequence_main_region_GestionCommande();
 							sCInterface.raiseDoReset();
 							

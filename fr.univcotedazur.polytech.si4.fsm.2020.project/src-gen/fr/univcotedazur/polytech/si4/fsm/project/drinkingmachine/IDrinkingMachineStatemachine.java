@@ -26,8 +26,6 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		
 		public boolean isRaisedDoReset();
 		
-		public boolean isRaisedDoCancel();
-		
 		public boolean isRaisedPrepareBoisson();
 		
 		public boolean isRaisedEnAttente();
@@ -41,7 +39,6 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 	
 		public void onNettoyageTextRaised();
 		public void onDoResetRaised();
-		public void onDoCancelRaised();
 		public void onPrepareBoissonRaised();
 		public void onEnAttenteRaised();
 		public void onUpdateBoissonRaised();
