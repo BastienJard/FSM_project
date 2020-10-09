@@ -3,6 +3,8 @@ package fr.univcotedazur.polytech.si4.fsm.project;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -22,6 +24,10 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import fr.univcotedazur.polytech.si4.fsm.project.drinkingmachine.DrinkingMachineStatemachine;
 
 public class DrinkFactoryMachine extends JFrame {
 
@@ -30,6 +36,8 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
+	private DrinkingMachineStatemachine myFSM;
+	private FactoryController controller;
 	/**
 	 * @wbp.nonvisual location=311,475
 	 */
@@ -42,6 +50,7 @@ public class DrinkFactoryMachine extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					DrinkFactoryMachine frame = new DrinkFactoryMachine();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -55,6 +64,15 @@ public class DrinkFactoryMachine extends JFrame {
 	 * Create the frame.
 	 */
 	public DrinkFactoryMachine() {
+		
+		controller = new FactoryController();
+		myFSM= new DrinkingMachineStatemachine();
+		TimerService timer = new TimerService();
+		myFSM.setTimer(timer);
+		myFSM.init();
+		myFSM.enter();
+		myFSM.getSCInterface().getListeners().add(new DrinkFactoryMachineControlerInterface(this));
+		
 		setForeground(Color.WHITE);
 		setFont(new Font("Cantarell", Font.BOLD, 22));
 		setBackground(Color.DARK_GRAY);
@@ -87,6 +105,8 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.setBackground(Color.DARK_GRAY);
 		coffeeButton.setBounds(12, 34, 96, 25);
 		contentPane.add(coffeeButton);
+		
+	
 
 		JButton expressoButton = new JButton("Expresso");
 		expressoButton.setForeground(Color.WHITE);
@@ -112,6 +132,7 @@ public class DrinkFactoryMachine extends JFrame {
 		progressBar.setForeground(Color.LIGHT_GRAY);
 		progressBar.setBackground(Color.DARK_GRAY);
 		progressBar.setBounds(12, 254, 622, 26);
+		
 		contentPane.add(progressBar);
 
 		JSlider sugarSlider = new JSlider();
@@ -137,7 +158,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sizeSlider.setMajorTickSpacing(1);
 		sizeSlider.setBounds(301, 125, 200, 36);
 		contentPane.add(sizeSlider);
-
+	
 		JSlider temperatureSlider = new JSlider();
 		temperatureSlider.setPaintLabels(true);
 		temperatureSlider.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -148,6 +169,7 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setMajorTickSpacing(1);
 		temperatureSlider.setMaximum(3);
 		temperatureSlider.setBounds(301, 188, 200, 54);
+		
 
 		Hashtable<Integer, JLabel> temperatureTable = new Hashtable<Integer, JLabel>();
 		temperatureTable.put(0, new JLabel("20°C"));
@@ -256,6 +278,39 @@ public class DrinkFactoryMachine extends JFrame {
 		panel_2.add(cancelButton);
 
 		// listeners
+		sizeSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				myFSM.raiseSlider();
+				messagesToUser.setText("<html>Vous avez choisi<br> comme taille :" + sizeSlider.getValue());
+			}
+		});
+		
+
+		temperatureSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				myFSM.raiseSlider();
+				messagesToUser.setText("<html>Vous avez choisi<br> comme température :" + temperatureSlider.getValue());
+			}
+		});
+		
+		sugarSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				myFSM.raiseSlider();
+				messagesToUser.setText("<html>Vous avez choisi<br> comme dose de Sucre :" + sugarSlider.getValue());
+			}
+		});
+		
+		coffeeButton.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				myFSM.raiseCoffeeButton();
+				controller.setBoisson("coffee");
+			}
+		});
+		
 		addCupButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
