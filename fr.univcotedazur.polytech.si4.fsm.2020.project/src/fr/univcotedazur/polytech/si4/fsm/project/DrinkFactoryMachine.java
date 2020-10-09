@@ -22,6 +22,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
@@ -40,6 +41,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	private DrinkingMachineStatemachine myFSM;
 	private FactoryController controller;
+	private Timer prepareTimer;
 	/**
 	 * @wbp.nonvisual location=311,475
 	 */
@@ -68,7 +70,7 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	
 	public void nettoyageText() {
-		messagesToUser.setText("Nettoyage de la machine en cours");
+		messagesToUser.setText("Nettoyage de la machine<br>en cours");
 	}
 	
 	public void doReset() {
@@ -77,6 +79,34 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setValue(2);
 		controller.setBoisson(null);
 		messagesToUser.setText("<html>Machine prête,<br>en attente de commande");
+	}
+	
+	public void takeValues() {
+		controller.setSize(sizeSlider.getValue());
+		controller.setSugar(sugarSlider.getValue());
+		controller.setTemperature(temperatureSlider.getValue());
+	}
+	
+	ActionListener doCountEvery = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			myFSM.raiseBoissonPrete();
+		}
+	};
+	
+	public void prepareBoisson() {
+		takeValues();
+		controller.prepare();
+		messagesToUser.setText(messagesToUser.getText() + "<br>Temps de préparation : " + controller.timeValue/1000 + "s");
+		
+		prepareTimer = new Timer((int) controller.timeValue, doCountEvery);
+		prepareTimer.start();
+		
+	}
+	
+	public void boissonPrete() {
+		prepareTimer.stop();
+		messagesToUser.setText("<html>Votre boisson est prête");
 	}
 	
 	public DrinkFactoryMachine() {
@@ -344,6 +374,13 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
 				myFSM.raiseCancelButton();
+			}
+		});
+		
+		nfcBiiiipButton.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				myFSM.raiseNFCButton();
 			}
 		});
 

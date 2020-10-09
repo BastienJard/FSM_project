@@ -19,7 +19,7 @@ public class DrinkFactoryMachineControlerInterface implements SCInterfaceListene
 	}
 	@Override
 	public void onPrepareBoissonRaised() {
-		
+		theGui.prepareBoisson();
 	}
 	@Override
 	public void onEnAttenteRaised() {
@@ -28,5 +28,9 @@ public class DrinkFactoryMachineControlerInterface implements SCInterfaceListene
 	@Override
 	public void onUpdateBoissonRaised() {
 		
+	}
+	@Override
+	public void onFinishTextRaised() {
+		theGui.boissonPrete();
 	}
 }

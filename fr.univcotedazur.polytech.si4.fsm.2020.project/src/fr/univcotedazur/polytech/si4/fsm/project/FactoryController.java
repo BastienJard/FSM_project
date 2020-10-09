@@ -6,7 +6,8 @@ public class FactoryController {
 	protected String price;
 	protected int sugar;
 	protected int size;
-	protected String temperature;
+	protected int temperature;
+	protected float timeValue;
 	
 	public FactoryController() {
 		
@@ -25,8 +26,13 @@ public class FactoryController {
 		this.size=size;
 	}
 	
-	public void setTemperature(String temperature) {
+	public void setTemperature(int temperature) {
 		this.temperature=temperature;
+	}
+	
+	public void prepare() {
+		//en ms
+		timeValue = (float)(Math.exp(this.temperature)*1000 + Math.exp(this.size)*100 + Math.exp(this.sugar)*10);
 	}
 
 }

@@ -196,6 +196,24 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			}
 		}
 		
+		private boolean finishText;
+		
+		
+		public boolean isRaisedFinishText() {
+			synchronized(DrinkingMachineStatemachine.this) {
+				return finishText;
+			}
+		}
+		
+		protected void raiseFinishText() {
+			synchronized(DrinkingMachineStatemachine.this) {
+				finishText = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onFinishTextRaised();
+				}
+			}
+		}
+		
 		protected void clearEvents() {
 			cancelButton = false;
 			coffeeButton = false;
@@ -210,6 +228,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		prepareBoisson = false;
 		enAttente = false;
 		updateBoisson = false;
+		finishText = false;
 		}
 		
 	}
@@ -298,27 +317,27 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	protected synchronized void singleCycle() {
 		for (nextStateIndex = 0; nextStateIndex < stateVector.length; nextStateIndex++) {
 			switch (stateVector[nextStateIndex]) {
-				case main_region_Demarrage:
-					main_region_Demarrage_react(true);
-					break;
-				case main_region_Pr_par_:
-					main_region_Pr_par__react(true);
-					break;
-				case main_region_En_pr_partation:
-					main_region_En_pr_partation_react(true);
-					break;
-				case main_region_GestionCommande__region0_Boisson:
-					main_region_GestionCommande__region0_Boisson_react(true);
-					break;
-				case main_region_GestionCommande__region0_Slider:
-					main_region_GestionCommande__region0_Slider_react(true);
-					break;
-				case main_region_GestionCommande__region0_Pay_:
-					main_region_GestionCommande__region0_Pay__react(true);
-					break;
-				case main_region_GestionCommande__region0_EnAttente:
-					main_region_GestionCommande__region0_EnAttente_react(true);
-					break;
+			case main_region_Demarrage:
+				main_region_Demarrage_react(true);
+				break;
+			case main_region_Pr_par_:
+				main_region_Pr_par__react(true);
+				break;
+			case main_region_En_pr_partation:
+				main_region_En_pr_partation_react(true);
+				break;
+			case main_region_GestionCommande__region0_Boisson:
+				main_region_GestionCommande__region0_Boisson_react(true);
+				break;
+			case main_region_GestionCommande__region0_Slider:
+				main_region_GestionCommande__region0_Slider_react(true);
+				break;
+			case main_region_GestionCommande__region0_Pay_:
+				main_region_GestionCommande__region0_Pay__react(true);
+				break;
+			case main_region_GestionCommande__region0_EnAttente:
+				main_region_GestionCommande__region0_EnAttente_react(true);
+				break;
 			default:
 				// $NullState$
 			}
@@ -478,6 +497,10 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	public synchronized boolean isRaisedUpdateBoisson() {
 		return sCInterface.isRaisedUpdateBoisson();
+	}
+	
+	public synchronized boolean isRaisedFinishText() {
+		return sCInterface.isRaisedFinishText();
 	}
 	
 	/* Entry action for state 'Demarrage'. */
@@ -771,6 +794,8 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		if (try_transition) {
 			if (sCInterface.boissonPrete) {
 				exitSequence_main_region_En_pr_partation();
+				sCInterface.raiseFinishText();
+				
 				enterSequence_main_region_Pr_par__default();
 				react();
 			} else {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
-  <sgraph:Statechart xmi:id="_KY_34AoEEeuzsqaUjh34MQ" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;in event cancelButton&#xA;in event coffeeButton&#xA;in event slider&#xA;in event NFCButton&#xA;in event boissonPrete&#xA;&#xA;out event nettoyageText&#xA;out event doReset&#xA;out event prepareBoisson&#xA;out event enAttente&#xA;out event updateBoisson&#xA;&#xA;// Define events&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="drinkingMachine">
+  <sgraph:Statechart xmi:id="_KY_34AoEEeuzsqaUjh34MQ" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;in event cancelButton&#xA;in event coffeeButton&#xA;in event slider&#xA;in event NFCButton&#xA;in event boissonPrete&#xA;&#xA;out event nettoyageText&#xA;out event doReset&#xA;out event prepareBoisson&#xA;out event enAttente&#xA;out event updateBoisson&#xA;out event finishText&#xA;&#xA;// Define events&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="drinkingMachine">
     <regions xmi:id="_KZEJUwoEEeuzsqaUjh34MQ" name="main region">
       <vertices xsi:type="sgraph:Entry" xmi:id="_KZMsMQoEEeuzsqaUjh34MQ">
         <outgoingTransitions xmi:id="_KZRksQoEEeuzsqaUjh34MQ" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
@@ -12,7 +12,7 @@
         <outgoingTransitions xmi:id="_3LsgEAoEEeuzsqaUjh34MQ" specification="after 5s/ raise nettoyageText" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_s71Z0AoEEeuzsqaUjh34MQ" name="En prépartation" incomingTransitions="_AjnRsAoFEeuzsqaUjh34MQ">
-        <outgoingTransitions xmi:id="_17cZIAoEEeuzsqaUjh34MQ" specification="boissonPrete" target="_fh3IAAoEEeuzsqaUjh34MQ"/>
+        <outgoingTransitions xmi:id="_17cZIAoEEeuzsqaUjh34MQ" specification="boissonPrete / raise finishText" target="_fh3IAAoEEeuzsqaUjh34MQ"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_7KpB4AoEEeuzsqaUjh34MQ" name="GestionCommande" incomingTransitions="_Emw-EAoFEeuzsqaUjh34MQ">
         <outgoingTransitions xmi:id="_CAkX4AoFEeuzsqaUjh34MQ" specification="cancelButton/ raise doReset" target="_KZOhZAoEEeuzsqaUjh34MQ"/>

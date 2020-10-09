@@ -32,6 +32,8 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		
 		public boolean isRaisedUpdateBoisson();
 		
+		public boolean isRaisedFinishText();
+		
 	public List<SCInterfaceListener> getListeners();
 	}
 	
@@ -42,6 +44,7 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		public void onPrepareBoissonRaised();
 		public void onEnAttenteRaised();
 		public void onUpdateBoissonRaised();
+		public void onFinishTextRaised();
 		}
 	
 	public SCInterface getSCInterface();
