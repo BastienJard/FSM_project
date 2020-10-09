@@ -336,27 +336,27 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	protected synchronized void singleCycle() {
 		for (nextStateIndex = 0; nextStateIndex < stateVector.length; nextStateIndex++) {
 			switch (stateVector[nextStateIndex]) {
-			case main_region_Demarrage:
-				main_region_Demarrage_react(true);
-				break;
-			case main_region_Pr_par_:
-				main_region_Pr_par__react(true);
-				break;
-			case main_region_En_pr_partation:
-				main_region_En_pr_partation_react(true);
-				break;
-			case main_region_GestionCommande__region0_Boisson:
-				main_region_GestionCommande__region0_Boisson_react(true);
-				break;
-			case main_region_GestionCommande__region0_Slider:
-				main_region_GestionCommande__region0_Slider_react(true);
-				break;
-			case main_region_GestionCommande__region0_Pay_:
-				main_region_GestionCommande__region0_Pay__react(true);
-				break;
-			case main_region_GestionCommande__region0_EnAttente:
-				main_region_GestionCommande__region0_EnAttente_react(true);
-				break;
+				case main_region_Demarrage:
+					main_region_Demarrage_react(true);
+					break;
+				case main_region_Pr_par_:
+					main_region_Pr_par__react(true);
+					break;
+				case main_region_En_pr_partation:
+					main_region_En_pr_partation_react(true);
+					break;
+				case main_region_GestionCommande__region0_Boisson:
+					main_region_GestionCommande__region0_Boisson_react(true);
+					break;
+				case main_region_GestionCommande__region0_Slider:
+					main_region_GestionCommande__region0_Slider_react(true);
+					break;
+				case main_region_GestionCommande__region0_Pay_:
+					main_region_GestionCommande__region0_Pay__react(true);
+					break;
+				case main_region_GestionCommande__region0_EnAttente:
+					main_region_GestionCommande__region0_EnAttente_react(true);
+					break;
 			default:
 				// $NullState$
 			}
