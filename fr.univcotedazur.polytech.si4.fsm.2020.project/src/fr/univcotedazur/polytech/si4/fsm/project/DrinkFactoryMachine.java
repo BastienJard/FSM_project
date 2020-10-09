@@ -307,7 +307,7 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				myFSM.raiseSlider();
-				messagesToUser.setText("<html>Vous avez choisi<br> comme température :" + temperatureSlider.getValue());
+				messagesToUser.setText("<html>Vous avez choisi<br> comme température :" + temperatureTable.get(temperatureSlider.getValue()).getText());
 			}
 		});
 		

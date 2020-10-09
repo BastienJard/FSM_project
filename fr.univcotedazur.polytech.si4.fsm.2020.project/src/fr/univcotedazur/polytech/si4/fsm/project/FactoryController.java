@@ -6,7 +6,7 @@ public class FactoryController {
 	protected String price;
 	protected int sugar;
 	protected int size;
-	protected int temperature;
+	protected String temperature;
 	
 	public FactoryController() {
 		
@@ -25,7 +25,7 @@ public class FactoryController {
 		this.size=size;
 	}
 	
-	public void setTemperature(int temperature) {
+	public void setTemperature(String temperature) {
 		this.temperature=temperature;
 	}
 
