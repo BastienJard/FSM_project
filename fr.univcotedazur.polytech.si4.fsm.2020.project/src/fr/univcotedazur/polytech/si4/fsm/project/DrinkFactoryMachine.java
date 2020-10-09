@@ -36,6 +36,8 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
+	private JLabel messagesToUser;
+	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	private DrinkingMachineStatemachine myFSM;
 	private FactoryController controller;
 	/**
@@ -62,7 +64,19 @@ public class DrinkFactoryMachine extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * 
 	 */
+	
+	public void nettoyageText() {
+		messagesToUser.setText("Nettoyage de la machine en cours");
+	}
+	
+	public void doReset() {
+		sugarSlider.setValue(1);
+		sizeSlider.setValue(1);
+		temperatureSlider.setValue(2);
+	}
+	
 	public DrinkFactoryMachine() {
 		
 		controller = new FactoryController();
@@ -85,7 +99,7 @@ public class DrinkFactoryMachine extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel messagesToUser = new JLabel("<html>This is<br>place to communicate <br> with the user");
+		messagesToUser = new JLabel("<html>This is<br>place to communicate <br> with the user");
 		messagesToUser.setForeground(Color.WHITE);
 		messagesToUser.setHorizontalAlignment(SwingConstants.LEFT);
 		messagesToUser.setVerticalAlignment(SwingConstants.TOP);
@@ -135,7 +149,7 @@ public class DrinkFactoryMachine extends JFrame {
 		
 		contentPane.add(progressBar);
 
-		JSlider sugarSlider = new JSlider();
+		sugarSlider = new JSlider();
 		sugarSlider.setValue(1);
 		sugarSlider.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		sugarSlider.setBackground(Color.DARK_GRAY);
@@ -147,7 +161,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sugarSlider.setBounds(301, 51, 200, 36);
 		contentPane.add(sugarSlider);
 
-		JSlider sizeSlider = new JSlider();
+		sizeSlider = new JSlider();
 		sizeSlider.setPaintTicks(true);
 		sizeSlider.setValue(1);
 		sizeSlider.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -159,7 +173,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sizeSlider.setBounds(301, 125, 200, 36);
 		contentPane.add(sizeSlider);
 	
-		JSlider temperatureSlider = new JSlider();
+		temperatureSlider = new JSlider();
 		temperatureSlider.setPaintLabels(true);
 		temperatureSlider.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		temperatureSlider.setValue(2);

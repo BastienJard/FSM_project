@@ -11,11 +11,11 @@ public class DrinkFactoryMachineControlerInterface implements SCInterfaceListene
 		
 	@Override
 	public void onNettoyageTextRaised() {
-		
+		theGui.nettoyageText();
 	}
 	@Override
 	public void onDoResetRaised() {
-		
+		theGui.doReset();
 	}
 	@Override
 	public void onDoCancelRaised() {
