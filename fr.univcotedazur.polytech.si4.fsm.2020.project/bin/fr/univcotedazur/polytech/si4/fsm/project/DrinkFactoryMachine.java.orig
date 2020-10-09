@@ -75,8 +75,6 @@ public class DrinkFactoryMachine extends JFrame {
 		sugarSlider.setValue(1);
 		sizeSlider.setValue(1);
 		temperatureSlider.setValue(2);
-		controller.setBoisson(null);
-		messagesToUser.setText("<html>Machine prête,<br>en attente de commande");
 	}
 	
 	public DrinkFactoryMachine() {
@@ -101,7 +99,7 @@ public class DrinkFactoryMachine extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		messagesToUser = new JLabel("<html>Machine prête,<br>en attente de commande");
+		messagesToUser = new JLabel("<html>This is<br>place to communicate <br> with the user");
 		messagesToUser.setForeground(Color.WHITE);
 		messagesToUser.setHorizontalAlignment(SwingConstants.LEFT);
 		messagesToUser.setVerticalAlignment(SwingConstants.TOP);
@@ -337,13 +335,6 @@ public class DrinkFactoryMachine extends JFrame {
 					ee.printStackTrace();
 				}
 				labelForPictures.setIcon(new ImageIcon(myPicture));
-			}
-		});
-		
-		cancelButton.addActionListener(new ActionListener() {
-			@Override 
-			public void actionPerformed( ActionEvent e) {
-				myFSM.raiseCancelButton();
 			}
 		});
 
