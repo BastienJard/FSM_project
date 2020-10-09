@@ -82,7 +82,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void nettoyageText() {
-		messagesToUser.setText("<hmlt>Nettoyage de la machine<br> en cours");
+		messagesToUser.setText("<html>Nettoyage de la machine<br> en cours");
 	}
 	
 	public void updateSlider() {
@@ -119,7 +119,7 @@ public class DrinkFactoryMachine extends JFrame {
 	public void prepareBoisson() {
 		takeValues();
 		controller.prepare();
-		messagesToUser.setText(messagesToUser.getText() + "<br>Temps de préparation : " + controller.timeValue/1000 + "s");
+		messagesToUser.setText("<html>Temps de préparation : " + controller.timeValue/1000 + "s");
 		
 		prepareTimer = new Timer((int) controller.timeValue, doCountEvery);
 		prepareTimer.start();
@@ -129,6 +129,10 @@ public class DrinkFactoryMachine extends JFrame {
 	public void boissonPrete() {
 		prepareTimer.stop();
 		messagesToUser.setText("<html>Votre boisson est prête");
+		boissonChoose.setText("");
+		sugarChoose.setText("");
+		sizeChoose.setText("");
+		temperatureChoose.setText("");
 	}
 	
 	public DrinkFactoryMachine() {
@@ -167,7 +171,7 @@ public class DrinkFactoryMachine extends JFrame {
 		boissonChoose.setVerticalAlignment(SwingConstants.TOP);
 		boissonChoose.setToolTipText("message to the user");
 		boissonChoose.setBackground(Color.WHITE);
-		boissonChoose.setBounds(126, 54, 165, 175);
+		boissonChoose.setBounds(126, 74, 165, 175);
 		
 		sugarChoose = new JLabel("");
 		sugarChoose.setForeground(Color.WHITE);
@@ -175,7 +179,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sugarChoose.setVerticalAlignment(SwingConstants.TOP);
 		sugarChoose.setToolTipText("message to the user");
 		sugarChoose.setBackground(Color.WHITE);
-		sugarChoose.setBounds(126, 74, 165, 175);
+		sugarChoose.setBounds(126, 94, 165, 175);
 		
 		sizeChoose = new JLabel("");
 		sizeChoose.setForeground(Color.WHITE);
@@ -183,7 +187,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sizeChoose.setVerticalAlignment(SwingConstants.TOP);
 		sizeChoose.setToolTipText("message to the user");
 		sizeChoose.setBackground(Color.WHITE);
-		sizeChoose.setBounds(126, 94, 165, 175);
+		sizeChoose.setBounds(126, 114, 165, 175);
 		
 		temperatureChoose = new JLabel("");
 		temperatureChoose.setForeground(Color.WHITE);
@@ -191,7 +195,7 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureChoose.setVerticalAlignment(SwingConstants.TOP);
 		temperatureChoose.setToolTipText("message to the user");
 		temperatureChoose.setBackground(Color.WHITE);
-		temperatureChoose.setBounds(126, 114, 165, 175);
+		temperatureChoose.setBounds(126, 134, 165, 175);
 		
 		contentPane.add(messagesToUser);
 		contentPane.add(boissonChoose);
