@@ -4,10 +4,12 @@ public class FactoryController {
 
 	protected String boisson;
 	protected String price;
-	protected int sugar;
-	protected int size;
-	protected int temperature;
+
+	protected int sugar = 1;
+	protected int size =1;
+	protected int temperature =2;
 	protected float timeValue;
+
 	
 	public FactoryController() {
 		

@@ -178,6 +178,24 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			}
 		}
 		
+		private boolean updateSlider;
+		
+		
+		public boolean isRaisedUpdateSlider() {
+			synchronized(DrinkingMachineStatemachine.this) {
+				return updateSlider;
+			}
+		}
+		
+		protected void raiseUpdateSlider() {
+			synchronized(DrinkingMachineStatemachine.this) {
+				updateSlider = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onUpdateSliderRaised();
+				}
+			}
+		}
+		
 		private boolean updateBoisson;
 		
 		
@@ -227,6 +245,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		doReset = false;
 		prepareBoisson = false;
 		enAttente = false;
+		updateSlider = false;
 		updateBoisson = false;
 		finishText = false;
 		}
@@ -495,6 +514,10 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		return sCInterface.isRaisedEnAttente();
 	}
 	
+	public synchronized boolean isRaisedUpdateSlider() {
+		return sCInterface.isRaisedUpdateSlider();
+	}
+	
 	public synchronized boolean isRaisedUpdateBoisson() {
 		return sCInterface.isRaisedUpdateBoisson();
 	}
@@ -505,7 +528,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	/* Entry action for state 'Demarrage'. */
 	private void entryAction_main_region_Demarrage() {
-		timer.setTimer(this, 0, 50, false);
+		timer.setTimer(this, 0, 2500, false);
 	}
 	
 	/* Entry action for state 'Préparé'. */
@@ -895,6 +918,8 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			} else {
 				if (sCInterface.slider) {
 					exitSequence_main_region_GestionCommande__region0_EnAttente();
+					sCInterface.raiseUpdateSlider();
+					
 					enterSequence_main_region_GestionCommande__region0_Slider_default();
 					main_region_GestionCommande_react(false);
 				} else {

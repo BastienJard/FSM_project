@@ -37,11 +37,13 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
-	private JLabel messagesToUser;
+	private JLabel messagesToUser, boissonChoose,sugarChoose,sizeChoose,temperatureChoose;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	private DrinkingMachineStatemachine myFSM;
 	private FactoryController controller;
 	private Timer prepareTimer;
+	private Hashtable<Integer, JLabel> temperatureTable;
+	
 	/**
 	 * @wbp.nonvisual location=311,475
 	 */
@@ -68,9 +70,25 @@ public class DrinkFactoryMachine extends JFrame {
 	 * Create the frame.
 	 * 
 	 */
+	public void enAttente() {
+		messagesToUser.setText("<html>Votre Commande :");
+		boissonChoose.setText("Boisson :");
+		sugarChoose.setText("Dose de Sucre : " + controller.sugar);
+		sizeChoose.setText("Taille : " + controller.size);
+		temperatureChoose.setText("Température : " + temperatureTable.get(controller.temperature).getText());
+	}
+	public void updateBoisson() {
+		boissonChoose.setText("Boisson : " + controller.boisson);
+	}
 	
 	public void nettoyageText() {
-		messagesToUser.setText("Nettoyage de la machine<br>en cours");
+		messagesToUser.setText("<hmlt>Nettoyage de la machine<br> en cours");
+	}
+	
+	public void updateSlider() {
+		sugarChoose.setText("Dose de Sucre : " + controller.sugar);
+		sizeChoose.setText("Taille : " + controller.size);
+		temperatureChoose.setText("Température : " + temperatureTable.get(controller.temperature).getText());
 	}
 	
 	public void doReset() {
@@ -78,7 +96,11 @@ public class DrinkFactoryMachine extends JFrame {
 		sizeSlider.setValue(1);
 		temperatureSlider.setValue(2);
 		controller.setBoisson(null);
-		messagesToUser.setText("<html>Machine prête,<br>en attente de commande");
+		messagesToUser.setText("<html>Machine prête");
+		boissonChoose.setText("");
+		sugarChoose.setText("");
+		sizeChoose.setText("");
+		temperatureChoose.setText("");
 	}
 	
 	public void takeValues() {
@@ -131,14 +153,51 @@ public class DrinkFactoryMachine extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		messagesToUser = new JLabel("<html>Machine prête,<br>en attente de commande");
+		messagesToUser = new JLabel("<html>Machine prête");
 		messagesToUser.setForeground(Color.WHITE);
 		messagesToUser.setHorizontalAlignment(SwingConstants.LEFT);
 		messagesToUser.setVerticalAlignment(SwingConstants.TOP);
 		messagesToUser.setToolTipText("message to the user");
 		messagesToUser.setBackground(Color.WHITE);
 		messagesToUser.setBounds(126, 34, 165, 175);
+		
+		boissonChoose = new JLabel("");
+		boissonChoose.setForeground(Color.WHITE);
+		boissonChoose.setHorizontalAlignment(SwingConstants.LEFT);
+		boissonChoose.setVerticalAlignment(SwingConstants.TOP);
+		boissonChoose.setToolTipText("message to the user");
+		boissonChoose.setBackground(Color.WHITE);
+		boissonChoose.setBounds(126, 54, 165, 175);
+		
+		sugarChoose = new JLabel("");
+		sugarChoose.setForeground(Color.WHITE);
+		sugarChoose.setHorizontalAlignment(SwingConstants.LEFT);
+		sugarChoose.setVerticalAlignment(SwingConstants.TOP);
+		sugarChoose.setToolTipText("message to the user");
+		sugarChoose.setBackground(Color.WHITE);
+		sugarChoose.setBounds(126, 74, 165, 175);
+		
+		sizeChoose = new JLabel("");
+		sizeChoose.setForeground(Color.WHITE);
+		sizeChoose.setHorizontalAlignment(SwingConstants.LEFT);
+		sizeChoose.setVerticalAlignment(SwingConstants.TOP);
+		sizeChoose.setToolTipText("message to the user");
+		sizeChoose.setBackground(Color.WHITE);
+		sizeChoose.setBounds(126, 94, 165, 175);
+		
+		temperatureChoose = new JLabel("");
+		temperatureChoose.setForeground(Color.WHITE);
+		temperatureChoose.setHorizontalAlignment(SwingConstants.LEFT);
+		temperatureChoose.setVerticalAlignment(SwingConstants.TOP);
+		temperatureChoose.setToolTipText("message to the user");
+		temperatureChoose.setBackground(Color.WHITE);
+		temperatureChoose.setBounds(126, 114, 165, 175);
+		
 		contentPane.add(messagesToUser);
+		contentPane.add(boissonChoose);
+		contentPane.add(sugarChoose);
+		contentPane.add(sizeChoose);
+		contentPane.add(temperatureChoose);
 
 		JLabel lblCoins = new JLabel("Coins");
 		lblCoins.setForeground(Color.WHITE);
@@ -217,7 +276,7 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setBounds(301, 188, 200, 54);
 		
 
-		Hashtable<Integer, JLabel> temperatureTable = new Hashtable<Integer, JLabel>();
+		temperatureTable = new Hashtable<Integer, JLabel>();
 		temperatureTable.put(0, new JLabel("20°C"));
 		temperatureTable.put(1, new JLabel("35°C"));
 		temperatureTable.put(2, new JLabel("60°C"));
@@ -328,7 +387,7 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				myFSM.raiseSlider();
-				messagesToUser.setText("<html>Vous avez choisi<br> comme taille :" + sizeSlider.getValue());
+				controller.setSize(sizeSlider.getValue());
 			}
 		});
 		
@@ -337,7 +396,7 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				myFSM.raiseSlider();
-				messagesToUser.setText("<html>Vous avez choisi<br> comme température :" + temperatureTable.get(temperatureSlider.getValue()).getText());
+				controller.setTemperature(temperatureSlider.getValue());
 			}
 		});
 		
@@ -345,15 +404,17 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				myFSM.raiseSlider();
-				messagesToUser.setText("<html>Vous avez choisi<br> comme dose de Sucre :" + sugarSlider.getValue());
+				controller.setSugar(sugarSlider.getValue());
 			}
 		});
 		
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
+				controller.boisson = "Café";
 				myFSM.raiseCoffeeButton();
-				controller.setBoisson("coffee");
+				
+
 			}
 		});
 		

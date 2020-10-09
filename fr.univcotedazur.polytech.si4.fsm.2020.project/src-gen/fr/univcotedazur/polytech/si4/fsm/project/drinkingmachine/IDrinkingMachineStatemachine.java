@@ -30,6 +30,8 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		
 		public boolean isRaisedEnAttente();
 		
+		public boolean isRaisedUpdateSlider();
+		
 		public boolean isRaisedUpdateBoisson();
 		
 		public boolean isRaisedFinishText();
@@ -43,6 +45,7 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		public void onDoResetRaised();
 		public void onPrepareBoissonRaised();
 		public void onEnAttenteRaised();
+		public void onUpdateSliderRaised();
 		public void onUpdateBoissonRaised();
 		public void onFinishTextRaised();
 		}

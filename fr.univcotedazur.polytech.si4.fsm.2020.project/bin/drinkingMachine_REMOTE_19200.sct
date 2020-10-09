@@ -12,7 +12,7 @@
         <outgoingTransitions xmi:id="_3LsgEAoEEeuzsqaUjh34MQ" specification="after 5s/ raise nettoyageText" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_s71Z0AoEEeuzsqaUjh34MQ" name="En prépartation" incomingTransitions="_AjnRsAoFEeuzsqaUjh34MQ">
-        <outgoingTransitions xmi:id="_17cZIAoEEeuzsqaUjh34MQ" specification="boissonPrete/raise finishText" target="_fh3IAAoEEeuzsqaUjh34MQ"/>
+        <outgoingTransitions xmi:id="_17cZIAoEEeuzsqaUjh34MQ" specification="boissonPrete" target="_fh3IAAoEEeuzsqaUjh34MQ"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_7KpB4AoEEeuzsqaUjh34MQ" name="GestionCommande" incomingTransitions="_Emw-EAoFEeuzsqaUjh34MQ">
         <outgoingTransitions xmi:id="_CAkX4AoFEeuzsqaUjh34MQ" specification="cancelButton/ raise doReset" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
@@ -243,7 +243,7 @@
     <edges xmi:id="_17dnQAoEEeuzsqaUjh34MQ" type="Transition" element="_17cZIAoEEeuzsqaUjh34MQ" source="_s72n8AoEEeuzsqaUjh34MQ" target="_fh4WIAoEEeuzsqaUjh34MQ">
       <children xsi:type="notation:DecorationNode" xmi:id="_17eOUwoEEeuzsqaUjh34MQ" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_17eOVAoEEeuzsqaUjh34MQ"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_17e1YAoEEeuzsqaUjh34MQ" x="-2" y="-54"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_17e1YAoEEeuzsqaUjh34MQ" y="10"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_17eOUAoEEeuzsqaUjh34MQ" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_17eOUgoEEeuzsqaUjh34MQ" fontName="Verdana"/>

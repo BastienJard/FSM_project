@@ -22,12 +22,17 @@ public class DrinkFactoryMachineControlerInterface implements SCInterfaceListene
 		theGui.prepareBoisson();
 	}
 	@Override
-	public void onEnAttenteRaised() {
-		
+	public void onUpdateBoissonRaised() {
+		theGui.updateBoisson();
 	}
 	@Override
-	public void onUpdateBoissonRaised() {
-		
+	public void onEnAttenteRaised() {
+		theGui.enAttente();
+	}
+	
+	@Override
+	public void onUpdateSliderRaised() {
+		theGui.updateSlider();
 	}
 	@Override
 	public void onFinishTextRaised() {
