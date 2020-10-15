@@ -21,7 +21,7 @@
             <outgoingTransitions xmi:id="_Xu4ecAoFEeuzsqaUjh34MQ" specification="after 50ms" target="_NEQu0AoFEeuzsqaUjh34MQ"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_cOn1oAoEEeuzsqaUjh34MQ" name="PaimentNFC" incomingTransitions="_VQXNkAoFEeuzsqaUjh34MQ">
-            <outgoingTransitions xmi:id="_FQYDIA7kEeuEG7dTszLj0w" specification="after 2s/ raise confirmationNFC" target="_D76xoA7kEeuEG7dTszLj0w"/>
+            <outgoingTransitions xmi:id="_FQYDIA7kEeuEG7dTszLj0w" specification="after 3s/ raise confirmationNFC" target="_D76xoA7kEeuEG7dTszLj0w"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_NEQu0AoFEeuzsqaUjh34MQ" name="EnAttente" incomingTransitions="_O6kJIAoFEeuzsqaUjh34MQ _Xu4ecAoFEeuzsqaUjh34MQ _oa33cA7jEeuEG7dTszLj0w">
             <outgoingTransitions xmi:id="_VQXNkAoFEeuzsqaUjh34MQ" specification="NFCButton/raise lectureCarte" target="_cOn1oAoEEeuzsqaUjh34MQ"/>
@@ -34,7 +34,7 @@
             <outgoingTransitions xmi:id="_O6kJIAoFEeuzsqaUjh34MQ" specification="" target="_NEQu0AoFEeuzsqaUjh34MQ"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_D76xoA7kEeuEG7dTszLj0w" name="Payé" incomingTransitions="_FQYDIA7kEeuEG7dTszLj0w _ShCA4A7kEeuEG7dTszLj0w">
-            <outgoingTransitions xmi:id="_jyXl0A7kEeuEG7dTszLj0w" specification="after 2s/ raise prepareBoisson" target="_s71Z0AoEEeuzsqaUjh34MQ"/>
+            <outgoingTransitions xmi:id="_jyXl0A7kEeuEG7dTszLj0w" specification="after 4s/ raise prepareBoisson" target="_s71Z0AoEEeuzsqaUjh34MQ"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_FvtDcA7kEeuEG7dTszLj0w" name="PaimentLiquide" incomingTransitions="_Otk9YA7kEeuEG7dTszLj0w _TWYUgA7kEeuEG7dTszLj0w">
             <outgoingTransitions xmi:id="_ShCA4A7kEeuEG7dTszLj0w" specification="confirmationCoin/ raise renduMonnaie" target="_D76xoA7kEeuEG7dTszLj0w"/>

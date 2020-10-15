@@ -51,13 +51,13 @@ public class DrinkFactoryMachineControlerInterface implements SCInterfaceListene
 
 	@Override
 	public void onRenduMonnaieRaised() {
-		// TODO Auto-generated method stub
+		theGui.rendueMonnaie();
 		
 	}
 
 	@Override
 	public void onConfirmationNFCRaised() {
-		// TODO Auto-generated method stub
+		theGui.paiementNFC();
 		
 	}
 	

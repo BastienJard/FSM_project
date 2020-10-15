@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
@@ -73,8 +74,19 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void updateCoin() {
-		coinInsert.setText("<html>Monnaie :" + controller.insertedCoin + " €");
+		coinInsert.setText("<html>Monnaie : " + controller.insertedCoin + " €");
 		verifyCount();
+	}
+	
+	public void rendueMonnaie() {
+		double rendue = controller.insertedCoin - controller.price;
+		BigDecimal bd = new BigDecimal(rendue);
+		bd = bd.setScale(3, BigDecimal.ROUND_DOWN);
+		messagesToUser.setText("<html>Rendue de monnaie : " + bd.doubleValue() + " €" );
+	}
+	
+	public void paiementNFC() {
+		messagesToUser.setText("Paiement de " + controller.price + " € accepté");
 	}
 	/**
 	 * Create the frame.
@@ -86,7 +98,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sugarChoose.setText("Dose de Sucre : " + controller.sugar);
 		sizeChoose.setText("Taille : " + controller.size);
 		temperatureChoose.setText("Température : " + temperatureTable.get(controller.temperature).getText());
-		coinInsert.setText("<html>Monnaie :" + controller.insertedCoin + " €");
+		coinInsert.setText("<html>Monnaie : " + controller.insertedCoin + " €");
 	}
 	public void updateBoisson() {
 		boissonChoose.setText("Boisson : " + controller.boisson);
@@ -151,6 +163,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sugarChoose.setText("");
 		sizeChoose.setText("");
 		temperatureChoose.setText("");
+		coinInsert.setText("");
 	}
 	
 	public DrinkFactoryMachine() {
@@ -443,7 +456,7 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
 				controller.boisson = "Café";
-				controller.price = 0.50;
+				controller.price = 0.35;
 				myFSM.raiseCoffeeButton();
 				
 

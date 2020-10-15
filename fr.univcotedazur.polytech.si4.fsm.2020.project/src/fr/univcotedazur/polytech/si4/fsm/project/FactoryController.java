@@ -5,16 +5,11 @@ public class FactoryController {
 	protected String boisson;
 	protected double price;
 	protected double insertedCoin;
-
 	protected int sugar = 1;
 	protected int size =1;
 	protected int temperature =2;
 	protected float timeValue;
 
-	
-	public FactoryController() {
-		
-	}
 	
 	public void setBoisson(String boisson) {
 		this.boisson=boisson;

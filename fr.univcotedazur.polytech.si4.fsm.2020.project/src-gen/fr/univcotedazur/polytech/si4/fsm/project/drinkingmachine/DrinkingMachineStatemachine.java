@@ -687,7 +687,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	/* Entry action for state 'PaimentNFC'. */
 	private void entryAction_main_region_GestionCommande__region0_PaimentNFC() {
-		timer.setTimer(this, 3, (2 * 1000), false);
+		timer.setTimer(this, 3, (3 * 1000), false);
 	}
 	
 	/* Entry action for state 'EnAttente'. */
@@ -697,7 +697,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	/* Entry action for state 'Payé'. */
 	private void entryAction_main_region_GestionCommande__region0_Pay_() {
-		timer.setTimer(this, 5, (2 * 1000), false);
+		timer.setTimer(this, 5, (4 * 1000), false);
 	}
 	
 	/* Exit action for state 'Demarrage'. */
