@@ -38,4 +38,27 @@ public class DrinkFactoryMachineControlerInterface implements SCInterfaceListene
 	public void onFinishTextRaised() {
 		theGui.boissonPrete();
 	}
+	@Override
+	public void onLectureCarteRaised() {
+		theGui.lectureCarte();
+	}
+
+	@Override
+	public void onIncreaseCoinRaised() {
+		theGui.updateCoin();
+		
+	}
+
+	@Override
+	public void onRenduMonnaieRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConfirmationNFCRaised() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

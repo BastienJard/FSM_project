@@ -37,7 +37,7 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
-	private JLabel messagesToUser, boissonChoose,sugarChoose,sizeChoose,temperatureChoose;
+	private JLabel messagesToUser, boissonChoose,sugarChoose,sizeChoose,temperatureChoose,coinInsert;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	private DrinkingMachineStatemachine myFSM;
 	private FactoryController controller;
@@ -66,6 +66,16 @@ public class DrinkFactoryMachine extends JFrame {
 		});
 	}
 
+	public void verifyCount() {
+		if(controller.price<=controller.insertedCoin) {
+			myFSM.raiseConfirmationCoin();
+		}
+	}
+	
+	public void updateCoin() {
+		coinInsert.setText("<html>Monnaie :" + controller.insertedCoin + " €");
+		verifyCount();
+	}
 	/**
 	 * Create the frame.
 	 * 
@@ -76,6 +86,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sugarChoose.setText("Dose de Sucre : " + controller.sugar);
 		sizeChoose.setText("Taille : " + controller.size);
 		temperatureChoose.setText("Température : " + temperatureTable.get(controller.temperature).getText());
+		coinInsert.setText("<html>Monnaie :" + controller.insertedCoin + " €");
 	}
 	public void updateBoisson() {
 		boissonChoose.setText("Boisson : " + controller.boisson);
@@ -91,11 +102,18 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureChoose.setText("Température : " + temperatureTable.get(controller.temperature).getText());
 	}
 	
+	public void lectureCarte() {
+		messagesToUser.setText("<html>Lecture de la carte<br> en cours ...");
+		
+	}
+	
 	public void doReset() {
 		sugarSlider.setValue(1);
 		sizeSlider.setValue(1);
 		temperatureSlider.setValue(2);
 		controller.setBoisson(null);
+		controller.price = 0.0;
+		controller.insertedCoin = 0.0;
 		messagesToUser.setText("<html>Machine prête");
 		boissonChoose.setText("");
 		sugarChoose.setText("");
@@ -197,11 +215,20 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureChoose.setBackground(Color.WHITE);
 		temperatureChoose.setBounds(126, 134, 165, 175);
 		
+		coinInsert = new JLabel("");
+		coinInsert.setForeground(Color.WHITE);
+		coinInsert.setHorizontalAlignment(SwingConstants.LEFT);
+		coinInsert.setVerticalAlignment(SwingConstants.TOP);
+		coinInsert.setToolTipText("message to the user");
+		coinInsert.setBackground(Color.WHITE);
+		coinInsert.setBounds(126, 154, 165, 175);
+		
 		contentPane.add(messagesToUser);
 		contentPane.add(boissonChoose);
 		contentPane.add(sugarChoose);
 		contentPane.add(sizeChoose);
 		contentPane.add(temperatureChoose);
+		contentPane.add(coinInsert);
 
 		JLabel lblCoins = new JLabel("Coins");
 		lblCoins.setForeground(Color.WHITE);
@@ -330,15 +357,15 @@ public class DrinkFactoryMachine extends JFrame {
 		money50centsButton.setBackground(Color.DARK_GRAY);
 		panel.add(money50centsButton);
 
-		JButton money25centsButton = new JButton("0.25 €");
-		money25centsButton.setForeground(Color.WHITE);
-		money25centsButton.setBackground(Color.DARK_GRAY);
-		panel.add(money25centsButton);
-
 		JButton money10centsButton = new JButton("0.10 €");
 		money10centsButton.setForeground(Color.WHITE);
 		money10centsButton.setBackground(Color.DARK_GRAY);
 		panel.add(money10centsButton);
+
+		JButton money5centsButton = new JButton("0.05 €");
+		money5centsButton.setForeground(Color.WHITE);
+		money5centsButton.setBackground(Color.DARK_GRAY);
+		panel.add(money5centsButton);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.DARK_GRAY);
@@ -416,6 +443,7 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
 				controller.boisson = "Café";
+				controller.price = 0.50;
 				myFSM.raiseCoffeeButton();
 				
 
@@ -448,6 +476,30 @@ public class DrinkFactoryMachine extends JFrame {
 				myFSM.raiseNFCButton();
 			}
 		});
+		
+		money10centsButton.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				controller.increaseCoin(0.10);
+				myFSM.raiseCoinButton();
+			}
+		}); 
+		
+		money50centsButton.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				controller.increaseCoin(0.50);
+				myFSM.raiseCoinButton();
+			}
+		}); 
+		
+		money5centsButton.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				controller.increaseCoin(0.05);
+				myFSM.raiseCoinButton();
+			}
+		}); 
 
 	}
 }

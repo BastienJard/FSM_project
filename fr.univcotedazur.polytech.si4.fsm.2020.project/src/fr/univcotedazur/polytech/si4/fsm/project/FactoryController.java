@@ -3,7 +3,8 @@ package fr.univcotedazur.polytech.si4.fsm.project;
 public class FactoryController {
 
 	protected String boisson;
-	protected String price;
+	protected double price;
+	protected double insertedCoin;
 
 	protected int sugar = 1;
 	protected int size =1;
@@ -35,6 +36,10 @@ public class FactoryController {
 	public void prepare() {
 		//en ms
 		timeValue = (float)(Math.exp(this.temperature)*1000 + Math.exp(this.size)*100 + Math.exp(this.sugar)*10);
+	}
+	
+	public void increaseCoin(double coin) {
+		this.insertedCoin += coin;
 	}
 
 }

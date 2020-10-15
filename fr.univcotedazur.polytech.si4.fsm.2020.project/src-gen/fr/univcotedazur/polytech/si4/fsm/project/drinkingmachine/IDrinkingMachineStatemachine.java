@@ -22,6 +22,10 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		
 		public void raiseBoissonPrete();
 		
+		public void raiseCoinButton();
+		
+		public void raiseConfirmationCoin();
+		
 		public boolean isRaisedNettoyageText();
 		
 		public boolean isRaisedDoReset();
@@ -36,6 +40,14 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		
 		public boolean isRaisedFinishText();
 		
+		public boolean isRaisedLectureCarte();
+		
+		public boolean isRaisedIncreaseCoin();
+		
+		public boolean isRaisedRenduMonnaie();
+		
+		public boolean isRaisedConfirmationNFC();
+		
 	public List<SCInterfaceListener> getListeners();
 	}
 	
@@ -48,6 +60,10 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		public void onUpdateSliderRaised();
 		public void onUpdateBoissonRaised();
 		public void onFinishTextRaised();
+		public void onLectureCarteRaised();
+		public void onIncreaseCoinRaised();
+		public void onRenduMonnaieRaised();
+		public void onConfirmationNFCRaised();
 		}
 	
 	public SCInterface getSCInterface();
