@@ -76,7 +76,7 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	public void updateCoin() {
 		BigDecimal bd = new BigDecimal(controller.insertedCoin);
-		bd = bd.setScale(3, BigDecimal.ROUND_DOWN);
+		bd = bd.setScale(2, BigDecimal.ROUND_HALF_DOWN);
 		coinInsert.setText("<html>Monnaie : " + bd.doubleValue() + " €");
 		verifyCount();
 	}
@@ -84,7 +84,7 @@ public class DrinkFactoryMachine extends JFrame {
 	public void rendueMonnaie() {
 		double rendue = controller.insertedCoin - controller.price;
 		BigDecimal bd = new BigDecimal(rendue);
-		bd = bd.setScale(3, BigDecimal.ROUND_DOWN);
+		bd = bd.setScale(2, BigDecimal.ROUND_HALF_DOWN);
 		messagesToUser.setText("<html>Rendue de monnaie : " + bd.doubleValue() + " €" );
 	}
 	
@@ -142,6 +142,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sugarChoose.setText("");
 		sizeChoose.setText("");
 		temperatureChoose.setText("");
+		coinInsert.setText("");
 	}
 	
 	public void takeValues() {
