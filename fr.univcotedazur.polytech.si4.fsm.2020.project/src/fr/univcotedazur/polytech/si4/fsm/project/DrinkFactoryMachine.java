@@ -45,6 +45,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private Timer prepareTimer;
 	private Hashtable<Integer, JLabel> temperatureTable;
 	private BufferedImage myPicture;
+	private Boolean isNFCDone = false, isPaiementLiquideDone = false;
 	
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -76,6 +77,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void updateCoin() {
+		isPaiementLiquideDone=true;
 		BigDecimal bd = new BigDecimal(controller.insertedCoin);
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_DOWN);
 		coinInsert.setText("<html>Monnaie : " + bd.doubleValue() + " €");
@@ -86,13 +88,25 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	public void rendueMonnaie() {
 		double rendue = controller.insertedCoin - controller.price;
+		controller.insertedCoin = rendue;
 		BigDecimal bd = new BigDecimal(rendue);
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_DOWN);
 		messagesToUser.setText("<html>Rendue de monnaie : " + bd.doubleValue() + " €" );
 	}
 	
 	public void paiementNFC() {
+		isNFCDone = true;
 		messagesToUser.setText("Paiement de " + controller.price + " € accepté");
+	}
+	
+	public void annulationNFC() {
+		isNFCDone = false;
+		messagesToUser.setText("<html>Annulation du paiment NFC");
+	}
+	
+	public void annulationPaiementLiquide() {
+		isPaiementLiquideDone=false;
+		messagesToUser.setText("<html>Rendue de monnaie : " + controller.insertedCoin + " €" );
 	}
 	/**
 	 * Create the frame.
@@ -140,17 +154,25 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void lectureCarte() {
+		isNFCDone = true;
 		messagesToUser.setText("<html>Lecture de la carte<br> en cours ...");
 	}
 	
 	public void doReset() {
+		if(isNFCDone) {
+			annulationNFC();
+		}else if (isPaiementLiquideDone) {
+			annulationPaiementLiquide();
+		}else {
+			messagesToUser.setText("<html>Machine prête");
+		}
 		sugarSlider.setValue(1);
 		sizeSlider.setValue(1);
 		temperatureSlider.setValue(2);
 		controller.setBoisson(null);
 		controller.price = 0.0;
 		controller.insertedCoin = 0.0;
-		messagesToUser.setText("<html>Machine prête");
+		
 		boissonChoose.setText("");
 		sugarChoose.setText("");
 		sizeChoose.setText("");
@@ -172,9 +194,13 @@ public class DrinkFactoryMachine extends JFrame {
 	};
 	
 	public void prepareBoisson() {
+		isNFCDone=false;
+		isPaiementLiquideDone=false;
 		takeValues();
 		controller.prepare();
-		messagesToUser.setText("<html>Temps de préparation : " + controller.timeValue/1000 + "s");
+		BigDecimal bd = new BigDecimal(controller.timeValue/1000);
+		bd = bd.setScale(0, BigDecimal.ROUND_UP);
+		messagesToUser.setText("<html>Temps de préparation : " + bd.doubleValue() + "s");
 		
 		try {
 			myPicture = ImageIO.read(new File("./picts/gobeletPolluant.jpg"));
