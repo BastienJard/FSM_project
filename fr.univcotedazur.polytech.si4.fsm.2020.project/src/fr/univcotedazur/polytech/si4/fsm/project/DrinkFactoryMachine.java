@@ -38,12 +38,13 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
-	private JLabel messagesToUser, boissonChoose,sugarChoose,sizeChoose,temperatureChoose,coinInsert;
+	private JLabel messagesToUser, boissonChoose,sugarChoose,sizeChoose,temperatureChoose,coinInsert, labelForPictures;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	private DrinkingMachineStatemachine myFSM;
 	private FactoryController controller;
 	private Timer prepareTimer;
 	private Hashtable<Integer, JLabel> temperatureTable;
+	private BufferedImage myPicture;
 	
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -106,6 +107,12 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	public void nettoyageText() {
 		messagesToUser.setText("<html>Nettoyage de la machine<br> en cours");
+		try {
+			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		labelForPictures.setIcon(new ImageIcon(myPicture));
 	}
 	
 	public void updateSlider() {
@@ -150,6 +157,13 @@ public class DrinkFactoryMachine extends JFrame {
 		takeValues();
 		controller.prepare();
 		messagesToUser.setText("<html>Temps de préparation : " + controller.timeValue/1000 + "s");
+		
+		try {
+			myPicture = ImageIO.read(new File("./picts/gobeletPolluant.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		labelForPictures.setIcon(new ImageIcon(myPicture));
 		
 		prepareTimer = new Timer((int) controller.timeValue, doCountEvery);
 		prepareTimer.start();
@@ -406,13 +420,13 @@ public class DrinkFactoryMachine extends JFrame {
 		addCupButton.setBounds(45, 336, 96, 25);
 		contentPane.add(addCupButton);
 
-		BufferedImage myPicture = null;
+		myPicture = null;
 		try {
 			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		JLabel labelForPictures = new JLabel(new ImageIcon(myPicture));
+		labelForPictures = new JLabel(new ImageIcon(myPicture));
 		labelForPictures.setBounds(175, 319, 286, 260);
 		contentPane.add(labelForPictures);
 
