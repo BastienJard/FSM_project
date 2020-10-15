@@ -49,6 +49,7 @@ public class DrinkFactoryMachine extends JFrame {
 	/**
 	 * @wbp.nonvisual location=311,475
 	 */
+	
 	private final ImageIcon imageIcon = new ImageIcon();
 
 	/**
@@ -78,7 +79,9 @@ public class DrinkFactoryMachine extends JFrame {
 		BigDecimal bd = new BigDecimal(controller.insertedCoin);
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_DOWN);
 		coinInsert.setText("<html>Monnaie : " + bd.doubleValue() + " €");
-		verifyCount();
+		if(controller.boisson!=null) {
+			verifyCount();
+		}
 	}
 	
 	public void rendueMonnaie() {
@@ -98,6 +101,7 @@ public class DrinkFactoryMachine extends JFrame {
 	public void enAttente() {
 		controller.price = 0.0;
 		controller.insertedCoin = 0.0;
+		controller.setBoisson(null);
 		messagesToUser.setText("<html>Votre Commande :");
 		boissonChoose.setText("Boisson :");
 		sugarChoose.setText("Dose de Sucre : " + controller.sugar);
@@ -105,8 +109,18 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureChoose.setText("Température : " + temperatureTable.get(controller.temperature).getText());
 		coinInsert.setText("<html>Monnaie : " + controller.insertedCoin + " €");
 	}
+	
+	public void attentePaiement() {
+		messagesToUser.setText("<html>Votre Commande :");
+		if(controller.boisson!=null) {
+			myFSM.raiseConfirmationNFC();
+		}
+	}
+	
 	public void updateBoisson() {
 		boissonChoose.setText("Boisson : " + controller.boisson);
+		verifyCount();
+		myFSM.raiseConfirmationNFC();
 	}
 	
 	public void nettoyageText() {
@@ -127,7 +141,6 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	public void lectureCarte() {
 		messagesToUser.setText("<html>Lecture de la carte<br> en cours ...");
-		
 	}
 	
 	public void doReset() {

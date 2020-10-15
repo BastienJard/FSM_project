@@ -55,10 +55,15 @@ public class DrinkFactoryMachineControlerInterface implements SCInterfaceListene
 		
 	}
 
-
 	@Override
 	public void onPaiementNFCRaised() {
-		// TODO Auto-generated method stub
+		theGui.paiementNFC();
+		
+	}
+
+	@Override
+	public void onAttentePaiementRaised() {
+		theGui.attentePaiement();
 		
 	}
 	

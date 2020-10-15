@@ -50,6 +50,8 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		
 		public boolean isRaisedPaiementNFC();
 		
+		public boolean isRaisedAttentePaiement();
+		
 	public List<SCInterfaceListener> getListeners();
 	}
 	
@@ -66,6 +68,7 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		public void onIncreaseCoinRaised();
 		public void onRenduMonnaieRaised();
 		public void onPaiementNFCRaised();
+		public void onAttentePaiementRaised();
 		}
 	
 	public SCInterface getSCInterface();

@@ -1,6 +1,5 @@
 package fr.univcotedazur.polytech.si4.fsm.project;
 
-import java.math.BigDecimal;
 
 public class FactoryController {
 
