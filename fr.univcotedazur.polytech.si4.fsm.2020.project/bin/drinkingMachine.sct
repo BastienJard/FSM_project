@@ -16,7 +16,7 @@
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_7KpB4AoEEeuzsqaUjh34MQ" specification="" name="GestionCommande" incomingTransitions="_Emw-EAoFEeuzsqaUjh34MQ">
         <outgoingTransitions xmi:id="_CAkX4AoFEeuzsqaUjh34MQ" specification="cancelButton/ raise doReset" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
-        <regions xmi:id="_7gKl8AoEEeuzsqaUjh34MQ">
+        <regions xmi:id="_7gKl8AoEEeuzsqaUjh34MQ" name="chooseGestion">
           <vertices xsi:type="sgraph:State" xmi:id="_NEQu0AoFEeuzsqaUjh34MQ" specification="" name="EnAttente" incomingTransitions="_O6kJIAoFEeuzsqaUjh34MQ _oa33cA7jEeuEG7dTszLj0w _jrqM8A78Eeu7eNDHNbji4g">
             <outgoingTransitions xmi:id="_oa33cA7jEeuEG7dTszLj0w" specification="slider/ raise updateSlider" target="_NEQu0AoFEeuzsqaUjh34MQ"/>
             <outgoingTransitions xmi:id="_jrqM8A78Eeu7eNDHNbji4g" specification="coffeeButton/raise updateBoisson" target="_NEQu0AoFEeuzsqaUjh34MQ"/>
@@ -25,19 +25,19 @@
             <outgoingTransitions xmi:id="_O6kJIAoFEeuzsqaUjh34MQ" specification="" target="_NEQu0AoFEeuzsqaUjh34MQ"/>
           </vertices>
         </regions>
-        <regions xmi:id="_EpkDUA77Eeu7eNDHNbji4g">
+        <regions xmi:id="_EpkDUA77Eeu7eNDHNbji4g" name="resetTimer">
           <vertices xsi:type="sgraph:Entry" xmi:id="_H8hB0A77Eeu7eNDHNbji4g">
             <outgoingTransitions xmi:id="_J7CkAA77Eeu7eNDHNbji4g" specification="" target="_ISX9EA77Eeu7eNDHNbji4g"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_ISX9EA77Eeu7eNDHNbji4g" name="reset" incomingTransitions="_J7CkAA77Eeu7eNDHNbji4g _GCKYgA78Eeu7eNDHNbji4g">
-            <outgoingTransitions xmi:id="_MCmGYA77Eeu7eNDHNbji4g" specification="after 5s/ raise doReset" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
+            <outgoingTransitions xmi:id="_MCmGYA77Eeu7eNDHNbji4g" specification="after 45s/ raise doReset" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
             <outgoingTransitions xmi:id="_FLWsUA78Eeu7eNDHNbji4g" specification="always" target="_EUD38A78Eeu7eNDHNbji4g"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_EUD38A78Eeu7eNDHNbji4g" name="test" incomingTransitions="_FLWsUA78Eeu7eNDHNbji4g">
             <outgoingTransitions xmi:id="_GCKYgA78Eeu7eNDHNbji4g" specification="after 50ms" target="_ISX9EA77Eeu7eNDHNbji4g"/>
           </vertices>
         </regions>
-        <regions xmi:id="_Fk_YgA71EeuEG7dTszLj0w">
+        <regions xmi:id="_Fk_YgA71EeuEG7dTszLj0w" name="paiementGestion">
           <vertices xsi:type="sgraph:Entry" xmi:id="_IJ0swA71EeuEG7dTszLj0w">
             <outgoingTransitions xmi:id="_K1vgcA71EeuEG7dTszLj0w" specification="" target="_IhlsgA71EeuEG7dTszLj0w"/>
           </vertices>
@@ -491,7 +491,7 @@
     <edges xmi:id="_LMz_0A75Eeu7eNDHNbji4g" type="Transition" element="_LMyxsA75Eeu7eNDHNbji4g" source="_FSwjkA72EeuEG7dTszLj0w" target="_s72n8AoEEeuzsqaUjh34MQ">
       <children xsi:type="notation:DecorationNode" xmi:id="_LMz_1A75Eeu7eNDHNbji4g" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_LMz_1Q75Eeu7eNDHNbji4g"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_LMz_1g75Eeu7eNDHNbji4g" x="176" y="-38"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_LMz_1g75Eeu7eNDHNbji4g" x="-76" y="-112"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_LMz_0Q75Eeu7eNDHNbji4g" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_LMz_0w75Eeu7eNDHNbji4g" fontName="Verdana"/>

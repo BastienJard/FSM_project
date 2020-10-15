@@ -395,13 +395,13 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		main_region_Pr_par_,
 		main_region_En_pr_partation,
 		main_region_GestionCommande,
-		main_region_GestionCommande__region0_EnAttente,
-		main_region_GestionCommande__region1_reset,
-		main_region_GestionCommande__region1_test,
-		main_region_GestionCommande__region2_EnAttentePaiement,
-		main_region_GestionCommande__region2_PaimentNFC,
-		main_region_GestionCommande__region2_PaimentLiquide,
-		main_region_GestionCommande__region2_Pay_,
+		main_region_GestionCommande_chooseGestion_EnAttente,
+		main_region_GestionCommande_resetTimer_reset,
+		main_region_GestionCommande_resetTimer_test,
+		main_region_GestionCommande_paiementGestion_EnAttentePaiement,
+		main_region_GestionCommande_paiementGestion_PaimentNFC,
+		main_region_GestionCommande_paiementGestion_PaimentLiquide,
+		main_region_GestionCommande_paiementGestion_Pay_,
 		$NullState$
 	};
 	
@@ -481,26 +481,26 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				case main_region_En_pr_partation:
 					main_region_En_pr_partation_react(true);
 					break;
-				case main_region_GestionCommande__region0_EnAttente:
-					main_region_GestionCommande__region0_EnAttente_react(true);
+				case main_region_GestionCommande_chooseGestion_EnAttente:
+					main_region_GestionCommande_chooseGestion_EnAttente_react(true);
 					break;
-				case main_region_GestionCommande__region1_reset:
-					main_region_GestionCommande__region1_reset_react(true);
+				case main_region_GestionCommande_resetTimer_reset:
+					main_region_GestionCommande_resetTimer_reset_react(true);
 					break;
-				case main_region_GestionCommande__region1_test:
-					main_region_GestionCommande__region1_test_react(true);
+				case main_region_GestionCommande_resetTimer_test:
+					main_region_GestionCommande_resetTimer_test_react(true);
 					break;
-				case main_region_GestionCommande__region2_EnAttentePaiement:
-					main_region_GestionCommande__region2_EnAttentePaiement_react(true);
+				case main_region_GestionCommande_paiementGestion_EnAttentePaiement:
+					main_region_GestionCommande_paiementGestion_EnAttentePaiement_react(true);
 					break;
-				case main_region_GestionCommande__region2_PaimentNFC:
-					main_region_GestionCommande__region2_PaimentNFC_react(true);
+				case main_region_GestionCommande_paiementGestion_PaimentNFC:
+					main_region_GestionCommande_paiementGestion_PaimentNFC_react(true);
 					break;
-				case main_region_GestionCommande__region2_PaimentLiquide:
-					main_region_GestionCommande__region2_PaimentLiquide_react(true);
+				case main_region_GestionCommande_paiementGestion_PaimentLiquide:
+					main_region_GestionCommande_paiementGestion_PaimentLiquide_react(true);
 					break;
-				case main_region_GestionCommande__region2_Pay_:
-					main_region_GestionCommande__region2_Pay__react(true);
+				case main_region_GestionCommande_paiementGestion_Pay_:
+					main_region_GestionCommande_paiementGestion_Pay__react(true);
 					break;
 			default:
 				// $NullState$
@@ -574,21 +574,21 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			return stateVector[0] == State.main_region_En_pr_partation;
 		case main_region_GestionCommande:
 			return stateVector[0].ordinal() >= State.
-					main_region_GestionCommande.ordinal()&& stateVector[0].ordinal() <= State.main_region_GestionCommande__region2_Pay_.ordinal();
-		case main_region_GestionCommande__region0_EnAttente:
-			return stateVector[0] == State.main_region_GestionCommande__region0_EnAttente;
-		case main_region_GestionCommande__region1_reset:
-			return stateVector[1] == State.main_region_GestionCommande__region1_reset;
-		case main_region_GestionCommande__region1_test:
-			return stateVector[1] == State.main_region_GestionCommande__region1_test;
-		case main_region_GestionCommande__region2_EnAttentePaiement:
-			return stateVector[2] == State.main_region_GestionCommande__region2_EnAttentePaiement;
-		case main_region_GestionCommande__region2_PaimentNFC:
-			return stateVector[2] == State.main_region_GestionCommande__region2_PaimentNFC;
-		case main_region_GestionCommande__region2_PaimentLiquide:
-			return stateVector[2] == State.main_region_GestionCommande__region2_PaimentLiquide;
-		case main_region_GestionCommande__region2_Pay_:
-			return stateVector[2] == State.main_region_GestionCommande__region2_Pay_;
+					main_region_GestionCommande.ordinal()&& stateVector[0].ordinal() <= State.main_region_GestionCommande_paiementGestion_Pay_.ordinal();
+		case main_region_GestionCommande_chooseGestion_EnAttente:
+			return stateVector[0] == State.main_region_GestionCommande_chooseGestion_EnAttente;
+		case main_region_GestionCommande_resetTimer_reset:
+			return stateVector[1] == State.main_region_GestionCommande_resetTimer_reset;
+		case main_region_GestionCommande_resetTimer_test:
+			return stateVector[1] == State.main_region_GestionCommande_resetTimer_test;
+		case main_region_GestionCommande_paiementGestion_EnAttentePaiement:
+			return stateVector[2] == State.main_region_GestionCommande_paiementGestion_EnAttentePaiement;
+		case main_region_GestionCommande_paiementGestion_PaimentNFC:
+			return stateVector[2] == State.main_region_GestionCommande_paiementGestion_PaimentNFC;
+		case main_region_GestionCommande_paiementGestion_PaimentLiquide:
+			return stateVector[2] == State.main_region_GestionCommande_paiementGestion_PaimentLiquide;
+		case main_region_GestionCommande_paiementGestion_Pay_:
+			return stateVector[2] == State.main_region_GestionCommande_paiementGestion_Pay_;
 		default:
 			return false;
 		}
@@ -716,17 +716,17 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	}
 	
 	/* Entry action for state 'reset'. */
-	private void entryAction_main_region_GestionCommande__region1_reset() {
-		timer.setTimer(this, 2, (5 * 1000), false);
+	private void entryAction_main_region_GestionCommande_resetTimer_reset() {
+		timer.setTimer(this, 2, (45 * 1000), false);
 	}
 	
 	/* Entry action for state 'test'. */
-	private void entryAction_main_region_GestionCommande__region1_test() {
+	private void entryAction_main_region_GestionCommande_resetTimer_test() {
 		timer.setTimer(this, 3, 50, false);
 	}
 	
 	/* Entry action for state 'Payé'. */
-	private void entryAction_main_region_GestionCommande__region2_Pay_() {
+	private void entryAction_main_region_GestionCommande_paiementGestion_Pay_() {
 		timer.setTimer(this, 4, (4 * 1000), false);
 	}
 	
@@ -741,17 +741,17 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	}
 	
 	/* Exit action for state 'reset'. */
-	private void exitAction_main_region_GestionCommande__region1_reset() {
+	private void exitAction_main_region_GestionCommande_resetTimer_reset() {
 		timer.unsetTimer(this, 2);
 	}
 	
 	/* Exit action for state 'test'. */
-	private void exitAction_main_region_GestionCommande__region1_test() {
+	private void exitAction_main_region_GestionCommande_resetTimer_test() {
 		timer.unsetTimer(this, 3);
 	}
 	
 	/* Exit action for state 'Payé'. */
-	private void exitAction_main_region_GestionCommande__region2_Pay_() {
+	private void exitAction_main_region_GestionCommande_paiementGestion_Pay_() {
 		timer.unsetTimer(this, 4);
 	}
 	
@@ -777,54 +777,54 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	/* 'default' enter sequence for state GestionCommande */
 	private void enterSequence_main_region_GestionCommande_default() {
-		enterSequence_main_region_GestionCommande__region0_default();
-		enterSequence_main_region_GestionCommande__region1_default();
-		enterSequence_main_region_GestionCommande__region2_default();
+		enterSequence_main_region_GestionCommande_chooseGestion_default();
+		enterSequence_main_region_GestionCommande_resetTimer_default();
+		enterSequence_main_region_GestionCommande_paiementGestion_default();
 	}
 	
 	/* 'default' enter sequence for state EnAttente */
-	private void enterSequence_main_region_GestionCommande__region0_EnAttente_default() {
+	private void enterSequence_main_region_GestionCommande_chooseGestion_EnAttente_default() {
 		nextStateIndex = 0;
-		stateVector[0] = State.main_region_GestionCommande__region0_EnAttente;
+		stateVector[0] = State.main_region_GestionCommande_chooseGestion_EnAttente;
 	}
 	
 	/* 'default' enter sequence for state reset */
-	private void enterSequence_main_region_GestionCommande__region1_reset_default() {
-		entryAction_main_region_GestionCommande__region1_reset();
+	private void enterSequence_main_region_GestionCommande_resetTimer_reset_default() {
+		entryAction_main_region_GestionCommande_resetTimer_reset();
 		nextStateIndex = 1;
-		stateVector[1] = State.main_region_GestionCommande__region1_reset;
+		stateVector[1] = State.main_region_GestionCommande_resetTimer_reset;
 	}
 	
 	/* 'default' enter sequence for state test */
-	private void enterSequence_main_region_GestionCommande__region1_test_default() {
-		entryAction_main_region_GestionCommande__region1_test();
+	private void enterSequence_main_region_GestionCommande_resetTimer_test_default() {
+		entryAction_main_region_GestionCommande_resetTimer_test();
 		nextStateIndex = 1;
-		stateVector[1] = State.main_region_GestionCommande__region1_test;
+		stateVector[1] = State.main_region_GestionCommande_resetTimer_test;
 	}
 	
 	/* 'default' enter sequence for state EnAttentePaiement */
-	private void enterSequence_main_region_GestionCommande__region2_EnAttentePaiement_default() {
+	private void enterSequence_main_region_GestionCommande_paiementGestion_EnAttentePaiement_default() {
 		nextStateIndex = 2;
-		stateVector[2] = State.main_region_GestionCommande__region2_EnAttentePaiement;
+		stateVector[2] = State.main_region_GestionCommande_paiementGestion_EnAttentePaiement;
 	}
 	
 	/* 'default' enter sequence for state PaimentNFC */
-	private void enterSequence_main_region_GestionCommande__region2_PaimentNFC_default() {
+	private void enterSequence_main_region_GestionCommande_paiementGestion_PaimentNFC_default() {
 		nextStateIndex = 2;
-		stateVector[2] = State.main_region_GestionCommande__region2_PaimentNFC;
+		stateVector[2] = State.main_region_GestionCommande_paiementGestion_PaimentNFC;
 	}
 	
 	/* 'default' enter sequence for state PaimentLiquide */
-	private void enterSequence_main_region_GestionCommande__region2_PaimentLiquide_default() {
+	private void enterSequence_main_region_GestionCommande_paiementGestion_PaimentLiquide_default() {
 		nextStateIndex = 2;
-		stateVector[2] = State.main_region_GestionCommande__region2_PaimentLiquide;
+		stateVector[2] = State.main_region_GestionCommande_paiementGestion_PaimentLiquide;
 	}
 	
 	/* 'default' enter sequence for state Payé */
-	private void enterSequence_main_region_GestionCommande__region2_Pay__default() {
-		entryAction_main_region_GestionCommande__region2_Pay_();
+	private void enterSequence_main_region_GestionCommande_paiementGestion_Pay__default() {
+		entryAction_main_region_GestionCommande_paiementGestion_Pay_();
 		nextStateIndex = 2;
-		stateVector[2] = State.main_region_GestionCommande__region2_Pay_;
+		stateVector[2] = State.main_region_GestionCommande_paiementGestion_Pay_;
 	}
 	
 	/* 'default' enter sequence for region main region */
@@ -832,19 +832,19 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		react_main_region__entry_Default();
 	}
 	
-	/* 'default' enter sequence for region null */
-	private void enterSequence_main_region_GestionCommande__region0_default() {
-		react_main_region_GestionCommande__region0__entry_Default();
+	/* 'default' enter sequence for region chooseGestion */
+	private void enterSequence_main_region_GestionCommande_chooseGestion_default() {
+		react_main_region_GestionCommande_chooseGestion__entry_Default();
 	}
 	
-	/* 'default' enter sequence for region null */
-	private void enterSequence_main_region_GestionCommande__region1_default() {
-		react_main_region_GestionCommande__region1__entry_Default();
+	/* 'default' enter sequence for region resetTimer */
+	private void enterSequence_main_region_GestionCommande_resetTimer_default() {
+		react_main_region_GestionCommande_resetTimer__entry_Default();
 	}
 	
-	/* 'default' enter sequence for region null */
-	private void enterSequence_main_region_GestionCommande__region2_default() {
-		react_main_region_GestionCommande__region2__entry_Default();
+	/* 'default' enter sequence for region paiementGestion */
+	private void enterSequence_main_region_GestionCommande_paiementGestion_default() {
+		react_main_region_GestionCommande_paiementGestion__entry_Default();
 	}
 	
 	/* Default exit sequence for state Demarrage */
@@ -871,57 +871,57 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	/* Default exit sequence for state GestionCommande */
 	private void exitSequence_main_region_GestionCommande() {
-		exitSequence_main_region_GestionCommande__region0();
-		exitSequence_main_region_GestionCommande__region1();
-		exitSequence_main_region_GestionCommande__region2();
+		exitSequence_main_region_GestionCommande_chooseGestion();
+		exitSequence_main_region_GestionCommande_resetTimer();
+		exitSequence_main_region_GestionCommande_paiementGestion();
 	}
 	
 	/* Default exit sequence for state EnAttente */
-	private void exitSequence_main_region_GestionCommande__region0_EnAttente() {
+	private void exitSequence_main_region_GestionCommande_chooseGestion_EnAttente() {
 		nextStateIndex = 0;
 		stateVector[0] = State.$NullState$;
 	}
 	
 	/* Default exit sequence for state reset */
-	private void exitSequence_main_region_GestionCommande__region1_reset() {
+	private void exitSequence_main_region_GestionCommande_resetTimer_reset() {
 		nextStateIndex = 1;
 		stateVector[1] = State.$NullState$;
 		
-		exitAction_main_region_GestionCommande__region1_reset();
+		exitAction_main_region_GestionCommande_resetTimer_reset();
 	}
 	
 	/* Default exit sequence for state test */
-	private void exitSequence_main_region_GestionCommande__region1_test() {
+	private void exitSequence_main_region_GestionCommande_resetTimer_test() {
 		nextStateIndex = 1;
 		stateVector[1] = State.$NullState$;
 		
-		exitAction_main_region_GestionCommande__region1_test();
+		exitAction_main_region_GestionCommande_resetTimer_test();
 	}
 	
 	/* Default exit sequence for state EnAttentePaiement */
-	private void exitSequence_main_region_GestionCommande__region2_EnAttentePaiement() {
+	private void exitSequence_main_region_GestionCommande_paiementGestion_EnAttentePaiement() {
 		nextStateIndex = 2;
 		stateVector[2] = State.$NullState$;
 	}
 	
 	/* Default exit sequence for state PaimentNFC */
-	private void exitSequence_main_region_GestionCommande__region2_PaimentNFC() {
+	private void exitSequence_main_region_GestionCommande_paiementGestion_PaimentNFC() {
 		nextStateIndex = 2;
 		stateVector[2] = State.$NullState$;
 	}
 	
 	/* Default exit sequence for state PaimentLiquide */
-	private void exitSequence_main_region_GestionCommande__region2_PaimentLiquide() {
+	private void exitSequence_main_region_GestionCommande_paiementGestion_PaimentLiquide() {
 		nextStateIndex = 2;
 		stateVector[2] = State.$NullState$;
 	}
 	
 	/* Default exit sequence for state Payé */
-	private void exitSequence_main_region_GestionCommande__region2_Pay_() {
+	private void exitSequence_main_region_GestionCommande_paiementGestion_Pay_() {
 		nextStateIndex = 2;
 		stateVector[2] = State.$NullState$;
 		
-		exitAction_main_region_GestionCommande__region2_Pay_();
+		exitAction_main_region_GestionCommande_paiementGestion_Pay_();
 	}
 	
 	/* Default exit sequence for region main region */
@@ -936,81 +936,81 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		case main_region_En_pr_partation:
 			exitSequence_main_region_En_pr_partation();
 			break;
-		case main_region_GestionCommande__region0_EnAttente:
-			exitSequence_main_region_GestionCommande__region0_EnAttente();
+		case main_region_GestionCommande_chooseGestion_EnAttente:
+			exitSequence_main_region_GestionCommande_chooseGestion_EnAttente();
 			break;
 		default:
 			break;
 		}
 		
 		switch (stateVector[1]) {
-		case main_region_GestionCommande__region1_reset:
-			exitSequence_main_region_GestionCommande__region1_reset();
+		case main_region_GestionCommande_resetTimer_reset:
+			exitSequence_main_region_GestionCommande_resetTimer_reset();
 			break;
-		case main_region_GestionCommande__region1_test:
-			exitSequence_main_region_GestionCommande__region1_test();
+		case main_region_GestionCommande_resetTimer_test:
+			exitSequence_main_region_GestionCommande_resetTimer_test();
 			break;
 		default:
 			break;
 		}
 		
 		switch (stateVector[2]) {
-		case main_region_GestionCommande__region2_EnAttentePaiement:
-			exitSequence_main_region_GestionCommande__region2_EnAttentePaiement();
+		case main_region_GestionCommande_paiementGestion_EnAttentePaiement:
+			exitSequence_main_region_GestionCommande_paiementGestion_EnAttentePaiement();
 			break;
-		case main_region_GestionCommande__region2_PaimentNFC:
-			exitSequence_main_region_GestionCommande__region2_PaimentNFC();
+		case main_region_GestionCommande_paiementGestion_PaimentNFC:
+			exitSequence_main_region_GestionCommande_paiementGestion_PaimentNFC();
 			break;
-		case main_region_GestionCommande__region2_PaimentLiquide:
-			exitSequence_main_region_GestionCommande__region2_PaimentLiquide();
+		case main_region_GestionCommande_paiementGestion_PaimentLiquide:
+			exitSequence_main_region_GestionCommande_paiementGestion_PaimentLiquide();
 			break;
-		case main_region_GestionCommande__region2_Pay_:
-			exitSequence_main_region_GestionCommande__region2_Pay_();
+		case main_region_GestionCommande_paiementGestion_Pay_:
+			exitSequence_main_region_GestionCommande_paiementGestion_Pay_();
 			break;
 		default:
 			break;
 		}
 	}
 	
-	/* Default exit sequence for region null */
-	private void exitSequence_main_region_GestionCommande__region0() {
+	/* Default exit sequence for region chooseGestion */
+	private void exitSequence_main_region_GestionCommande_chooseGestion() {
 		switch (stateVector[0]) {
-		case main_region_GestionCommande__region0_EnAttente:
-			exitSequence_main_region_GestionCommande__region0_EnAttente();
+		case main_region_GestionCommande_chooseGestion_EnAttente:
+			exitSequence_main_region_GestionCommande_chooseGestion_EnAttente();
 			break;
 		default:
 			break;
 		}
 	}
 	
-	/* Default exit sequence for region null */
-	private void exitSequence_main_region_GestionCommande__region1() {
+	/* Default exit sequence for region resetTimer */
+	private void exitSequence_main_region_GestionCommande_resetTimer() {
 		switch (stateVector[1]) {
-		case main_region_GestionCommande__region1_reset:
-			exitSequence_main_region_GestionCommande__region1_reset();
+		case main_region_GestionCommande_resetTimer_reset:
+			exitSequence_main_region_GestionCommande_resetTimer_reset();
 			break;
-		case main_region_GestionCommande__region1_test:
-			exitSequence_main_region_GestionCommande__region1_test();
+		case main_region_GestionCommande_resetTimer_test:
+			exitSequence_main_region_GestionCommande_resetTimer_test();
 			break;
 		default:
 			break;
 		}
 	}
 	
-	/* Default exit sequence for region null */
-	private void exitSequence_main_region_GestionCommande__region2() {
+	/* Default exit sequence for region paiementGestion */
+	private void exitSequence_main_region_GestionCommande_paiementGestion() {
 		switch (stateVector[2]) {
-		case main_region_GestionCommande__region2_EnAttentePaiement:
-			exitSequence_main_region_GestionCommande__region2_EnAttentePaiement();
+		case main_region_GestionCommande_paiementGestion_EnAttentePaiement:
+			exitSequence_main_region_GestionCommande_paiementGestion_EnAttentePaiement();
 			break;
-		case main_region_GestionCommande__region2_PaimentNFC:
-			exitSequence_main_region_GestionCommande__region2_PaimentNFC();
+		case main_region_GestionCommande_paiementGestion_PaimentNFC:
+			exitSequence_main_region_GestionCommande_paiementGestion_PaimentNFC();
 			break;
-		case main_region_GestionCommande__region2_PaimentLiquide:
-			exitSequence_main_region_GestionCommande__region2_PaimentLiquide();
+		case main_region_GestionCommande_paiementGestion_PaimentLiquide:
+			exitSequence_main_region_GestionCommande_paiementGestion_PaimentLiquide();
 			break;
-		case main_region_GestionCommande__region2_Pay_:
-			exitSequence_main_region_GestionCommande__region2_Pay_();
+		case main_region_GestionCommande_paiementGestion_Pay_:
+			exitSequence_main_region_GestionCommande_paiementGestion_Pay_();
 			break;
 		default:
 			break;
@@ -1023,18 +1023,18 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	}
 	
 	/* Default react sequence for initial entry  */
-	private void react_main_region_GestionCommande__region0__entry_Default() {
-		enterSequence_main_region_GestionCommande__region0_EnAttente_default();
+	private void react_main_region_GestionCommande_chooseGestion__entry_Default() {
+		enterSequence_main_region_GestionCommande_chooseGestion_EnAttente_default();
 	}
 	
 	/* Default react sequence for initial entry  */
-	private void react_main_region_GestionCommande__region1__entry_Default() {
-		enterSequence_main_region_GestionCommande__region1_reset_default();
+	private void react_main_region_GestionCommande_resetTimer__entry_Default() {
+		enterSequence_main_region_GestionCommande_resetTimer_reset_default();
 	}
 	
 	/* Default react sequence for initial entry  */
-	private void react_main_region_GestionCommande__region2__entry_Default() {
-		enterSequence_main_region_GestionCommande__region2_EnAttentePaiement_default();
+	private void react_main_region_GestionCommande_paiementGestion__entry_Default() {
+		enterSequence_main_region_GestionCommande_paiementGestion_EnAttentePaiement_default();
 	}
 	
 	private boolean react() {
@@ -1121,21 +1121,21 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		return did_transition;
 	}
 	
-	private boolean main_region_GestionCommande__region0_EnAttente_react(boolean try_transition) {
+	private boolean main_region_GestionCommande_chooseGestion_EnAttente_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
 			if (sCInterface.slider) {
-				exitSequence_main_region_GestionCommande__region0_EnAttente();
+				exitSequence_main_region_GestionCommande_chooseGestion_EnAttente();
 				sCInterface.raiseUpdateSlider();
 				
-				enterSequence_main_region_GestionCommande__region0_EnAttente_default();
+				enterSequence_main_region_GestionCommande_chooseGestion_EnAttente_default();
 			} else {
 				if (sCInterface.coffeeButton) {
-					exitSequence_main_region_GestionCommande__region0_EnAttente();
+					exitSequence_main_region_GestionCommande_chooseGestion_EnAttente();
 					sCInterface.raiseUpdateBoisson();
 					
-					enterSequence_main_region_GestionCommande__region0_EnAttente_default();
+					enterSequence_main_region_GestionCommande_chooseGestion_EnAttente_default();
 				} else {
 					did_transition = false;
 				}
@@ -1144,7 +1144,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		return did_transition;
 	}
 	
-	private boolean main_region_GestionCommande__region1_reset_react(boolean try_transition) {
+	private boolean main_region_GestionCommande_resetTimer_reset_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
@@ -1155,20 +1155,20 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				enterSequence_main_region_Demarrage_default();
 				react();
 			} else {
-				exitSequence_main_region_GestionCommande__region1_reset();
-				enterSequence_main_region_GestionCommande__region1_test_default();
+				exitSequence_main_region_GestionCommande_resetTimer_reset();
+				enterSequence_main_region_GestionCommande_resetTimer_test_default();
 			}
 		}
 		return did_transition;
 	}
 	
-	private boolean main_region_GestionCommande__region1_test_react(boolean try_transition) {
+	private boolean main_region_GestionCommande_resetTimer_test_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
 			if (timeEvents[3]) {
-				exitSequence_main_region_GestionCommande__region1_test();
-				enterSequence_main_region_GestionCommande__region1_reset_default();
+				exitSequence_main_region_GestionCommande_resetTimer_test();
+				enterSequence_main_region_GestionCommande_resetTimer_reset_default();
 			} else {
 				did_transition = false;
 			}
@@ -1176,22 +1176,22 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		return did_transition;
 	}
 	
-	private boolean main_region_GestionCommande__region2_EnAttentePaiement_react(boolean try_transition) {
+	private boolean main_region_GestionCommande_paiementGestion_EnAttentePaiement_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
 			if (sCInterface.nFCButton) {
-				exitSequence_main_region_GestionCommande__region2_EnAttentePaiement();
+				exitSequence_main_region_GestionCommande_paiementGestion_EnAttentePaiement();
 				sCInterface.raiseLectureCarte();
 				
-				enterSequence_main_region_GestionCommande__region2_PaimentNFC_default();
+				enterSequence_main_region_GestionCommande_paiementGestion_PaimentNFC_default();
 				main_region_GestionCommande_react(false);
 			} else {
 				if (sCInterface.coinButton) {
-					exitSequence_main_region_GestionCommande__region2_EnAttentePaiement();
+					exitSequence_main_region_GestionCommande_paiementGestion_EnAttentePaiement();
 					sCInterface.raiseIncreaseCoin();
 					
-					enterSequence_main_region_GestionCommande__region2_PaimentLiquide_default();
+					enterSequence_main_region_GestionCommande_paiementGestion_PaimentLiquide_default();
 					main_region_GestionCommande_react(false);
 				} else {
 					did_transition = false;
@@ -1204,15 +1204,15 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		return did_transition;
 	}
 	
-	private boolean main_region_GestionCommande__region2_PaimentNFC_react(boolean try_transition) {
+	private boolean main_region_GestionCommande_paiementGestion_PaimentNFC_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
 			if (sCInterface.confirmationNFC) {
-				exitSequence_main_region_GestionCommande__region2_PaimentNFC();
+				exitSequence_main_region_GestionCommande_paiementGestion_PaimentNFC();
 				sCInterface.raisePaiementNFC();
 				
-				enterSequence_main_region_GestionCommande__region2_Pay__default();
+				enterSequence_main_region_GestionCommande_paiementGestion_Pay__default();
 				main_region_GestionCommande_react(false);
 			} else {
 				did_transition = false;
@@ -1224,21 +1224,21 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		return did_transition;
 	}
 	
-	private boolean main_region_GestionCommande__region2_PaimentLiquide_react(boolean try_transition) {
+	private boolean main_region_GestionCommande_paiementGestion_PaimentLiquide_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
 			if (sCInterface.coinButton) {
-				exitSequence_main_region_GestionCommande__region2_PaimentLiquide();
+				exitSequence_main_region_GestionCommande_paiementGestion_PaimentLiquide();
 				sCInterface.raiseIncreaseCoin();
 				
-				enterSequence_main_region_GestionCommande__region2_PaimentLiquide_default();
+				enterSequence_main_region_GestionCommande_paiementGestion_PaimentLiquide_default();
 			} else {
 				if (sCInterface.confirmationCoin) {
-					exitSequence_main_region_GestionCommande__region2_PaimentLiquide();
+					exitSequence_main_region_GestionCommande_paiementGestion_PaimentLiquide();
 					sCInterface.raiseRenduMonnaie();
 					
-					enterSequence_main_region_GestionCommande__region2_Pay__default();
+					enterSequence_main_region_GestionCommande_paiementGestion_Pay__default();
 					main_region_GestionCommande_react(false);
 				} else {
 					did_transition = false;
@@ -1251,7 +1251,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		return did_transition;
 	}
 	
-	private boolean main_region_GestionCommande__region2_Pay__react(boolean try_transition) {
+	private boolean main_region_GestionCommande_paiementGestion_Pay__react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
