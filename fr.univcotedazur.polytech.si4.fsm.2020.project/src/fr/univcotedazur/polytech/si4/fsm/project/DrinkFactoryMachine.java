@@ -75,7 +75,9 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void updateCoin() {
-		coinInsert.setText("<html>Monnaie : " + controller.insertedCoin + " €");
+		BigDecimal bd = new BigDecimal(controller.insertedCoin);
+		bd = bd.setScale(3, BigDecimal.ROUND_DOWN);
+		coinInsert.setText("<html>Monnaie : " + bd.doubleValue() + " €");
 		verifyCount();
 	}
 	
@@ -94,6 +96,8 @@ public class DrinkFactoryMachine extends JFrame {
 	 * 
 	 */
 	public void enAttente() {
+		controller.price = 0.0;
+		controller.insertedCoin = 0.0;
 		messagesToUser.setText("<html>Votre Commande :");
 		boissonChoose.setText("Boisson :");
 		sugarChoose.setText("Dose de Sucre : " + controller.sugar);
