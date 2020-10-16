@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
-  <sgraph:Statechart xmi:id="_KY_34AoEEeuzsqaUjh34MQ" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;in event cancelButton&#xA;in event coffeeButton&#xA;in event slider&#xA;in event NFCButton&#xA;in event boissonPrete&#xA;in event coinButton&#xA;in event confirmationCoin&#xA;in event confirmationNFC&#xA;&#xA;out event nettoyageText&#xA;out event doReset&#xA;out event prepareBoisson&#xA;out event enAttente&#xA;out event updateSlider&#xA;out event updateBoisson&#xA;out event finishText&#xA;out event lectureCarte&#xA;out event increaseCoin&#xA;out event renduMonnaie&#xA;out event paiementNFC&#xA;out event attentePaiement&#xA;&#xA;// Define events&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="drinkingMachine">
+  <sgraph:Statechart xmi:id="_KY_34AoEEeuzsqaUjh34MQ" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;in event cancelButton&#xA;in event coffeeButton&#xA;in event slider&#xA;in event NFCButton&#xA;in event boissonPrete&#xA;in event coinButton&#xA;in event confirmationCoin&#xA;in event confirmationNFC&#xA;in event error&#xA;&#xA;out event nettoyageText&#xA;out event doReset&#xA;out event prepareBoisson&#xA;out event enAttente&#xA;out event updateSlider&#xA;out event updateBoisson&#xA;out event finishText&#xA;out event lectureCarte&#xA;out event increaseCoin&#xA;out event renduMonnaie&#xA;out event paiementNFC&#xA;out event attentePaiement&#xA;out event erreurPaiment&#xA;&#xA;// Define events&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="drinkingMachine">
     <regions xmi:id="_KZEJUwoEEeuzsqaUjh34MQ" name="main region">
       <vertices xsi:type="sgraph:Entry" xmi:id="_KZMsMQoEEeuzsqaUjh34MQ">
         <outgoingTransitions xmi:id="_KZRksQoEEeuzsqaUjh34MQ" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
@@ -45,12 +45,14 @@
             <outgoingTransitions xmi:id="_PUN24A71EeuEG7dTszLj0w" specification="NFCButton/ raise lectureCarte" target="_anVI4A8AEeu7eNDHNbji4g"/>
             <outgoingTransitions xmi:id="_YfWwwA71EeuEG7dTszLj0w" specification="coinButton/ raise increaseCoin" target="_XPGp3Q71EeuEG7dTszLj0w"/>
           </vertices>
-          <vertices xsi:type="sgraph:State" xmi:id="_OPm_QA71EeuEG7dTszLj0w" name="PaimentNFC" incomingTransitions="_eEJOAA8AEeu7eNDHNbji4g">
+          <vertices xsi:type="sgraph:State" xmi:id="_OPm_QA71EeuEG7dTszLj0w" name="PaimentNFC" incomingTransitions="_eEJOAA8AEeu7eNDHNbji4g _MXrZkA9_Eeu34_dgiymI_Q">
             <outgoingTransitions xmi:id="_HrwbQA72EeuEG7dTszLj0w" specification="confirmationNFC/raise paiementNFC" target="_FSv8gA72EeuEG7dTszLj0w"/>
+            <outgoingTransitions xmi:id="_MXrZkA9_Eeu34_dgiymI_Q" specification="error/raise erreurPaiment" target="_OPm_QA71EeuEG7dTszLj0w"/>
           </vertices>
-          <vertices xsi:type="sgraph:State" xmi:id="_XPGp3Q71EeuEG7dTszLj0w" name="PaimentLiquide" incomingTransitions="_XPHQ6A71EeuEG7dTszLj0w _YfWwwA71EeuEG7dTszLj0w">
+          <vertices xsi:type="sgraph:State" xmi:id="_XPGp3Q71EeuEG7dTszLj0w" name="PaimentLiquide" incomingTransitions="_XPHQ6A71EeuEG7dTszLj0w _YfWwwA71EeuEG7dTszLj0w _C_0SUA9_Eeu34_dgiymI_Q">
             <outgoingTransitions xmi:id="_XPHQ6A71EeuEG7dTszLj0w" specification="coinButton/raise increaseCoin" target="_XPGp3Q71EeuEG7dTszLj0w"/>
             <outgoingTransitions xmi:id="_IpYhIA72EeuEG7dTszLj0w" specification="confirmationCoin/raise renduMonnaie" target="_FSv8gA72EeuEG7dTszLj0w"/>
+            <outgoingTransitions xmi:id="_C_0SUA9_Eeu34_dgiymI_Q" specification="error/ raise erreurPaiment" target="_XPGp3Q71EeuEG7dTszLj0w"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_FSv8gA72EeuEG7dTszLj0w" name="Payé" incomingTransitions="_HrwbQA72EeuEG7dTszLj0w _IpYhIA72EeuEG7dTszLj0w">
             <outgoingTransitions xmi:id="_LMyxsA75Eeu7eNDHNbji4g" specification="after 4s/ raise prepareBoisson" target="_s71Z0AoEEeuzsqaUjh34MQ"/>
@@ -581,6 +583,28 @@
       <styles xsi:type="notation:FontStyle" xmi:id="_eELqQA8AEeu7eNDHNbji4g" fontName="Verdana"/>
       <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_eELDMg8AEeu7eNDHNbji4g" points="[-3, 6, 61, -103]$[-35, 84, 29, -25]"/>
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_eENfcA8AEeu7eNDHNbji4g" id="(0.375,0.8867924528301887)"/>
+    </edges>
+    <edges xmi:id="_DB4H0A9_Eeu34_dgiymI_Q" type="Transition" element="_C_0SUA9_Eeu34_dgiymI_Q" source="_fvRUNw71EeuEG7dTszLj0w" target="_fvRUNw71EeuEG7dTszLj0w">
+      <children xsi:type="notation:DecorationNode" xmi:id="_DB59AA9_Eeu34_dgiymI_Q" type="TransitionExpression">
+        <styles xsi:type="notation:ShapeStyle" xmi:id="_DB59AQ9_Eeu34_dgiymI_Q"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_DB59Ag9_Eeu34_dgiymI_Q" x="24" y="57"/>
+      </children>
+      <styles xsi:type="notation:ConnectorStyle" xmi:id="_DB4H0Q9_Eeu34_dgiymI_Q" routing="Rectilinear" lineColor="4210752"/>
+      <styles xsi:type="notation:FontStyle" xmi:id="_DB4u4A9_Eeu34_dgiymI_Q" fontName="Verdana"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_DB4H0g9_Eeu34_dgiymI_Q" points="[26, 27, 26, 27]$[63, 27, 63, 27]$[63, 14, 63, 14]$[26, 14, 26, 14]"/>
+      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_DB9nYA9_Eeu34_dgiymI_Q" id="(0.775,0.2641509433962264)"/>
+      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_DB-OcA9_Eeu34_dgiymI_Q" id="(0.775,0.2641509433962264)"/>
+    </edges>
+    <edges xmi:id="_MXt10A9_Eeu34_dgiymI_Q" type="Transition" element="_MXrZkA9_Eeu34_dgiymI_Q" source="_fvRUKw71EeuEG7dTszLj0w" target="_fvRUKw71EeuEG7dTszLj0w">
+      <children xsi:type="notation:DecorationNode" xmi:id="_MXvD8A9_Eeu34_dgiymI_Q" type="TransitionExpression">
+        <styles xsi:type="notation:ShapeStyle" xmi:id="_MXvD8Q9_Eeu34_dgiymI_Q"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_MXvD8g9_Eeu34_dgiymI_Q" x="7" y="-5"/>
+      </children>
+      <styles xsi:type="notation:ConnectorStyle" xmi:id="_MXt10Q9_Eeu34_dgiymI_Q" routing="Rectilinear" lineColor="4210752"/>
+      <styles xsi:type="notation:FontStyle" xmi:id="_MXuc4A9_Eeu34_dgiymI_Q" fontName="Verdana"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_MXt10g9_Eeu34_dgiymI_Q" points="[19, 15, 19, 16]$[86, 15, 86, 16]$[86, -1, 86, 0]$[19, -1, 19, 0]"/>
+      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_MXyuUA9_Eeu34_dgiymI_Q" id="(0.8118811881188119,0.509090909090909)"/>
+      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_MXzVYA9_Eeu34_dgiymI_Q" id="(0.8118811881188119,0.4909090909090909)"/>
     </edges>
   </notation:Diagram>
 </xmi:XMI>

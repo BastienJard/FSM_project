@@ -66,5 +66,11 @@ public class DrinkFactoryMachineControlerInterface implements SCInterfaceListene
 		theGui.attentePaiement();
 		
 	}
+
+	@Override
+	public void onErreurPaimentRaised() {
+		theGui.errorPaiement();
+		
+	}
 	
 }

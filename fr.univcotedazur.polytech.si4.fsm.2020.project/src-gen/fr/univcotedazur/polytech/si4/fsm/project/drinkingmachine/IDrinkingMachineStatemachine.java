@@ -28,6 +28,8 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		
 		public void raiseConfirmationNFC();
 		
+		public void raiseError();
+		
 		public boolean isRaisedNettoyageText();
 		
 		public boolean isRaisedDoReset();
@@ -52,6 +54,8 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		
 		public boolean isRaisedAttentePaiement();
 		
+		public boolean isRaisedErreurPaiment();
+		
 	public List<SCInterfaceListener> getListeners();
 	}
 	
@@ -69,6 +73,7 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		public void onRenduMonnaieRaised();
 		public void onPaiementNFCRaised();
 		public void onAttentePaiementRaised();
+		public void onErreurPaimentRaised();
 		}
 	
 	public SCInterface getSCInterface();

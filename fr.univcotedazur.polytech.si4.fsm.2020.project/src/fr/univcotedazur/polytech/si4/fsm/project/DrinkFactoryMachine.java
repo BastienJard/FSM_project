@@ -38,7 +38,7 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
-	private JLabel messagesToUser, boissonChoose,sugarChoose,sizeChoose,temperatureChoose,coinInsert, labelForPictures;
+	private JLabel messagesToUser, boissonChoose,coinInsert, labelForPictures, priceLabel;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	private DrinkingMachineStatemachine myFSM;
 	private FactoryController controller;
@@ -68,6 +68,10 @@ public class DrinkFactoryMachine extends JFrame {
 				}
 			}
 		});
+	}
+	
+	public void errorPaiement() {
+		messagesToUser.setText("<html>Erreur, vous ne pouvez<br> pas changer de moyen de paiement");
 	}
 
 	public void verifyCount() {
@@ -118,10 +122,8 @@ public class DrinkFactoryMachine extends JFrame {
 		controller.setBoisson(null);
 		messagesToUser.setText("<html>Votre Commande :");
 		boissonChoose.setText("Boisson :");
-		sugarChoose.setText("Dose de Sucre : " + controller.sugar);
-		sizeChoose.setText("Taille : " + controller.size);
-		temperatureChoose.setText("Température : " + temperatureTable.get(controller.temperature).getText());
 		coinInsert.setText("<html>Monnaie : " + controller.insertedCoin + " €");
+		priceLabel.setText("Prix : " + controller.price + " €");
 	}
 	
 	public void attentePaiement() {
@@ -131,8 +133,15 @@ public class DrinkFactoryMachine extends JFrame {
 		}
 	}
 	
+	public void updateSlider() {
+		controller.setSize(sizeSlider.getValue());
+		controller.setSugar(sugarSlider.getValue());
+		controller.setTemperature(temperatureSlider.getValue());
+	}
+	
 	public void updateBoisson() {
 		boissonChoose.setText("Boisson : " + controller.boisson);
+		priceLabel.setText("Prix : " + controller.price + " €");
 		verifyCount();
 		myFSM.raiseConfirmationNFC();
 	}
@@ -147,11 +156,6 @@ public class DrinkFactoryMachine extends JFrame {
 		labelForPictures.setIcon(new ImageIcon(myPicture));
 	}
 	
-	public void updateSlider() {
-		sugarChoose.setText("Dose de Sucre : " + controller.sugar);
-		sizeChoose.setText("Taille : " + controller.size);
-		temperatureChoose.setText("Température : " + temperatureTable.get(controller.temperature).getText());
-	}
 	
 	public void lectureCarte() {
 		isNFCDone = true;
@@ -174,17 +178,10 @@ public class DrinkFactoryMachine extends JFrame {
 		controller.insertedCoin = 0.0;
 		
 		boissonChoose.setText("");
-		sugarChoose.setText("");
-		sizeChoose.setText("");
-		temperatureChoose.setText("");
 		coinInsert.setText("");
+		priceLabel.setText("");
 	}
 	
-	public void takeValues() {
-		controller.setSize(sizeSlider.getValue());
-		controller.setSugar(sugarSlider.getValue());
-		controller.setTemperature(temperatureSlider.getValue());
-	}
 	
 	ActionListener doCountEvery = new ActionListener() {
 		@Override
@@ -196,7 +193,6 @@ public class DrinkFactoryMachine extends JFrame {
 	public void prepareBoisson() {
 		isNFCDone=false;
 		isPaiementLiquideDone=false;
-		takeValues();
 		controller.prepare();
 		BigDecimal bd = new BigDecimal(controller.timeValue/1000);
 		bd = bd.setScale(0, BigDecimal.ROUND_UP);
@@ -218,10 +214,8 @@ public class DrinkFactoryMachine extends JFrame {
 		prepareTimer.stop();
 		messagesToUser.setText("<html>Votre boisson est prête");
 		boissonChoose.setText("");
-		sugarChoose.setText("");
-		sizeChoose.setText("");
-		temperatureChoose.setText("");
 		coinInsert.setText("");
+		priceLabel.setText("");
 	}
 	
 	public DrinkFactoryMachine() {
@@ -260,31 +254,15 @@ public class DrinkFactoryMachine extends JFrame {
 		boissonChoose.setVerticalAlignment(SwingConstants.TOP);
 		boissonChoose.setToolTipText("message to the user");
 		boissonChoose.setBackground(Color.WHITE);
-		boissonChoose.setBounds(126, 74, 165, 175);
+		boissonChoose.setBounds(126, 94, 165, 175);
 		
-		sugarChoose = new JLabel("");
-		sugarChoose.setForeground(Color.WHITE);
-		sugarChoose.setHorizontalAlignment(SwingConstants.LEFT);
-		sugarChoose.setVerticalAlignment(SwingConstants.TOP);
-		sugarChoose.setToolTipText("message to the user");
-		sugarChoose.setBackground(Color.WHITE);
-		sugarChoose.setBounds(126, 94, 165, 175);
-		
-		sizeChoose = new JLabel("");
-		sizeChoose.setForeground(Color.WHITE);
-		sizeChoose.setHorizontalAlignment(SwingConstants.LEFT);
-		sizeChoose.setVerticalAlignment(SwingConstants.TOP);
-		sizeChoose.setToolTipText("message to the user");
-		sizeChoose.setBackground(Color.WHITE);
-		sizeChoose.setBounds(126, 114, 165, 175);
-		
-		temperatureChoose = new JLabel("");
-		temperatureChoose.setForeground(Color.WHITE);
-		temperatureChoose.setHorizontalAlignment(SwingConstants.LEFT);
-		temperatureChoose.setVerticalAlignment(SwingConstants.TOP);
-		temperatureChoose.setToolTipText("message to the user");
-		temperatureChoose.setBackground(Color.WHITE);
-		temperatureChoose.setBounds(126, 134, 165, 175);
+		priceLabel = new JLabel("");
+		priceLabel.setForeground(Color.WHITE);
+		priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		priceLabel.setVerticalAlignment(SwingConstants.TOP);
+		priceLabel.setToolTipText("message to the user");
+		priceLabel.setBackground(Color.WHITE);
+		priceLabel.setBounds(126, 114, 165, 175);
 		
 		coinInsert = new JLabel("");
 		coinInsert.setForeground(Color.WHITE);
@@ -292,13 +270,11 @@ public class DrinkFactoryMachine extends JFrame {
 		coinInsert.setVerticalAlignment(SwingConstants.TOP);
 		coinInsert.setToolTipText("message to the user");
 		coinInsert.setBackground(Color.WHITE);
-		coinInsert.setBounds(126, 154, 165, 175);
+		coinInsert.setBounds(126, 134, 165, 175);
 		
 		contentPane.add(messagesToUser);
 		contentPane.add(boissonChoose);
-		contentPane.add(sugarChoose);
-		contentPane.add(sizeChoose);
-		contentPane.add(temperatureChoose);
+		contentPane.add(priceLabel);
 		contentPane.add(coinInsert);
 
 		JLabel lblCoins = new JLabel("Coins");
@@ -544,33 +520,55 @@ public class DrinkFactoryMachine extends JFrame {
 		nfcBiiiipButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				myFSM.raiseNFCButton();
+				if(!isPaiementLiquideDone) {
+					myFSM.raiseNFCButton();
+				}
+				else {
+					myFSM.raiseError();
+				}
 			}
 		});
 		
 		money10centsButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.increaseCoin(0.10);
-				myFSM.raiseCoinButton();
+				if(!isNFCDone) {
+					controller.increaseCoin(0.10);
+					myFSM.raiseCoinButton();
+				}
+				else {
+					myFSM.raiseError();
+				}
 			}
 		}); 
 		
 		money50centsButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.increaseCoin(0.50);
-				myFSM.raiseCoinButton();
+				if(!isNFCDone) {
+					controller.increaseCoin(0.50);
+					myFSM.raiseCoinButton();
+				}
+				else {
+					myFSM.raiseError();
+				}
 			}
 		}); 
 		
 		money5centsButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.increaseCoin(0.05);
-				myFSM.raiseCoinButton();
+				if(!isNFCDone) {
+					controller.increaseCoin(0.05);
+					myFSM.raiseCoinButton();
+				}
+				else {
+					myFSM.raiseError();
+				}
 			}
 		}); 
 
 	}
+
+
 }
