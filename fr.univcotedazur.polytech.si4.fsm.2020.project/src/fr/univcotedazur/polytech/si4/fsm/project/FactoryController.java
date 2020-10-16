@@ -31,7 +31,7 @@ public class FactoryController {
 	
 	public void prepare() {
 		//en ms
-		timeValue = (float)(Math.exp(this.temperature)*1000 + Math.exp(this.size)*100 + Math.exp(this.sugar)*10);
+		timeValue = (float)(Math.exp(this.temperature)*1000 + Math.exp(this.size)*100 + Math.exp(this.sugar)*10 + 6000);
 	}
 	
 	public void increaseCoin(double coin) {		

@@ -34,16 +34,16 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			}
 		}
 		
-		private boolean boissonButton;
+		private boolean coffeeButton;
 		
 		
-		public void raiseBoissonButton() {
+		public void raiseCoffeeButton() {
 			synchronized(DrinkingMachineStatemachine.this) {
 				inEventQueue.add(
 					new Runnable() {
 						@Override
 						public void run() {
-							boissonButton = true;
+							coffeeButton = true;
 							singleCycle();
 						}
 					}
@@ -152,24 +152,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 						@Override
 						public void run() {
 							confirmationNFC = true;
-							singleCycle();
-						}
-					}
-				);
-				runCycle();
-			}
-		}
-		
-		private boolean error;
-		
-		
-		public void raiseError() {
-			synchronized(DrinkingMachineStatemachine.this) {
-				inEventQueue.add(
-					new Runnable() {
-						@Override
-						public void run() {
-							error = true;
 							singleCycle();
 						}
 					}
@@ -394,34 +376,15 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			}
 		}
 		
-		private boolean erreurPaiment;
-		
-		
-		public boolean isRaisedErreurPaiment() {
-			synchronized(DrinkingMachineStatemachine.this) {
-				return erreurPaiment;
-			}
-		}
-		
-		protected void raiseErreurPaiment() {
-			synchronized(DrinkingMachineStatemachine.this) {
-				erreurPaiment = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onErreurPaimentRaised();
-				}
-			}
-		}
-		
 		protected void clearEvents() {
 			cancelButton = false;
-			boissonButton = false;
+			coffeeButton = false;
 			slider = false;
 			nFCButton = false;
 			boissonPrete = false;
 			coinButton = false;
 			confirmationCoin = false;
 			confirmationNFC = false;
-			error = false;
 		}
 		protected void clearOutEvents() {
 		
@@ -437,7 +400,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		renduMonnaie = false;
 		paiementNFC = false;
 		attentePaiement = false;
-		erreurPaiment = false;
 		}
 		
 	}
@@ -696,8 +658,8 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		sCInterface.raiseCancelButton();
 	}
 	
-	public synchronized void raiseBoissonButton() {
-		sCInterface.raiseBoissonButton();
+	public synchronized void raiseCoffeeButton() {
+		sCInterface.raiseCoffeeButton();
 	}
 	
 	public synchronized void raiseSlider() {
@@ -722,10 +684,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	public synchronized void raiseConfirmationNFC() {
 		sCInterface.raiseConfirmationNFC();
-	}
-	
-	public synchronized void raiseError() {
-		sCInterface.raiseError();
 	}
 	
 	public synchronized boolean isRaisedNettoyageText() {
@@ -774,10 +732,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	public synchronized boolean isRaisedAttentePaiement() {
 		return sCInterface.isRaisedAttentePaiement();
-	}
-	
-	public synchronized boolean isRaisedErreurPaiment() {
-		return sCInterface.isRaisedErreurPaiment();
 	}
 	
 	/* Entry action for state 'Demarrage'. */
@@ -1237,7 +1191,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				
 				enterSequence_main_region_GestionCommande_chooseGestion_EnAttente_default();
 			} else {
-				if (sCInterface.boissonButton) {
+				if (sCInterface.coffeeButton) {
 					exitSequence_main_region_GestionCommande_chooseGestion_EnAttente();
 					sCInterface.raiseUpdateBoisson();
 					
@@ -1321,15 +1275,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				enterSequence_main_region_GestionCommande_paiementGestion_Pay__default();
 				main_region_GestionCommande_react(false);
 			} else {
-				if (sCInterface.error) {
-					exitSequence_main_region_GestionCommande_paiementGestion_PaimentNFC();
-					sCInterface.raiseErreurPaiment();
-					
-					enterSequence_main_region_GestionCommande_paiementGestion_PaimentNFC_default();
-					main_region_GestionCommande_react(false);
-				} else {
-					did_transition = false;
-				}
+				did_transition = false;
 			}
 		}
 		if (did_transition==false) {
@@ -1356,15 +1302,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 					enterSequence_main_region_GestionCommande_paiementGestion_Pay__default();
 					main_region_GestionCommande_react(false);
 				} else {
-					if (sCInterface.error) {
-						exitSequence_main_region_GestionCommande_paiementGestion_PaimentLiquide();
-						sCInterface.raiseErreurPaiment();
-						
-						enterSequence_main_region_GestionCommande_paiementGestion_PaimentLiquide_default();
-						main_region_GestionCommande_react(false);
-					} else {
-						did_transition = false;
-					}
+					did_transition = false;
 				}
 			}
 		}

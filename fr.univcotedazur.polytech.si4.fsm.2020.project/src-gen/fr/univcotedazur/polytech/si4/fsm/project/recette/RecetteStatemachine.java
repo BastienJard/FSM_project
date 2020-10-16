@@ -238,21 +238,21 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 	protected synchronized void singleCycle() {
 		for (nextStateIndex = 0; nextStateIndex < stateVector.length; nextStateIndex++) {
 			switch (stateVector[nextStateIndex]) {
-				case main_region_DebutRecette:
-					main_region_DebutRecette_react(true);
-					break;
-				case main_region_Etape1:
-					main_region_Etape1_react(true);
-					break;
-				case main_region_Etape2:
-					main_region_Etape2_react(true);
-					break;
-				case main_region_Etape3:
-					main_region_Etape3_react(true);
-					break;
-				case main_region_EnAttente:
-					main_region_EnAttente_react(true);
-					break;
+			case main_region_DebutRecette:
+				main_region_DebutRecette_react(true);
+				break;
+			case main_region_Etape1:
+				main_region_Etape1_react(true);
+				break;
+			case main_region_Etape2:
+				main_region_Etape2_react(true);
+				break;
+			case main_region_Etape3:
+				main_region_Etape3_react(true);
+				break;
+			case main_region_EnAttente:
+				main_region_EnAttente_react(true);
+				break;
 			default:
 				// $NullState$
 			}
