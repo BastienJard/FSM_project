@@ -30,6 +30,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import fr.univcotedazur.polytech.si4.fsm.project.drinkingmachine.DrinkingMachineStatemachine;
+import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteStatemachine;
 
 public class DrinkFactoryMachine extends JFrame {
 
@@ -41,6 +42,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private JLabel messagesToUser, boissonChoose,coinInsert, labelForPictures, priceLabel;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	private DrinkingMachineStatemachine myFSM;
+	private RecetteStatemachine recetteFSM;
 	private FactoryController controller;
 	private Timer prepareTimer;
 	private Hashtable<Integer, JLabel> temperatureTable;
@@ -227,6 +229,13 @@ public class DrinkFactoryMachine extends JFrame {
 		myFSM.init();
 		myFSM.enter();
 		myFSM.getSCInterface().getListeners().add(new DrinkFactoryMachineControlerInterface(this));
+		
+		recetteFSM= new RecetteStatemachine();
+		TimerService timer2 = new TimerService();
+		recetteFSM.setTimer(timer2);
+		recetteFSM.init();
+		recetteFSM.enter();
+		recetteFSM.getSCInterface().getListeners().add(new RecetteMachineControllerInterface(this));
 		
 		setForeground(Color.WHITE);
 		setFont(new Font("Cantarell", Font.BOLD, 22));

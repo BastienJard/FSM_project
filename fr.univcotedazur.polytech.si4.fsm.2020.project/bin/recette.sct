@@ -125,7 +125,7 @@
         <layoutConstraint xsi:type="notation:Bounds" xmi:id="_xi5rVA-FEeu34_dgiymI_Q"/>
       </children>
       <styles xsi:type="notation:ShapeStyle" xmi:id="_xi5EQQ-FEeu34_dgiymI_Q" fontName="Verdana" fillColor="15790320" lineColor="12632256"/>
-      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_xi6SYA-FEeu34_dgiymI_Q" x="220" y="10" width="400" height="404"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_xi6SYA-FEeu34_dgiymI_Q" x="220" y="10" width="400" height="633"/>
     </children>
     <children xsi:type="notation:Shape" xmi:id="_xi_K4A-FEeu34_dgiymI_Q" type="StatechartText" fontName="Verdana" lineColor="4210752">
       <children xsi:type="notation:DecorationNode" xmi:id="_xi_K4g-FEeu34_dgiymI_Q" type="StatechartName">
