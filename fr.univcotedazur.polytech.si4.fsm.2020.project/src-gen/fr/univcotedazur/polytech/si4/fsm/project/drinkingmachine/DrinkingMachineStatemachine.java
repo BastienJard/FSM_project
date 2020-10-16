@@ -34,16 +34,16 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			}
 		}
 		
-		private boolean coffeeButton;
+		private boolean boissonButton;
 		
 		
-		public void raiseCoffeeButton() {
+		public void raiseBoissonButton() {
 			synchronized(DrinkingMachineStatemachine.this) {
 				inEventQueue.add(
 					new Runnable() {
 						@Override
 						public void run() {
-							coffeeButton = true;
+							boissonButton = true;
 							singleCycle();
 						}
 					}
@@ -414,7 +414,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		
 		protected void clearEvents() {
 			cancelButton = false;
-			coffeeButton = false;
+			boissonButton = false;
 			slider = false;
 			nFCButton = false;
 			boissonPrete = false;
@@ -696,8 +696,8 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		sCInterface.raiseCancelButton();
 	}
 	
-	public synchronized void raiseCoffeeButton() {
-		sCInterface.raiseCoffeeButton();
+	public synchronized void raiseBoissonButton() {
+		sCInterface.raiseBoissonButton();
 	}
 	
 	public synchronized void raiseSlider() {
@@ -1237,7 +1237,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				
 				enterSequence_main_region_GestionCommande_chooseGestion_EnAttente_default();
 			} else {
-				if (sCInterface.coffeeButton) {
+				if (sCInterface.boissonButton) {
 					exitSequence_main_region_GestionCommande_chooseGestion_EnAttente();
 					sCInterface.raiseUpdateBoisson();
 					

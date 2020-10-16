@@ -14,7 +14,7 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 	
 		public void raiseCancelButton();
 		
-		public void raiseCoffeeButton();
+		public void raiseBoissonButton();
 		
 		public void raiseSlider();
 		

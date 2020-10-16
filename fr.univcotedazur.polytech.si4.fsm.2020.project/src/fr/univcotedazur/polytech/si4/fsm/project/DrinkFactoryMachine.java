@@ -491,9 +491,26 @@ public class DrinkFactoryMachine extends JFrame {
 			public void actionPerformed( ActionEvent e) {
 				controller.boisson = "Café";
 				controller.price = 0.35;
-				myFSM.raiseCoffeeButton();
-				
-
+				myFSM.raiseBoissonButton();
+			}
+		});
+		
+		expressoButton.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				controller.boisson = "Expresso";
+				controller.price = 0.50;
+				myFSM.raiseBoissonButton();
+			}
+		});
+		
+		
+		teaButton.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				controller.boisson = "Tea";
+				controller.price = 0.40;
+				myFSM.raiseBoissonButton();
 			}
 		});
 		
