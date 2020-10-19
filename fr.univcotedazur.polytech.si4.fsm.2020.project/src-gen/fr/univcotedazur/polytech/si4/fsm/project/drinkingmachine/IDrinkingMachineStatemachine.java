@@ -24,11 +24,9 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		
 		public void raiseCoinButton();
 		
-		public void raiseConfirmationCoin();
-		
-		public void raiseConfirmationNFC();
-		
 		public void raiseError();
+		
+		public void raiseConfirmationLiquide();
 		
 		public boolean isRaisedNettoyageText();
 		
@@ -55,6 +53,10 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		public boolean isRaisedAttentePaiement();
 		
 		public boolean isRaisedErreurPaiment();
+		
+		public boolean getIsThereBoisson();
+		
+		public void setIsThereBoisson(boolean value);
 		
 	public List<SCInterfaceListener> getListeners();
 	}

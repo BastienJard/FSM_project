@@ -11,25 +11,26 @@ public class RecetteMachineControllerInterface implements SCInterfaceListener{
 
 	@Override
 	public void onEtape1Raised() {
-		// TODO Auto-generated method stub
+		theGui.controller.boisson.doEtape1();
 		
 	}
 
 	@Override
 	public void onEtape2Raised() {
-		// TODO Auto-generated method stub
+		theGui.controller.boisson.doEtape2();
 		
 	}
 
 	@Override
 	public void onEtape3Raised() {
-		// TODO Auto-generated method stub
+		theGui.controller.boisson.doEtape3();
 		
 	}
 
 	@Override
 	public void onEnAttenteRaised() {
-		// TODO Auto-generated method stub
+		theGui.controller.boisson.fin();
+		theGui.myFSM.raiseBoissonPrete();
 		
 	}
 	

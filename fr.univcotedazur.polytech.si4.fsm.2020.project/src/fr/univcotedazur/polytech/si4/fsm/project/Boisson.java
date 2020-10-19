@@ -10,13 +10,13 @@ import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteStatemachine;
 
 public abstract class Boisson {
 	protected String name;
-	protected int price;
+	protected double price;
 	protected int totalTime;
 	protected JLabel messagesToUser;
 	protected Timer recetteTimer;
 	protected RecetteStatemachine recetteFSM;
 	
-	public Boisson(String name, int price, int totalTime, JLabel messagesToUser, RecetteStatemachine recetteFSM) {
+	public Boisson(String name, double price, int totalTime, JLabel messagesToUser, RecetteStatemachine recetteFSM) {
 		this.name = name;
 		this.price = price;
 		this.totalTime = totalTime;
@@ -29,7 +29,7 @@ public abstract class Boisson {
 		return name;
 	}
 	
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 	

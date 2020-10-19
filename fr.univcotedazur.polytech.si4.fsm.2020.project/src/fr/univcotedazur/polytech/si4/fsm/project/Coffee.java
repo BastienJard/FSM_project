@@ -4,12 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
+import javax.swing.Timer;
 
 import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteStatemachine;
 
 public class Coffee extends Boisson{
 
-	public Coffee(String name, int price, int totalTime, JLabel messagesToUser, RecetteStatemachine recetteFSM) {
+	public Coffee(String name, double price, int totalTime, JLabel messagesToUser, RecetteStatemachine recetteFSM) {
 		super(name, price, totalTime, messagesToUser, recetteFSM);
 	}
 	
@@ -30,8 +31,7 @@ public class Coffee extends Boisson{
 	@Override
 	public void doEtape1() {
 		messagesToUser.setText("<html>Préparation dosette");
-		recetteTimer.setDelay(totalTime*33/100);
-		recetteTimer.addActionListener(doNext);
+		recetteTimer = new Timer((int)(0.2*totalTime),doNext);
 		recetteTimer.start();
 		
 	}
@@ -40,9 +40,7 @@ public class Coffee extends Boisson{
 	public void doEtape2() {
 		recetteTimer.stop();
 		messagesToUser.setText("<html>Chauffage de l'eau");
-		recetteTimer.restart();
-		recetteTimer.setDelay(totalTime*33/100);
-		recetteTimer.addActionListener(doNext);
+		recetteTimer = new Timer((int)(0.5*totalTime),doNext);
 		recetteTimer.start();
 	}
 
@@ -50,9 +48,7 @@ public class Coffee extends Boisson{
 	public void doEtape3() {
 		recetteTimer.stop();
 		messagesToUser.setText("<html>Remplissage du récipient");
-		recetteTimer.restart();
-		recetteTimer.setDelay(totalTime*33/100);
-		recetteTimer.addActionListener(finRecette);
+		recetteTimer = new Timer((int)(0.3*totalTime),finRecette);
 		recetteTimer.start();
 	}
 	

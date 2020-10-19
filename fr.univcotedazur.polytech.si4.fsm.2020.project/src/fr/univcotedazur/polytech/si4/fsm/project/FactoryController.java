@@ -3,8 +3,7 @@ package fr.univcotedazur.polytech.si4.fsm.project;
 
 public class FactoryController {
 
-	protected String boisson;
-	protected double price;
+	protected Boisson boisson;
 	protected double insertedCoin;
 	protected int sugar = 1;
 	protected int size =1;
@@ -12,7 +11,7 @@ public class FactoryController {
 	protected float timeValue;
 
 	
-	public void setBoisson(String boisson) {
+	public void setBoisson(Boisson boisson) {
 		this.boisson=boisson;
 	
 	}
@@ -32,7 +31,8 @@ public class FactoryController {
 	public void prepare() {
 		//en ms
 		timeValue = (float)(Math.exp(this.temperature)*1000 + Math.exp(this.size)*100 + Math.exp(this.sugar)*10 + 6000);
-	}
+		boisson.totalTime = (int)timeValue;	
+		}
 	
 	public void increaseCoin(double coin) {		
 		this.insertedCoin += coin;
