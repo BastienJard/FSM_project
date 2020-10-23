@@ -124,24 +124,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			}
 		}
 		
-		private boolean error;
-		
-		
-		public void raiseError() {
-			synchronized(DrinkingMachineStatemachine.this) {
-				inEventQueue.add(
-					new Runnable() {
-						@Override
-						public void run() {
-							error = true;
-							singleCycle();
-						}
-					}
-				);
-				runCycle();
-			}
-		}
-		
 		private boolean confirmationLiquide;
 		
 		
@@ -415,7 +397,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			nFCButton = false;
 			boissonPrete = false;
 			coinButton = false;
-			error = false;
 			confirmationLiquide = false;
 		}
 		protected void clearOutEvents() {
@@ -712,10 +693,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		sCInterface.raiseCoinButton();
 	}
 	
-	public synchronized void raiseError() {
-		sCInterface.raiseError();
-	}
-	
 	public synchronized void raiseConfirmationLiquide() {
 		sCInterface.raiseConfirmationLiquide();
 	}
@@ -802,7 +779,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	/* Entry action for state 'Payé'. */
 	private void entryAction_main_region_GestionCommande_paiementGestion_Pay_() {
-		timer.setTimer(this, 4, 50, false);
+		timer.setTimer(this, 4, (2 * 1000), false);
 	}
 	
 	/* Entry action for state 'LectureCarte'. */
@@ -1278,7 +1255,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				enterSequence_main_region_Demarrage_default();
 				react();
 			} else {
-				if ((sCInterface.boissonButton || (sCInterface.slider || (sCInterface.nFCButton || (sCInterface.coinButton || sCInterface.error))))) {
+				if ((sCInterface.boissonButton || (sCInterface.slider || (sCInterface.nFCButton || sCInterface.coinButton)))) {
 					exitSequence_main_region_GestionCommande_resetTimer_reset();
 					enterSequence_main_region_GestionCommande_resetTimer_reset_default();
 				} else {
@@ -1328,7 +1305,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				enterSequence_main_region_GestionCommande_paiementGestion_Pay__default();
 				main_region_GestionCommande_react(false);
 			} else {
-				if (sCInterface.error) {
+				if (sCInterface.coinButton) {
 					exitSequence_main_region_GestionCommande_paiementGestion_PaimentNFC();
 					sCInterface.raiseErreurPaiment();
 					
@@ -1354,7 +1331,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				
 				enterSequence_main_region_GestionCommande_paiementGestion_InsertionArgent_default();
 			} else {
-				if (sCInterface.error) {
+				if (sCInterface.nFCButton) {
 					exitSequence_main_region_GestionCommande_paiementGestion_InsertionArgent();
 					sCInterface.raiseErreurPaiment();
 					
@@ -1427,7 +1404,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				enterSequence_main_region_GestionCommande_paiementGestion_Pay__default();
 				main_region_GestionCommande_react(false);
 			} else {
-				if (sCInterface.error) {
+				if (sCInterface.nFCButton) {
 					exitSequence_main_region_GestionCommande_paiementGestion_PaiementLiquide();
 					sCInterface.raiseErreurPaiment();
 					

@@ -24,8 +24,6 @@ public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachi
 		
 		public void raiseCoinButton();
 		
-		public void raiseError();
-		
 		public void raiseConfirmationLiquide();
 		
 		public boolean isRaisedNettoyageText();

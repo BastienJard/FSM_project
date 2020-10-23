@@ -38,7 +38,7 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
-	private JLabel messagesToUser, boissonChoose,coinInsert, labelForPictures, priceLabel;
+	private JLabel messagesToUser, boissonChoose,coinInsert, labelForPictures, priceLabel, recetteLabel;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	protected DrinkingMachineStatemachine myFSM;
 	private RecetteStatemachine recetteFSM;
@@ -176,6 +176,9 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	
 	public void prepareBoisson() {
+		boissonChoose.setText("");
+		coinInsert.setText("");
+		priceLabel.setText("");
 		isNFCDone=false;
 		isPaiementLiquideDone=false;
 		controller.prepare();
@@ -194,9 +197,7 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	public void boissonPrete() {
 		messagesToUser.setText("<html>Votre boisson est prête");
-		boissonChoose.setText("");
-		coinInsert.setText("");
-		priceLabel.setText("");
+		recetteLabel.setText("");
 	}
 	
 	public DrinkFactoryMachine() {
@@ -237,6 +238,14 @@ public class DrinkFactoryMachine extends JFrame {
 		messagesToUser.setBackground(Color.WHITE);
 		messagesToUser.setBounds(126, 34, 165, 175);
 		
+		recetteLabel = new JLabel("");
+		recetteLabel.setForeground(Color.WHITE);
+		recetteLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		recetteLabel.setVerticalAlignment(SwingConstants.TOP);
+		recetteLabel.setToolTipText("message to the user");
+		recetteLabel.setBackground(Color.WHITE);
+		recetteLabel.setBounds(126, 64, 165, 175);
+		
 		boissonChoose = new JLabel("");
 		boissonChoose.setForeground(Color.WHITE);
 		boissonChoose.setHorizontalAlignment(SwingConstants.LEFT);
@@ -262,6 +271,7 @@ public class DrinkFactoryMachine extends JFrame {
 		coinInsert.setBounds(126, 134, 165, 175);
 		
 		contentPane.add(messagesToUser);
+		contentPane.add(recetteLabel);
 		contentPane.add(boissonChoose);
 		contentPane.add(priceLabel);
 		contentPane.add(coinInsert);
@@ -450,7 +460,7 @@ public class DrinkFactoryMachine extends JFrame {
 		panel_2.add(cancelButton);
 
 		
-		Boisson coffee = new Coffee("coffee", 0.35,(int)controller.timeValue, messagesToUser,recetteFSM);
+		
 		
 		// listeners
 		sizeSlider.addChangeListener(new ChangeListener() {
@@ -481,7 +491,7 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = coffee;
+				controller.boisson = new Coffee("coffee", 0.35,controller, recetteLabel,recetteFSM);
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -489,7 +499,7 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = coffee;
+				controller.boisson = new Expresso("expresso", 0.50,controller, recetteLabel,recetteFSM);
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -498,7 +508,6 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = coffee;
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -526,12 +535,7 @@ public class DrinkFactoryMachine extends JFrame {
 		nfcBiiiipButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				if(!isPaiementLiquideDone) {
-					myFSM.raiseNFCButton();
-				}
-				else {
-					myFSM.raiseError();
-				}
+				myFSM.raiseNFCButton();
 			}
 		});
 		
@@ -540,12 +544,10 @@ public class DrinkFactoryMachine extends JFrame {
 			public void actionPerformed( ActionEvent e) {
 				if(!isNFCDone) {
 					controller.increaseCoin(0.10);
-					myFSM.raiseCoinButton();
 				}
-				else {
-					myFSM.raiseError();
-				}
+				myFSM.raiseCoinButton();
 			}
+				
 		}); 
 		
 		money50centsButton.addActionListener(new ActionListener() {
@@ -553,11 +555,8 @@ public class DrinkFactoryMachine extends JFrame {
 			public void actionPerformed( ActionEvent e) {
 				if(!isNFCDone) {
 					controller.increaseCoin(0.50);
-					myFSM.raiseCoinButton();
 				}
-				else {
-					myFSM.raiseError();
-				}
+				myFSM.raiseCoinButton();
 			}
 		}); 
 		
@@ -566,11 +565,9 @@ public class DrinkFactoryMachine extends JFrame {
 			public void actionPerformed( ActionEvent e) {
 				if(!isNFCDone) {
 					controller.increaseCoin(0.05);
-					myFSM.raiseCoinButton();
 				}
-				else {
-					myFSM.raiseError();
-				}
+				myFSM.raiseCoinButton();
+				
 			}
 		}); 
 

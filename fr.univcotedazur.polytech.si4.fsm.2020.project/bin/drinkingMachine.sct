@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
-  <sgraph:Statechart xmi:id="_KY_34AoEEeuzsqaUjh34MQ" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;in event cancelButton&#xA;in event boissonButton&#xA;in event slider&#xA;in event NFCButton&#xA;in event boissonPrete&#xA;in event coinButton&#xA;in event error&#xA;in event confirmationLiquide&#xA;&#xA;out event nettoyageText&#xA;out event doReset&#xA;out event prepareBoisson&#xA;out event enAttente&#xA;out event updateSlider&#xA;out event updateBoisson&#xA;out event finishText&#xA;out event lectureCarte&#xA;out event increaseCoin&#xA;out event renduMonnaie&#xA;out event paiementNFC&#xA;out event attentePaiement&#xA;out event erreurPaiment&#xA;&#xA;var isThereBoisson: boolean =false&#xA;&#xA;&#xA;// Define events&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="drinkingMachine">
+  <sgraph:Statechart xmi:id="_KY_34AoEEeuzsqaUjh34MQ" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;in event cancelButton&#xA;in event boissonButton&#xA;in event slider&#xA;in event NFCButton&#xA;in event boissonPrete&#xA;in event coinButton&#xA;in event confirmationLiquide&#xA;&#xA;out event nettoyageText&#xA;out event doReset&#xA;out event prepareBoisson&#xA;out event enAttente&#xA;out event updateSlider&#xA;out event updateBoisson&#xA;out event finishText&#xA;out event lectureCarte&#xA;out event increaseCoin&#xA;out event renduMonnaie&#xA;out event paiementNFC&#xA;out event attentePaiement&#xA;out event erreurPaiment&#xA;&#xA;var isThereBoisson: boolean =false&#xA;&#xA;&#xA;// Define events&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="drinkingMachine">
     <regions xmi:id="_KZEJUwoEEeuzsqaUjh34MQ" name="main region">
       <vertices xsi:type="sgraph:Entry" xmi:id="_KZMsMQoEEeuzsqaUjh34MQ">
         <outgoingTransitions xmi:id="_KZRksQoEEeuzsqaUjh34MQ" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
@@ -31,7 +31,7 @@
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_1WqTDA-UEeu34_dgiymI_Q" name="reset" incomingTransitions="_1WvykA-UEeu34_dgiymI_Q _2CihkA-UEeu34_dgiymI_Q">
             <outgoingTransitions xmi:id="_1Wq6GQ-UEeu34_dgiymI_Q" specification="after 45s/ raise doReset" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
-            <outgoingTransitions xmi:id="_2CihkA-UEeu34_dgiymI_Q" specification="boissonButton,slider,NFCButton,coinButton,error" target="_1WqTDA-UEeu34_dgiymI_Q"/>
+            <outgoingTransitions xmi:id="_2CihkA-UEeu34_dgiymI_Q" specification="boissonButton,slider,NFCButton,coinButton" target="_1WqTDA-UEeu34_dgiymI_Q"/>
           </vertices>
         </regions>
         <regions xmi:id="_Fk_YgA71EeuEG7dTszLj0w" name="paiementGestion">
@@ -44,22 +44,22 @@
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_OPm_QA71EeuEG7dTszLj0w" specification="" name="PaimentNFC" incomingTransitions="_eEJOAA8AEeu7eNDHNbji4g _MXrZkA9_Eeu34_dgiymI_Q">
             <outgoingTransitions xmi:id="_HrwbQA72EeuEG7dTszLj0w" specification="every 10ms[isThereBoisson]/raise paiementNFC" target="_FSv8gA72EeuEG7dTszLj0w"/>
-            <outgoingTransitions xmi:id="_MXrZkA9_Eeu34_dgiymI_Q" specification="error/raise erreurPaiment" target="_OPm_QA71EeuEG7dTszLj0w"/>
+            <outgoingTransitions xmi:id="_MXrZkA9_Eeu34_dgiymI_Q" specification="coinButton/raise erreurPaiment" target="_OPm_QA71EeuEG7dTszLj0w"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_XPGp3Q71EeuEG7dTszLj0w" name="InsertionArgent" incomingTransitions="_XPHQ6A71EeuEG7dTszLj0w _YfWwwA71EeuEG7dTszLj0w _C_0SUA9_Eeu34_dgiymI_Q">
             <outgoingTransitions xmi:id="_XPHQ6A71EeuEG7dTszLj0w" specification="coinButton/raise increaseCoin" target="_XPGp3Q71EeuEG7dTszLj0w"/>
-            <outgoingTransitions xmi:id="_C_0SUA9_Eeu34_dgiymI_Q" specification="error/ raise erreurPaiment" target="_XPGp3Q71EeuEG7dTszLj0w"/>
+            <outgoingTransitions xmi:id="_C_0SUA9_Eeu34_dgiymI_Q" specification="NFCButton/ raise erreurPaiment" target="_XPGp3Q71EeuEG7dTszLj0w"/>
             <outgoingTransitions xmi:id="_kKrX4BH0Eeu34_dgiymI_Q" specification="confirmationLiquide" target="_blfDsBH0Eeu34_dgiymI_Q"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_FSv8gA72EeuEG7dTszLj0w" name="Payé" incomingTransitions="_HrwbQA72EeuEG7dTszLj0w _dJsocBH0Eeu34_dgiymI_Q">
-            <outgoingTransitions xmi:id="_LMyxsA75Eeu7eNDHNbji4g" specification="after 50ms/ raise prepareBoisson" target="_s71Z0AoEEeuzsqaUjh34MQ"/>
+            <outgoingTransitions xmi:id="_LMyxsA75Eeu7eNDHNbji4g" specification="after 2s/ raise prepareBoisson" target="_s71Z0AoEEeuzsqaUjh34MQ"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_anVI4A8AEeu7eNDHNbji4g" name="LectureCarte" incomingTransitions="_PUN24A71EeuEG7dTszLj0w">
             <outgoingTransitions xmi:id="_eEJOAA8AEeu7eNDHNbji4g" specification="after 3s/ raise attentePaiement" target="_OPm_QA71EeuEG7dTszLj0w"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_blfDsBH0Eeu34_dgiymI_Q" name="PaiementLiquide" incomingTransitions="_kKrX4BH0Eeu34_dgiymI_Q _ks7ecBH2Eeux-9Iro5AIgA">
             <outgoingTransitions xmi:id="_dJsocBH0Eeu34_dgiymI_Q" specification="every 10ms[isThereBoisson]/raise renduMonnaie" target="_FSv8gA72EeuEG7dTszLj0w"/>
-            <outgoingTransitions xmi:id="_ks7ecBH2Eeux-9Iro5AIgA" specification="error/raise erreurPaiment" target="_blfDsBH0Eeu34_dgiymI_Q"/>
+            <outgoingTransitions xmi:id="_ks7ecBH2Eeux-9Iro5AIgA" specification="NFCButton/raise erreurPaiment" target="_blfDsBH0Eeu34_dgiymI_Q"/>
           </vertices>
         </regions>
       </vertices>
