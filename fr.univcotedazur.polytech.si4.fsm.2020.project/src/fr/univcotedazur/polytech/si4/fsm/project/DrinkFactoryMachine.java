@@ -46,6 +46,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private Hashtable<Integer, JLabel> temperatureTable;
 	private BufferedImage myPicture;
 	private Boolean isNFCDone = false, isPaiementLiquideDone = false;
+	private JProgressBar progressBar;
 	
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -141,6 +142,7 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	public void nettoyageText() {
 		messagesToUser.setText("<html>Nettoyage de la machine<br> en cours");
+		progressBar.setValue(0);
 		try {
 			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
 		} catch (IOException e) {
@@ -308,9 +310,9 @@ public class DrinkFactoryMachine extends JFrame {
 		soupButton.setBounds(12, 145, 96, 25);
 		contentPane.add(soupButton);
 
-		JProgressBar progressBar = new JProgressBar();
+		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
-		progressBar.setValue(10);
+		progressBar.setValue(0);
 		progressBar.setForeground(Color.LIGHT_GRAY);
 		progressBar.setBackground(Color.DARK_GRAY);
 		progressBar.setBounds(12, 254, 622, 26);
@@ -489,7 +491,7 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Coffee("coffee", 0.35,controller, recetteLabel,recetteFSM);
+				controller.boisson = new Coffee("coffee",progressBar, 0.35,controller, recetteLabel,recetteFSM);
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -497,7 +499,7 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Expresso("expresso", 0.50,controller, recetteLabel,recetteFSM);
+				controller.boisson = new Expresso("expresso",progressBar, 0.50,controller, recetteLabel,recetteFSM);
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -506,7 +508,7 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Tea("tea", 0.40, controller, recetteLabel, recetteFSM);
+				controller.boisson = new Tea("tea",progressBar, 0.40, controller, recetteLabel, recetteFSM);
 				myFSM.raiseBoissonButton();
 			}
 		});
