@@ -142,6 +142,24 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			}
 		}
 		
+		private boolean takeCup;
+		
+		
+		public void raiseTakeCup() {
+			synchronized(DrinkingMachineStatemachine.this) {
+				inEventQueue.add(
+					new Runnable() {
+						@Override
+						public void run() {
+							takeCup = true;
+							singleCycle();
+						}
+					}
+				);
+				runCycle();
+			}
+		}
+		
 		private boolean nettoyageText;
 		
 		
@@ -398,6 +416,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 			boissonPrete = false;
 			coinButton = false;
 			confirmationLiquide = false;
+			takeCup = false;
 		}
 		protected void clearOutEvents() {
 		
@@ -425,7 +444,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	public enum State {
 		main_region_Demarrage,
-		main_region_Pr_par_,
+		main_region_AttenteR_cup_ration,
 		main_region_En_pr_partation,
 		main_region_GestionCommande,
 		main_region_GestionCommande_chooseGestion_EnAttente,
@@ -445,7 +464,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	private ITimer timer;
 	
-	private final boolean[] timeEvents = new boolean[7];
+	private final boolean[] timeEvents = new boolean[6];
 	
 	private BlockingQueue<Runnable> inEventQueue = new LinkedBlockingQueue<Runnable>();
 	private boolean isRunningCycle = false;
@@ -507,39 +526,39 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	protected synchronized void singleCycle() {
 		for (nextStateIndex = 0; nextStateIndex < stateVector.length; nextStateIndex++) {
 			switch (stateVector[nextStateIndex]) {
-			case main_region_Demarrage:
-				main_region_Demarrage_react(true);
-				break;
-			case main_region_Pr_par_:
-				main_region_Pr_par__react(true);
-				break;
-			case main_region_En_pr_partation:
-				main_region_En_pr_partation_react(true);
-				break;
-			case main_region_GestionCommande_chooseGestion_EnAttente:
-				main_region_GestionCommande_chooseGestion_EnAttente_react(true);
-				break;
-			case main_region_GestionCommande_resetTimer_reset:
-				main_region_GestionCommande_resetTimer_reset_react(true);
-				break;
-			case main_region_GestionCommande_paiementGestion_EnAttentePaiement:
-				main_region_GestionCommande_paiementGestion_EnAttentePaiement_react(true);
-				break;
-			case main_region_GestionCommande_paiementGestion_PaimentNFC:
-				main_region_GestionCommande_paiementGestion_PaimentNFC_react(true);
-				break;
-			case main_region_GestionCommande_paiementGestion_InsertionArgent:
-				main_region_GestionCommande_paiementGestion_InsertionArgent_react(true);
-				break;
-			case main_region_GestionCommande_paiementGestion_Pay_:
-				main_region_GestionCommande_paiementGestion_Pay__react(true);
-				break;
-			case main_region_GestionCommande_paiementGestion_LectureCarte:
-				main_region_GestionCommande_paiementGestion_LectureCarte_react(true);
-				break;
-			case main_region_GestionCommande_paiementGestion_PaiementLiquide:
-				main_region_GestionCommande_paiementGestion_PaiementLiquide_react(true);
-				break;
+				case main_region_Demarrage:
+					main_region_Demarrage_react(true);
+					break;
+				case main_region_AttenteR_cup_ration:
+					main_region_AttenteR_cup_ration_react(true);
+					break;
+				case main_region_En_pr_partation:
+					main_region_En_pr_partation_react(true);
+					break;
+				case main_region_GestionCommande_chooseGestion_EnAttente:
+					main_region_GestionCommande_chooseGestion_EnAttente_react(true);
+					break;
+				case main_region_GestionCommande_resetTimer_reset:
+					main_region_GestionCommande_resetTimer_reset_react(true);
+					break;
+				case main_region_GestionCommande_paiementGestion_EnAttentePaiement:
+					main_region_GestionCommande_paiementGestion_EnAttentePaiement_react(true);
+					break;
+				case main_region_GestionCommande_paiementGestion_PaimentNFC:
+					main_region_GestionCommande_paiementGestion_PaimentNFC_react(true);
+					break;
+				case main_region_GestionCommande_paiementGestion_InsertionArgent:
+					main_region_GestionCommande_paiementGestion_InsertionArgent_react(true);
+					break;
+				case main_region_GestionCommande_paiementGestion_Pay_:
+					main_region_GestionCommande_paiementGestion_Pay__react(true);
+					break;
+				case main_region_GestionCommande_paiementGestion_LectureCarte:
+					main_region_GestionCommande_paiementGestion_LectureCarte_react(true);
+					break;
+				case main_region_GestionCommande_paiementGestion_PaiementLiquide:
+					main_region_GestionCommande_paiementGestion_PaiementLiquide_react(true);
+					break;
 			default:
 				// $NullState$
 			}
@@ -606,8 +625,8 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		switch (state) {
 		case main_region_Demarrage:
 			return stateVector[0] == State.main_region_Demarrage;
-		case main_region_Pr_par_:
-			return stateVector[0] == State.main_region_Pr_par_;
+		case main_region_AttenteR_cup_ration:
+			return stateVector[0] == State.main_region_AttenteR_cup_ration;
 		case main_region_En_pr_partation:
 			return stateVector[0] == State.main_region_En_pr_partation;
 		case main_region_GestionCommande:
@@ -697,6 +716,10 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		sCInterface.raiseConfirmationLiquide();
 	}
 	
+	public synchronized void raiseTakeCup() {
+		sCInterface.raiseTakeCup();
+	}
+	
 	public synchronized boolean isRaisedNettoyageText() {
 		return sCInterface.isRaisedNettoyageText();
 	}
@@ -759,37 +782,32 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 	
 	/* Entry action for state 'Demarrage'. */
 	private void entryAction_main_region_Demarrage() {
-		timer.setTimer(this, 0, 2500, false);
-	}
-	
-	/* Entry action for state 'Préparé'. */
-	private void entryAction_main_region_Pr_par_() {
-		timer.setTimer(this, 1, (5 * 1000), false);
+		timer.setTimer(this, 0, 3500, false);
 	}
 	
 	/* Entry action for state 'reset'. */
 	private void entryAction_main_region_GestionCommande_resetTimer_reset() {
-		timer.setTimer(this, 2, (45 * 1000), false);
+		timer.setTimer(this, 1, (45 * 1000), false);
 	}
 	
 	/* Entry action for state 'PaimentNFC'. */
 	private void entryAction_main_region_GestionCommande_paiementGestion_PaimentNFC() {
-		timer.setTimer(this, 3, 10, true);
+		timer.setTimer(this, 2, 10, true);
 	}
 	
 	/* Entry action for state 'Payé'. */
 	private void entryAction_main_region_GestionCommande_paiementGestion_Pay_() {
-		timer.setTimer(this, 4, (2 * 1000), false);
+		timer.setTimer(this, 3, (2 * 1000), false);
 	}
 	
 	/* Entry action for state 'LectureCarte'. */
 	private void entryAction_main_region_GestionCommande_paiementGestion_LectureCarte() {
-		timer.setTimer(this, 5, (3 * 1000), false);
+		timer.setTimer(this, 4, (3 * 1000), false);
 	}
 	
 	/* Entry action for state 'PaiementLiquide'. */
 	private void entryAction_main_region_GestionCommande_paiementGestion_PaiementLiquide() {
-		timer.setTimer(this, 6, 10, true);
+		timer.setTimer(this, 5, 10, true);
 	}
 	
 	/* Exit action for state 'Demarrage'. */
@@ -797,34 +815,29 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		timer.unsetTimer(this, 0);
 	}
 	
-	/* Exit action for state 'Préparé'. */
-	private void exitAction_main_region_Pr_par_() {
-		timer.unsetTimer(this, 1);
-	}
-	
 	/* Exit action for state 'reset'. */
 	private void exitAction_main_region_GestionCommande_resetTimer_reset() {
-		timer.unsetTimer(this, 2);
+		timer.unsetTimer(this, 1);
 	}
 	
 	/* Exit action for state 'PaimentNFC'. */
 	private void exitAction_main_region_GestionCommande_paiementGestion_PaimentNFC() {
-		timer.unsetTimer(this, 3);
+		timer.unsetTimer(this, 2);
 	}
 	
 	/* Exit action for state 'Payé'. */
 	private void exitAction_main_region_GestionCommande_paiementGestion_Pay_() {
-		timer.unsetTimer(this, 4);
+		timer.unsetTimer(this, 3);
 	}
 	
 	/* Exit action for state 'LectureCarte'. */
 	private void exitAction_main_region_GestionCommande_paiementGestion_LectureCarte() {
-		timer.unsetTimer(this, 5);
+		timer.unsetTimer(this, 4);
 	}
 	
 	/* Exit action for state 'PaiementLiquide'. */
 	private void exitAction_main_region_GestionCommande_paiementGestion_PaiementLiquide() {
-		timer.unsetTimer(this, 6);
+		timer.unsetTimer(this, 5);
 	}
 	
 	/* 'default' enter sequence for state Demarrage */
@@ -834,11 +847,10 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		stateVector[0] = State.main_region_Demarrage;
 	}
 	
-	/* 'default' enter sequence for state Préparé */
-	private void enterSequence_main_region_Pr_par__default() {
-		entryAction_main_region_Pr_par_();
+	/* 'default' enter sequence for state AttenteRécupération */
+	private void enterSequence_main_region_AttenteR_cup_ration_default() {
 		nextStateIndex = 0;
-		stateVector[0] = State.main_region_Pr_par_;
+		stateVector[0] = State.main_region_AttenteR_cup_ration;
 	}
 	
 	/* 'default' enter sequence for state En prépartation */
@@ -935,12 +947,10 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		exitAction_main_region_Demarrage();
 	}
 	
-	/* Default exit sequence for state Préparé */
-	private void exitSequence_main_region_Pr_par_() {
+	/* Default exit sequence for state AttenteRécupération */
+	private void exitSequence_main_region_AttenteR_cup_ration() {
 		nextStateIndex = 0;
 		stateVector[0] = State.$NullState$;
-		
-		exitAction_main_region_Pr_par_();
 	}
 	
 	/* Default exit sequence for state En prépartation */
@@ -1020,8 +1030,8 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		case main_region_Demarrage:
 			exitSequence_main_region_Demarrage();
 			break;
-		case main_region_Pr_par_:
-			exitSequence_main_region_Pr_par_();
+		case main_region_AttenteR_cup_ration:
+			exitSequence_main_region_AttenteR_cup_ration();
 			break;
 		case main_region_En_pr_partation:
 			exitSequence_main_region_En_pr_partation();
@@ -1159,12 +1169,12 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		return did_transition;
 	}
 	
-	private boolean main_region_Pr_par__react(boolean try_transition) {
+	private boolean main_region_AttenteR_cup_ration_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[1]) {
-				exitSequence_main_region_Pr_par_();
+			if (sCInterface.takeCup) {
+				exitSequence_main_region_AttenteR_cup_ration();
 				sCInterface.raiseNettoyageText();
 				
 				enterSequence_main_region_Demarrage_default();
@@ -1187,7 +1197,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				exitSequence_main_region_En_pr_partation();
 				sCInterface.raiseFinishText();
 				
-				enterSequence_main_region_Pr_par__default();
+				enterSequence_main_region_AttenteR_cup_ration_default();
 				react();
 			} else {
 				did_transition = false;
@@ -1248,7 +1258,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[2]) {
+			if (timeEvents[1]) {
 				exitSequence_main_region_GestionCommande();
 				sCInterface.raiseDoReset();
 				
@@ -1298,7 +1308,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((timeEvents[3]) && (sCInterface.getIsThereBoisson()))) {
+			if (((timeEvents[2]) && (sCInterface.getIsThereBoisson()))) {
 				exitSequence_main_region_GestionCommande_paiementGestion_PaimentNFC();
 				sCInterface.raisePaiementNFC();
 				
@@ -1310,7 +1320,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 					sCInterface.raiseErreurPaiment();
 					
 					enterSequence_main_region_GestionCommande_paiementGestion_PaimentNFC_default();
-					main_region_GestionCommande_react(false);
 				} else {
 					did_transition = false;
 				}
@@ -1331,14 +1340,12 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 				sCInterface.raiseIncreaseCoin();
 				
 				enterSequence_main_region_GestionCommande_paiementGestion_InsertionArgent_default();
-				main_region_GestionCommande_react(false);
 			} else {
 				if (sCInterface.nFCButton) {
 					exitSequence_main_region_GestionCommande_paiementGestion_InsertionArgent();
 					sCInterface.raiseErreurPaiment();
 					
 					enterSequence_main_region_GestionCommande_paiementGestion_InsertionArgent_default();
-					main_region_GestionCommande_react(false);
 				} else {
 					if (sCInterface.confirmationLiquide) {
 						exitSequence_main_region_GestionCommande_paiementGestion_InsertionArgent();
@@ -1360,7 +1367,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[4]) {
+			if (timeEvents[3]) {
 				exitSequence_main_region_GestionCommande();
 				sCInterface.raisePrepareBoisson();
 				
@@ -1380,7 +1387,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[5]) {
+			if (timeEvents[4]) {
 				exitSequence_main_region_GestionCommande_paiementGestion_LectureCarte();
 				sCInterface.raiseAttentePaiement();
 				
@@ -1400,7 +1407,7 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((timeEvents[6]) && (sCInterface.getIsThereBoisson()))) {
+			if (((timeEvents[5]) && (sCInterface.getIsThereBoisson()))) {
 				exitSequence_main_region_GestionCommande_paiementGestion_PaiementLiquide();
 				sCInterface.raiseRenduMonnaie();
 				
@@ -1412,7 +1419,6 @@ public class DrinkingMachineStatemachine implements IDrinkingMachineStatemachine
 					sCInterface.raiseErreurPaiment();
 					
 					enterSequence_main_region_GestionCommande_paiementGestion_PaiementLiquide_default();
-					main_region_GestionCommande_react(false);
 				} else {
 					did_transition = false;
 				}

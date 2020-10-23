@@ -38,7 +38,7 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
-	private JLabel messagesToUser, boissonChoose,coinInsert, labelForPictures, priceLabel, recetteLabel;
+	private JLabel messagesToUser, boissonChoose,coinInsert, priceLabel, recetteLabel;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	protected DrinkingMachineStatemachine myFSM;
 	private RecetteStatemachine recetteFSM;
@@ -47,6 +47,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private BufferedImage myPicture;
 	private Boolean isNFCDone = false, isPaiementLiquideDone = false;
 	private JProgressBar progressBar;
+	private JButton buttonForPicture;
 	
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -153,7 +154,7 @@ public class DrinkFactoryMachine extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		labelForPictures.setIcon(new ImageIcon(myPicture));
+		buttonForPicture.setIcon(new ImageIcon(myPicture));
 	}
 	
 	
@@ -198,7 +199,7 @@ public class DrinkFactoryMachine extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		labelForPictures.setIcon(new ImageIcon(myPicture));
+		buttonForPicture.setIcon(new ImageIcon(myPicture));
 		recetteFSM.raiseBeginRecette();
 	}
 	
@@ -293,8 +294,8 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.setForeground(Color.WHITE);
 		coffeeButton.setBackground(Color.DARK_GRAY);
 		coffeeButton.setBounds(12, 34, 96, 25);
-		contentPane.add(coffeeButton);
 		
+		contentPane.add(coffeeButton);
 	
 
 		JButton expressoButton = new JButton("Expresso");
@@ -452,9 +453,9 @@ public class DrinkFactoryMachine extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		labelForPictures = new JLabel(new ImageIcon(myPicture));
-		labelForPictures.setBounds(175, 319, 286, 260);
-		contentPane.add(labelForPictures);
+		buttonForPicture = new JButton(new ImageIcon(myPicture));
+		buttonForPicture.setBounds(203, 319, 230, 260);
+		contentPane.add(buttonForPicture);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.DARK_GRAY);
@@ -493,6 +494,8 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 		});
 		
+		
+		
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
@@ -527,7 +530,7 @@ public class DrinkFactoryMachine extends JFrame {
 				} catch (IOException ee) {
 					ee.printStackTrace();
 				}
-				labelForPictures.setIcon(new ImageIcon(myPicture));
+				buttonForPicture.setIcon(new ImageIcon(myPicture));
 			}
 		});
 		
@@ -575,7 +578,15 @@ public class DrinkFactoryMachine extends JFrame {
 				myFSM.raiseCoinButton();
 				
 			}
-		}); 
+		});
+		
+		buttonForPicture.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				myFSM.raiseTakeCup();
+			}
+		});
+		
 
 	}
 
