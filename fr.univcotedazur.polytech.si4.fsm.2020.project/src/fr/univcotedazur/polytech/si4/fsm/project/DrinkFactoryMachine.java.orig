@@ -460,6 +460,13 @@ public class DrinkFactoryMachine extends JFrame {
 		panel_2.add(cancelButton);
 
 		
+<<<<<<< Updated upstream
+		
+=======
+		Boisson coffee = new Coffee("coffee", 0.35,(int)controller.timeValue, messagesToUser,recetteFSM);
+		Boisson tea = new Tea("tea", 0.40,(int)controller.timeValue, messagesToUser, recetteFSM);
+>>>>>>> Stashed changes
+		
 		// listeners
 		sizeSlider.addChangeListener(new ChangeListener() {
 			@Override
@@ -506,7 +513,10 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Tea("tea", 0.40, controller, recetteLabel, recetteFSM);
+<<<<<<< Updated upstream
+=======
+				controller.boisson = tea;
+>>>>>>> Stashed changes
 				myFSM.raiseBoissonButton();
 			}
 		});

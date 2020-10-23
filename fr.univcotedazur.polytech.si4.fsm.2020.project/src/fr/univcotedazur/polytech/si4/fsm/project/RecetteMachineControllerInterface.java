@@ -33,5 +33,17 @@ public class RecetteMachineControllerInterface implements SCInterfaceListener{
 		theGui.myFSM.raiseBoissonPrete();
 		
 	}
+
+	@Override
+	public void onEtape4Raised() {
+		theGui.controller.boisson.doEtape4();
+		
+	}
+
+	@Override
+	public void onEtape5Raised() {
+		theGui.controller.boisson.doEtape5();
+		
+	}
 	
 }

@@ -124,6 +124,42 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 			}
 		}
 		
+		private boolean etape4;
+		
+		
+		public boolean isRaisedEtape4() {
+			synchronized(RecetteStatemachine.this) {
+				return etape4;
+			}
+		}
+		
+		protected void raiseEtape4() {
+			synchronized(RecetteStatemachine.this) {
+				etape4 = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onEtape4Raised();
+				}
+			}
+		}
+		
+		private boolean etape5;
+		
+		
+		public boolean isRaisedEtape5() {
+			synchronized(RecetteStatemachine.this) {
+				return etape5;
+			}
+		}
+		
+		protected void raiseEtape5() {
+			synchronized(RecetteStatemachine.this) {
+				etape5 = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onEtape5Raised();
+				}
+			}
+		}
+		
 		private boolean enAttente;
 		
 		
@@ -152,6 +188,8 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 		etape1 = false;
 		etape2 = false;
 		etape3 = false;
+		etape4 = false;
+		etape5 = false;
 		enAttente = false;
 		}
 		
@@ -168,6 +206,8 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 		main_region_Etape2,
 		main_region_Etape3,
 		main_region_EnAttente,
+		main_region_Etape4,
+		main_region_Etape5,
 		$NullState$
 	};
 	
@@ -238,21 +278,27 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 	protected synchronized void singleCycle() {
 		for (nextStateIndex = 0; nextStateIndex < stateVector.length; nextStateIndex++) {
 			switch (stateVector[nextStateIndex]) {
-				case main_region_DebutRecette:
-					main_region_DebutRecette_react(true);
-					break;
-				case main_region_Etape1:
-					main_region_Etape1_react(true);
-					break;
-				case main_region_Etape2:
-					main_region_Etape2_react(true);
-					break;
-				case main_region_Etape3:
-					main_region_Etape3_react(true);
-					break;
-				case main_region_EnAttente:
-					main_region_EnAttente_react(true);
-					break;
+			case main_region_DebutRecette:
+				main_region_DebutRecette_react(true);
+				break;
+			case main_region_Etape1:
+				main_region_Etape1_react(true);
+				break;
+			case main_region_Etape2:
+				main_region_Etape2_react(true);
+				break;
+			case main_region_Etape3:
+				main_region_Etape3_react(true);
+				break;
+			case main_region_EnAttente:
+				main_region_EnAttente_react(true);
+				break;
+			case main_region_Etape4:
+				main_region_Etape4_react(true);
+				break;
+			case main_region_Etape5:
+				main_region_Etape5_react(true);
+				break;
 			default:
 				// $NullState$
 			}
@@ -327,6 +373,10 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 			return stateVector[0] == State.main_region_Etape3;
 		case main_region_EnAttente:
 			return stateVector[0] == State.main_region_EnAttente;
+		case main_region_Etape4:
+			return stateVector[0] == State.main_region_Etape4;
+		case main_region_Etape5:
+			return stateVector[0] == State.main_region_Etape5;
 		default:
 			return false;
 		}
@@ -391,6 +441,14 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 		return sCInterface.isRaisedEtape3();
 	}
 	
+	public synchronized boolean isRaisedEtape4() {
+		return sCInterface.isRaisedEtape4();
+	}
+	
+	public synchronized boolean isRaisedEtape5() {
+		return sCInterface.isRaisedEtape5();
+	}
+	
 	public synchronized boolean isRaisedEnAttente() {
 		return sCInterface.isRaisedEnAttente();
 	}
@@ -436,6 +494,18 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 		stateVector[0] = State.main_region_EnAttente;
 	}
 	
+	/* 'default' enter sequence for state Etape4 */
+	private void enterSequence_main_region_Etape4_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Etape4;
+	}
+	
+	/* 'default' enter sequence for state Etape5 */
+	private void enterSequence_main_region_Etape5_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_region_Etape5;
+	}
+	
 	/* 'default' enter sequence for region main region */
 	private void enterSequence_main_region_default() {
 		react_main_region__entry_Default();
@@ -473,6 +543,18 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 		exitAction_main_region_EnAttente();
 	}
 	
+	/* Default exit sequence for state Etape4 */
+	private void exitSequence_main_region_Etape4() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
+	/* Default exit sequence for state Etape5 */
+	private void exitSequence_main_region_Etape5() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
+	}
+	
 	/* Default exit sequence for region main region */
 	private void exitSequence_main_region() {
 		switch (stateVector[0]) {
@@ -490,6 +572,12 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 			break;
 		case main_region_EnAttente:
 			exitSequence_main_region_EnAttente();
+			break;
+		case main_region_Etape4:
+			exitSequence_main_region_Etape4();
+			break;
+		case main_region_Etape5:
+			exitSequence_main_region_Etape5();
 			break;
 		default:
 			break;
@@ -576,7 +664,15 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 				enterSequence_main_region_EnAttente_default();
 				react();
 			} else {
-				did_transition = false;
+				if (sCInterface.next) {
+					exitSequence_main_region_Etape3();
+					sCInterface.raiseEtape4();
+					
+					enterSequence_main_region_Etape4_default();
+					react();
+				} else {
+					did_transition = false;
+				}
 			}
 		}
 		if (did_transition==false) {
@@ -592,6 +688,46 @@ public class RecetteStatemachine implements IRecetteStatemachine {
 			if (timeEvents[0]) {
 				exitSequence_main_region_EnAttente();
 				enterSequence_main_region_DebutRecette_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Etape4_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.next) {
+				exitSequence_main_region_Etape4();
+				sCInterface.raiseEtape5();
+				
+				enterSequence_main_region_Etape5_default();
+				react();
+			} else {
+				did_transition = false;
+			}
+		}
+		if (did_transition==false) {
+			did_transition = react();
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_Etape5_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (sCInterface.finRecette) {
+				exitSequence_main_region_Etape5();
+				sCInterface.raiseEnAttente();
+				
+				enterSequence_main_region_EnAttente_default();
 				react();
 			} else {
 				did_transition = false;

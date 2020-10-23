@@ -24,6 +24,10 @@ public interface IRecetteStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedEtape3();
 		
+		public boolean isRaisedEtape4();
+		
+		public boolean isRaisedEtape5();
+		
 		public boolean isRaisedEnAttente();
 		
 	public List<SCInterfaceListener> getListeners();
@@ -34,6 +38,8 @@ public interface IRecetteStatemachine extends ITimerCallback,IStatemachine {
 		public void onEtape1Raised();
 		public void onEtape2Raised();
 		public void onEtape3Raised();
+		public void onEtape4Raised();
+		public void onEtape5Raised();
 		public void onEnAttenteRaised();
 		}
 	
