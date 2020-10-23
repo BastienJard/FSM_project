@@ -3,11 +3,8 @@ package fr.univcotedazur.polytech.si4.fsm.project.drinkingmachine;
 
 import fr.univcotedazur.polytech.si4.fsm.project.IStatemachine;
 import fr.univcotedazur.polytech.si4.fsm.project.ITimerCallback;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+
 
 public interface IDrinkingMachineStatemachine extends ITimerCallback,IStatemachine {
 	public interface SCInterface {

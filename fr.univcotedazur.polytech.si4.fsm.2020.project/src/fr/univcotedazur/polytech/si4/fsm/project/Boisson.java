@@ -1,8 +1,5 @@
 package fr.univcotedazur.polytech.si4.fsm.project;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JLabel;
 import javax.swing.Timer;
 

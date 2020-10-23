@@ -30,6 +30,7 @@ public class Tea extends Boisson{
 	
 	@Override
 	public void doEtape1() {
+		totalTime = (int)controller.timeValue;
 		messagesToUser.setText("<html>Récupération et positionnement<br>d’un sachet<br>Démarrage du chauffage de l’eau");
 		recetteTimer = new Timer((int)(0.2*totalTime),doNext);
 		recetteTimer.start();
