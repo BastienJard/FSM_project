@@ -45,7 +45,7 @@ public class DrinkFactoryMachine extends JFrame {
 	protected FactoryController controller;
 	private Hashtable<Integer, JLabel> temperatureTable;
 	private BufferedImage myPicture;
-	private Boolean isNFCDone = false, isPaiementLiquideDone = false;
+	private Boolean isNFCDone = false, isPaiementLiquideDone = false, cupAdded = false;
 	private JProgressBar progressBar;
 	private JButton buttonForPicture;
 	
@@ -98,7 +98,9 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	public void paiementNFC() {
 		isNFCDone = true;
-		messagesToUser.setText("Paiement de " + controller.boisson.price + " € accepté");
+		BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
+		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+		messagesToUser.setText("Paiement de " + bd + " € accepté");
 	}
 	
 	public void annulationNFC() {
@@ -142,6 +144,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void nettoyageText() {
+		cupAdded = false;
 		messagesToUser.setText("<html>Nettoyage de la machine<br> en cours");
 		progressBar.setValue(0);
 		sugarSlider.setValue(1);
@@ -180,6 +183,13 @@ public class DrinkFactoryMachine extends JFrame {
 		boissonChoose.setText("");
 		coinInsert.setText("");
 		priceLabel.setText("");
+		cupAdded = false;
+		try {
+			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		buttonForPicture.setIcon(new ImageIcon(myPicture));
 	}
 	
 	
@@ -193,13 +203,15 @@ public class DrinkFactoryMachine extends JFrame {
 		BigDecimal bd = new BigDecimal(controller.timeValue/1000);
 		bd = bd.setScale(0, BigDecimal.ROUND_UP);
 		messagesToUser.setText("<html>Temps de préparation : " + bd.doubleValue() + "s");
-		
-		try {
+		if(!cupAdded) {
+			try {
 			myPicture = ImageIO.read(new File("./picts/gobeletPolluant.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
+		}
+		
 		recetteFSM.raiseBeginRecette();
 	}
 	
@@ -499,7 +511,10 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Coffee("coffee",progressBar, 0.35,controller, recetteLabel,recetteFSM);
+				controller.boisson = new Coffee("coffee",progressBar, 0.35,controller, recetteLabel,recetteFSM, cupAdded);
+				if(cupAdded) {
+					controller.boisson.setPrice(0.25);
+				}
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -507,7 +522,10 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Expresso("expresso",progressBar, 0.50,controller, recetteLabel,recetteFSM);
+				controller.boisson = new Expresso("expresso",progressBar, 0.50,controller, recetteLabel,recetteFSM, cupAdded);
+				if(cupAdded) {
+					controller.boisson.setPrice(0.40);
+				}
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -516,7 +534,10 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Tea("tea",progressBar, 0.40, controller, recetteLabel, recetteFSM);
+				controller.boisson = new Tea("tea",progressBar, 0.40, controller, recetteLabel, recetteFSM, cupAdded);
+				if(cupAdded) {
+					controller.boisson.setPrice(0.30);
+				}
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -524,6 +545,14 @@ public class DrinkFactoryMachine extends JFrame {
 		addCupButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				cupAdded = true;
+				if(controller.boisson != null) {
+					controller.boisson.setPrice(controller.boisson.getPrice() - 0.1);
+					BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
+					bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+					priceLabel.setText("Prix : " + bd + " €");
+					updateCoin();
+				}
 				BufferedImage myPicture = null;
 				try {
 					myPicture = ImageIO.read(new File("./picts/ownCup.jpg"));

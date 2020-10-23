@@ -11,8 +11,8 @@ import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteStatemachine;
 
 public class Expresso extends Boisson{
 	
-	public Expresso(String name,JProgressBar progressBar, double price,  FactoryController controller, JLabel messagesToUser, RecetteStatemachine recetteFSM) {
-		super(name,progressBar, price,  controller, messagesToUser, recetteFSM);
+	public Expresso(String name,JProgressBar progressBar, double price,  FactoryController controller, JLabel messagesToUser, RecetteStatemachine recetteFSM, Boolean cupAdded) {
+		super(name,progressBar, price,  controller, messagesToUser, recetteFSM, cupAdded);
 	}
 	
 	ActionListener doNext = new ActionListener() {
@@ -52,7 +52,12 @@ public class Expresso extends Boisson{
 	@Override
 	public void doEtape2() {
 		recetteTimer.stop();
-		messagesToUser.setText("<html>Positionnement du goblet, tassage des grains");
+		if(cupAdded) {
+			messagesToUser.setText("<html>Tassage des grains");
+		}else {
+			messagesToUser.setText("<html>Positionnement du goblet, tassage des grains");
+		}
+		
 		recetteTimer = new Timer((int)(0.5*totalTime),doNext);
 		recetteTimer.start();
 		

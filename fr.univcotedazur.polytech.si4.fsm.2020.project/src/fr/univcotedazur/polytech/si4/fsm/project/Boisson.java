@@ -15,8 +15,9 @@ public abstract class Boisson {
 	protected RecetteStatemachine recetteFSM;
 	protected int totalTime, totalProgress;
 	protected JProgressBar progressBar;
+	protected Boolean cupAdded;
 	
-	public Boisson(String name,JProgressBar progressBar, double price, FactoryController controller, JLabel messagesToUser, RecetteStatemachine recetteFSM) {
+	public Boisson(String name,JProgressBar progressBar, double price, FactoryController controller, JLabel messagesToUser, RecetteStatemachine recetteFSM, Boolean cupAdded) {
 		this.name = name;
 		this.price = price;
 		this.controller = controller;
@@ -26,6 +27,7 @@ public abstract class Boisson {
 		this.recetteFSM = recetteFSM;
 		this.totalProgress =0;
 		this.progressBar = progressBar;
+		this.cupAdded = cupAdded;
 	}
 	
 	public String getName() {
@@ -50,4 +52,8 @@ public abstract class Boisson {
 	public void doEtape4() {}
 	public void doEtape5() {}
 	public abstract void fin();
+
+	public void setPrice(double d) {
+		this.price = d;
+	}
 }

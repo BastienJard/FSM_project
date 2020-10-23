@@ -11,8 +11,8 @@ import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteStatemachine;
 
 public class Tea extends Boisson{
 
-	public Tea(String name,JProgressBar progressBar, double price, FactoryController controller, JLabel messagesToUser, RecetteStatemachine recetteFSM) {
-		super(name,progressBar, price, controller, messagesToUser, recetteFSM);
+	public Tea(String name,JProgressBar progressBar, double price, FactoryController controller, JLabel messagesToUser, RecetteStatemachine recetteFSM, Boolean cupAdded) {
+		super(name,progressBar, price, controller, messagesToUser, recetteFSM, cupAdded);
 	}
 
 	ActionListener doNext = new ActionListener() {
@@ -52,7 +52,11 @@ public class Tea extends Boisson{
 	@Override
 	public void doEtape2() {
 		recetteTimer.stop();
-		messagesToUser.setText("<html>Chauffage de l'eau<br>Positionnement du gobelet");
+		if(cupAdded) {
+			messagesToUser.setText("<html>Chauffage de l'eau");
+		}else {
+			messagesToUser.setText("<html>Chauffage de l'eau<br>Positionnement du gobelet");
+		}
 		recetteTimer = new Timer((int)(0.3*totalTime),doNext);
 		recetteTimer.start();
 		

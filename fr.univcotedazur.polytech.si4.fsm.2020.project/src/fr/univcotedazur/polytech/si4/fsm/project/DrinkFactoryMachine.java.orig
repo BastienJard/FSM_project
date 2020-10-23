@@ -38,14 +38,16 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
-	private JLabel messagesToUser, boissonChoose,coinInsert, labelForPictures, priceLabel, recetteLabel;
+	private JLabel messagesToUser, boissonChoose,coinInsert, priceLabel, recetteLabel;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	protected DrinkingMachineStatemachine myFSM;
 	private RecetteStatemachine recetteFSM;
 	protected FactoryController controller;
 	private Hashtable<Integer, JLabel> temperatureTable;
 	private BufferedImage myPicture;
-	private Boolean isNFCDone = false, isPaiementLiquideDone = false;
+	private Boolean isNFCDone = false, isPaiementLiquideDone = false, cupAdded = false;
+	private JProgressBar progressBar;
+	private JButton buttonForPicture;
 	
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -140,13 +142,20 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void nettoyageText() {
+		cupAdded = false;
 		messagesToUser.setText("<html>Nettoyage de la machine<br> en cours");
+		progressBar.setValue(0);
+		sugarSlider.setValue(1);
+		sizeSlider.setValue(1);
+		temperatureSlider.setValue(2);
+		controller.setBoisson(null);
+		controller.insertedCoin = 0.0;
 		try {
 			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		labelForPictures.setIcon(new ImageIcon(myPicture));
+		buttonForPicture.setIcon(new ImageIcon(myPicture));
 	}
 	
 	
@@ -172,6 +181,13 @@ public class DrinkFactoryMachine extends JFrame {
 		boissonChoose.setText("");
 		coinInsert.setText("");
 		priceLabel.setText("");
+		cupAdded = false;
+		try {
+			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		labelForPictures.setIcon(new ImageIcon(myPicture));
 	}
 	
 	
@@ -185,13 +201,19 @@ public class DrinkFactoryMachine extends JFrame {
 		BigDecimal bd = new BigDecimal(controller.timeValue/1000);
 		bd = bd.setScale(0, BigDecimal.ROUND_UP);
 		messagesToUser.setText("<html>Temps de préparation : " + bd.doubleValue() + "s");
-		
-		try {
+		if(!cupAdded) {
+			try {
 			myPicture = ImageIO.read(new File("./picts/gobeletPolluant.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+<<<<<<< Updated upstream
+		buttonForPicture.setIcon(new ImageIcon(myPicture));
+=======
 		labelForPictures.setIcon(new ImageIcon(myPicture));
+		}
+		
+>>>>>>> Stashed changes
 		recetteFSM.raiseBeginRecette();
 	}
 	
@@ -286,8 +308,8 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.setForeground(Color.WHITE);
 		coffeeButton.setBackground(Color.DARK_GRAY);
 		coffeeButton.setBounds(12, 34, 96, 25);
-		contentPane.add(coffeeButton);
 		
+		contentPane.add(coffeeButton);
 	
 
 		JButton expressoButton = new JButton("Expresso");
@@ -308,9 +330,9 @@ public class DrinkFactoryMachine extends JFrame {
 		soupButton.setBounds(12, 145, 96, 25);
 		contentPane.add(soupButton);
 
-		JProgressBar progressBar = new JProgressBar();
+		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
-		progressBar.setValue(10);
+		progressBar.setValue(0);
 		progressBar.setForeground(Color.LIGHT_GRAY);
 		progressBar.setBackground(Color.DARK_GRAY);
 		progressBar.setBounds(12, 254, 622, 26);
@@ -445,9 +467,9 @@ public class DrinkFactoryMachine extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		labelForPictures = new JLabel(new ImageIcon(myPicture));
-		labelForPictures.setBounds(175, 319, 286, 260);
-		contentPane.add(labelForPictures);
+		buttonForPicture = new JButton(new ImageIcon(myPicture));
+		buttonForPicture.setBounds(203, 319, 230, 260);
+		contentPane.add(buttonForPicture);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.DARK_GRAY);
@@ -459,13 +481,6 @@ public class DrinkFactoryMachine extends JFrame {
 		cancelButton.setBackground(Color.DARK_GRAY);
 		panel_2.add(cancelButton);
 
-		
-<<<<<<< Updated upstream
-		
-=======
-		Boisson coffee = new Coffee("coffee", 0.35,(int)controller.timeValue, messagesToUser,recetteFSM);
-		Boisson tea = new Tea("tea", 0.40,(int)controller.timeValue, messagesToUser, recetteFSM);
->>>>>>> Stashed changes
 		
 		// listeners
 		sizeSlider.addChangeListener(new ChangeListener() {
@@ -493,10 +508,15 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 		});
 		
+		
+		
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Coffee("coffee", 0.35,controller, recetteLabel,recetteFSM);
+				controller.boisson = new Coffee("coffee",progressBar, 0.35,controller, recetteLabel,recetteFSM);
+				if(cupAdded) {
+					controller.boisson.setPrice(0.25);
+				}
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -504,7 +524,10 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Expresso("expresso", 0.50,controller, recetteLabel,recetteFSM);
+				controller.boisson = new Expresso("expresso",progressBar, 0.50,controller, recetteLabel,recetteFSM);
+				if(cupAdded) {
+					controller.boisson.setPrice(0.40);
+				}
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -513,10 +536,10 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-<<<<<<< Updated upstream
-=======
-				controller.boisson = tea;
->>>>>>> Stashed changes
+				controller.boisson = new Tea("tea",progressBar, 0.40, controller, recetteLabel, recetteFSM);
+				if(cupAdded) {
+					controller.boisson.setPrice(0.30);
+				}
 				myFSM.raiseBoissonButton();
 			}
 		});
@@ -524,13 +547,21 @@ public class DrinkFactoryMachine extends JFrame {
 		addCupButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				cupAdded = true;
+				if(controller.boisson != null) {
+					controller.boisson.setPrice(controller.boisson.getPrice() - 0.1);
+					BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
+					bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+					priceLabel.setText("Prix : " + bd + " €");
+					updateCoin();
+				}
 				BufferedImage myPicture = null;
 				try {
 					myPicture = ImageIO.read(new File("./picts/ownCup.jpg"));
 				} catch (IOException ee) {
 					ee.printStackTrace();
 				}
-				labelForPictures.setIcon(new ImageIcon(myPicture));
+				buttonForPicture.setIcon(new ImageIcon(myPicture));
 			}
 		});
 		
@@ -578,7 +609,15 @@ public class DrinkFactoryMachine extends JFrame {
 				myFSM.raiseCoinButton();
 				
 			}
-		}); 
+		});
+		
+		buttonForPicture.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				myFSM.raiseTakeCup();
+			}
+		});
+		
 
 	}
 
