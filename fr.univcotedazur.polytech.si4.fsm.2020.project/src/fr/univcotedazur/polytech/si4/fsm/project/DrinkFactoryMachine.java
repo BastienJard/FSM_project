@@ -143,6 +143,11 @@ public class DrinkFactoryMachine extends JFrame {
 	public void nettoyageText() {
 		messagesToUser.setText("<html>Nettoyage de la machine<br> en cours");
 		progressBar.setValue(0);
+		sugarSlider.setValue(1);
+		sizeSlider.setValue(1);
+		temperatureSlider.setValue(2);
+		controller.setBoisson(null);
+		controller.insertedCoin = 0.0;
 		try {
 			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
 		} catch (IOException e) {
