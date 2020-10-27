@@ -544,7 +544,7 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Coffee("coffee", 0.35,controller, recetteLabel,recetteFSM, cupAdded);
+				controller.boisson = new Coffee("coffee", 0.35, recetteLabel, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.25);
 				}
@@ -555,7 +555,7 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Expresso("expresso", 0.50,controller, recetteLabel,recetteFSM, cupAdded);
+				controller.boisson = new Expresso("expresso", 0.50, recetteLabel, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.40);
 				}
@@ -567,7 +567,7 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Tea("tea", 0.40, controller, recetteLabel, recetteFSM, cupAdded);
+				controller.boisson = new Tea("tea", 0.40, recetteLabel, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.30);
 				}

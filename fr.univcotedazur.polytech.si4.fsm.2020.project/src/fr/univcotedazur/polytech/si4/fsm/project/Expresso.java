@@ -1,32 +1,12 @@
 package fr.univcotedazur.polytech.si4.fsm.project;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JLabel;
-import javax.swing.Timer;
-
-import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteMachineStatemachine;
 
 public class Expresso extends Boisson{
 	
-	public Expresso(String name, double price,  FactoryController controller, JLabel messagesToUser, RecetteMachineStatemachine recetteFSM, Boolean cupAdded) {
-		super(name, price,  controller, messagesToUser, recetteFSM, cupAdded);
+	public Expresso(String name, double price, JLabel messagesToUser, Boolean cupAdded) {
+		super(name, price, messagesToUser, cupAdded);
 	}
-	
-	ActionListener doNext = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			recetteFSM.raiseNext();
-		}
-	};
-	
-	ActionListener finRecette = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			recetteFSM.raiseFinRecette();
-		}
-	};
 	
 
 	@Override

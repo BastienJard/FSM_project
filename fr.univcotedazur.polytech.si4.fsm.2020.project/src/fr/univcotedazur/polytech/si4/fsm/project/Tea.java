@@ -1,22 +1,16 @@
 package fr.univcotedazur.polytech.si4.fsm.project;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JLabel;
-import javax.swing.Timer;
 
-import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteMachineStatemachine;
 
 public class Tea extends Boisson{
 
-	public Tea(String name, double price, FactoryController controller, JLabel messagesToUser, RecetteMachineStatemachine recetteFSM, Boolean cupAdded) {
-		super(name, price, controller, messagesToUser, recetteFSM, cupAdded);
+	public Tea(String name, double price, JLabel messagesToUser, Boolean cupAdded) {
+		super(name, price, messagesToUser, cupAdded);
 	}
 	
 	@Override
 	public void doEtape1() {
-		totalTime = (int)controller.timeValue;
 		messagesToUser.setText("<html>Récupération et positionnement<br>d’un sachet<br>Démarrage du chauffage de l’eau");
 		
 	}
