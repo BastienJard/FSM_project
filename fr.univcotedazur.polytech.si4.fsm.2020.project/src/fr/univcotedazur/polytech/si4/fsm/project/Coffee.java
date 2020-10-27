@@ -4,76 +4,51 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
-import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
-import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteStatemachine;
+import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteMachineStatemachine;
+
+
 
 public class Coffee extends Boisson{
 
-	public Coffee(String name, JProgressBar progressBar, double price, FactoryController controller, JLabel messagesToUser, RecetteStatemachine recetteFSM, Boolean cupAdded) {
-		super(name,progressBar, price,  controller, messagesToUser, recetteFSM, cupAdded);
+	public Coffee(String name, double price, FactoryController controller, JLabel messagesToUser, RecetteMachineStatemachine recetteFSM, Boolean cupAdded) {
+		super(name, price,  controller, messagesToUser, recetteFSM, cupAdded);
 	}
 	
-	ActionListener doNext = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			recetteFSM.raiseNext();
-		}
-	};
-	
-	ActionListener finRecette = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			recetteFSM.raiseFinRecette();
-		}
-	};
-	
-	ActionListener advance = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			totalProgress++;
-			progressBar.setValue(totalProgress);
-			
-		}
-	};
-
 	@Override
 	public void doEtape1() {
-		totalTime = (int)controller.timeValue;
-		progressTimer = new Timer(totalTime/100, advance);
 		messagesToUser.setText("<html>Préparation dosette<br>Démarrage du chauffage de l’eau");
-		recetteTimer = new Timer((int)(0.2*totalTime),doNext);
-		recetteTimer.start();
-		progressTimer.start();
 		
 	}
 
 	@Override
 	public void doEtape2() {
-		recetteTimer.stop();
 		if(cupAdded) {
 			messagesToUser.setText("<html>Chauffage de l'eau");
 		}else {
 			messagesToUser.setText("<html>Chauffage de l'eau<br>Positionnement du gobelet");
 		}
-		recetteTimer = new Timer((int)(0.5*totalTime),doNext);
-		recetteTimer.start();
 	}
 
 	@Override
 	public void doEtape3() {
-		recetteTimer.stop();
 		messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre");
-		recetteTimer = new Timer((int)(0.3*totalTime),finRecette);
-		recetteTimer.start();
 	}
 	
 	@Override
 	public void fin() {
-		progressTimer.stop();
-		progressBar.setValue(100);
-		recetteTimer.stop();
+	}
+
+	@Override
+	public void calculateTime(int sugar, int size, int temp) {
+		timeStep1 = 2000;
+		timeStep2 = (int)(Math.exp(temp)*1000 + (int) Math.exp(size)*500);
+		timeStep3 = (int) Math.exp(size)*2000;
+		timeStep4 =0;
+		timeStep5 = 0;
+		totalTime= timeStep1+timeStep2 +timeStep3+timeStep4+timeStep5;
+		
 	}
 
 }

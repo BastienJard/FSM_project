@@ -5,10 +5,10 @@ public class FactoryController {
 
 	protected Boisson boisson;
 	protected double insertedCoin;
-	protected int sugar = 1;
+	protected int sugar =1;
 	protected int size =1;
-	protected int temperature =2;
-	protected float timeValue;
+	protected int temperature =2 ;
+	protected int timeValue;
 
 	
 	public void setBoisson(Boisson boisson) {
@@ -29,8 +29,8 @@ public class FactoryController {
 	}
 	
 	public void prepare() {
-		//en ms
-		timeValue = (float)(Math.exp(this.temperature)*1000 + Math.exp(this.size)*100 + Math.exp(this.sugar)*10 + 6000);
+		boisson.calculateTime(sugar, size, temperature);
+		timeValue = boisson.totalTime;
 		}
 	
 	public void increaseCoin(double coin) {		

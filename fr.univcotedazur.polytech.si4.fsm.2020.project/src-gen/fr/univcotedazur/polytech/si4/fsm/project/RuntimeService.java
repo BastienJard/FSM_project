@@ -25,22 +25,17 @@ public class RuntimeService {
 	private class StatemachineTimerTask extends TimerTask {
 
 		private List<IStatemachine> statemachineList = new LinkedList<IStatemachine>();
-
+	
 		private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-
+	
 		private boolean isPaused = false;
-
+	
 		@Override
 		public void run() {
 			lock.readLock().lock();
-			if (!isPaused) {
-				for (IStatemachine statemachine : statemachineList) {
-					statemachine.runCycle();
-				}
-			}
 			lock.readLock().unlock();
 		}
-
+	
 		/**
 		 * Adds the given state machine to the TimerTask.
 		 *
@@ -53,7 +48,7 @@ public class RuntimeService {
 			lock.writeLock().unlock();
 			return ret;
 		}
-
+	
 		/**
 		 * Removes the given state machine from the TimerTask.
 		 *
@@ -66,11 +61,11 @@ public class RuntimeService {
 			lock.writeLock().unlock();
 			return ret;
 		}
-
+	
 		public void pause() {
 			isPaused = true;
 		}
-
+	
 		public void resume() {
 			isPaused = false;
 		}

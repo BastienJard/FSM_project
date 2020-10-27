@@ -28,8 +28,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import fr.univcotedazur.polytech.si4.fsm.project.drinkingmachine.DrinkingMachineStatemachine;
-import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteStatemachine;
+import fr.univcotedazur.polytech.si4.fsm.project.drinkingMachine.DrinkingMachineStatemachine;
+import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteMachineStatemachine;
+
+
 
 public class DrinkFactoryMachine extends JFrame {
 
@@ -41,13 +43,14 @@ public class DrinkFactoryMachine extends JFrame {
 	private JLabel messagesToUser, boissonChoose,coinInsert, priceLabel, recetteLabel;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	protected DrinkingMachineStatemachine myFSM;
-	private RecetteStatemachine recetteFSM;
+	private RecetteMachineStatemachine recetteFSM;
 	protected FactoryController controller;
 	private Hashtable<Integer, JLabel> temperatureTable;
 	private BufferedImage myPicture;
 	private Boolean isNFCDone = false, isPaiementLiquideDone = false, cupAdded = false;
 	private JProgressBar progressBar;
 	private JButton buttonForPicture;
+	private int progression = 0;
 	
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -158,6 +161,8 @@ public class DrinkFactoryMachine extends JFrame {
 			e.printStackTrace();
 		}
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
+		progressBar.setValue(0);
+		progression =0;
 	}
 	
 	
@@ -211,8 +216,13 @@ public class DrinkFactoryMachine extends JFrame {
 		}
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
 		}
-		
-		recetteFSM.raiseBeginRecette();
+		recetteFSM.setIncreaseTime((int)controller.timeValue/100);
+		recetteFSM.setTimeStep1(controller.boisson.timeStep1);
+		recetteFSM.setTimeStep2(controller.boisson.timeStep2);
+		recetteFSM.setTimeStep3(controller.boisson.timeStep3);
+		recetteFSM.setTimeStep4(controller.boisson.timeStep4);
+		recetteFSM.setTimeStep5(controller.boisson.timeStep5);
+		recetteFSM.raiseBeginRecipe();
 	}
 	
 	public void boissonPrete() {
@@ -220,22 +230,48 @@ public class DrinkFactoryMachine extends JFrame {
 		recetteLabel.setText("");
 	}
 	
+	public void progressDrink() {
+		progression++;
+		progressBar.setValue(progression);
+	}
+	
 	public DrinkFactoryMachine() {
 		
 		controller = new FactoryController();
 		myFSM= new DrinkingMachineStatemachine();
 		TimerService timer = new TimerService();
-		myFSM.setTimer(timer);
-		myFSM.init();
+		myFSM.setTimerService(timer);
+		myFSM.getNettoyageText().subscribe(e -> this.nettoyageText());
+		myFSM.getDoReset().subscribe(e -> this.doReset());
+		myFSM.getEnAttente().subscribe(e -> this.enAttente());
+		myFSM.getErreurPaiment().subscribe(e -> this.errorPaiement());
+		myFSM.getFinishText().subscribe(e -> this.boissonPrete());
+		myFSM.getIncreaseCoin().subscribe(e -> this.updateCoin());
+		myFSM.getLectureCarte().subscribe(e -> this.lectureCarte());
+		myFSM.getPaiementNFC().subscribe(e -> this.paiementNFC());
+		myFSM.getPrepareBoisson().subscribe(e -> this.prepareBoisson());
+		myFSM.getRenduMonnaie().subscribe(e -> this.rendueMonnaie());
+		myFSM.getUpdateBoisson().subscribe(e -> this.updateBoisson());
+		myFSM.getUpdateSlider().subscribe(e -> this.updateSlider());
 		myFSM.enter();
-		myFSM.getSCInterface().getListeners().add(new DrinkFactoryMachineControlerInterface(this));
 		
-		recetteFSM= new RecetteStatemachine();
+		//myFSM.getListeners().add(new DrinkFactoryMachineControlerInterface(this));
+		
+		recetteFSM = new RecetteMachineStatemachine();
 		TimerService timer2 = new TimerService();
-		recetteFSM.setTimer(timer2);
-		recetteFSM.init();
+		recetteFSM.setTimerService(timer2);
+		recetteFSM.getEtape1().subscribe(e -> controller.boisson.doEtape1());
+		recetteFSM.getEtape2().subscribe(e -> controller.boisson.doEtape2());
+		recetteFSM.getEtape3().subscribe(e -> controller.boisson.doEtape3());
+		recetteFSM.getEtape4().subscribe(e -> controller.boisson.doEtape4());
+		recetteFSM.getEtape5().subscribe(e -> controller.boisson.doEtape5());
+		recetteFSM.getIncreaseProgressBar().subscribe(e -> this.progressDrink());
+		recetteFSM.getEnAttente().subscribe(e -> {
+			controller.boisson.fin();
+			myFSM.raiseBoissonPrete();
+		});
 		recetteFSM.enter();
-		recetteFSM.getSCInterface().getListeners().add(new RecetteMachineControllerInterface(this));
+		//recetteFSM.getSCInterface().getListeners().add(new RecetteMachineControllerInterface(this));
 		
 		
 		setForeground(Color.WHITE);
@@ -485,7 +521,6 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				myFSM.raiseSlider();
-				controller.setSize(sizeSlider.getValue());
 			}
 		});
 		
@@ -494,7 +529,6 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				myFSM.raiseSlider();
-				controller.setTemperature(temperatureSlider.getValue());
 			}
 		});
 		
@@ -502,7 +536,6 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				myFSM.raiseSlider();
-				controller.setSugar(sugarSlider.getValue());
 			}
 		});
 		
@@ -511,7 +544,7 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Coffee("coffee",progressBar, 0.35,controller, recetteLabel,recetteFSM, cupAdded);
+				controller.boisson = new Coffee("coffee", 0.35,controller, recetteLabel,recetteFSM, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.25);
 				}
@@ -522,7 +555,7 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Expresso("expresso",progressBar, 0.50,controller, recetteLabel,recetteFSM, cupAdded);
+				controller.boisson = new Expresso("expresso", 0.50,controller, recetteLabel,recetteFSM, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.40);
 				}
@@ -534,7 +567,7 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Tea("tea",progressBar, 0.40, controller, recetteLabel, recetteFSM, cupAdded);
+				controller.boisson = new Tea("tea", 0.40, controller, recetteLabel, recetteFSM, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.30);
 				}
