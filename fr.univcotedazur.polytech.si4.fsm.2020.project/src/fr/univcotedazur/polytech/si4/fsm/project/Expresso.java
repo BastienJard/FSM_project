@@ -2,7 +2,7 @@ package fr.univcotedazur.polytech.si4.fsm.project;
 
 import javax.swing.JLabel;
 
-public class Expresso extends Boisson{
+public class Expresso extends Drink{
 	
 	public Expresso(String name, double price, JLabel messagesToUser, Boolean cupAdded) {
 		super(name, price, messagesToUser, cupAdded);
@@ -10,13 +10,13 @@ public class Expresso extends Boisson{
 	
 
 	@Override
-	public void doEtape1() {
+	public void doStep1() {
 		messagesToUser.setText("<html>Broyage des grains, chauffage de l'eau");
 		
 	}
 
 	@Override
-	public void doEtape2() {
+	public void doStep2() {
 		if(cupAdded) {
 			messagesToUser.setText("<html>Tassage des grains");
 		}else {
@@ -27,15 +27,11 @@ public class Expresso extends Boisson{
 	}
 
 	@Override
-	public void doEtape3() {
+	public void doStep3() {
 		messagesToUser.setText("<html>Ajout du sucre, remplissage du récipient");
 		
 	}
 
-	@Override
-	public void fin() {
-	}
-	
 	@Override
 	public void calculateTime(int sugar, int size, int temp) {
 		timeStep1 = (int)(Math.exp(temp)*1000 + (int) Math.exp(size)*750);

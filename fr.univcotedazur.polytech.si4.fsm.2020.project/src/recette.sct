@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
-  <sgraph:Statechart xmi:id="_xi2A8A-FEeu34_dgiymI_Q" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;in event beginRecipe&#xA;in event next&#xA;in event finRecette&#xA;&#xA;out event etape1&#xA;out event etape2&#xA;out event etape3&#xA;out event etape4&#xA;out event etape5&#xA;out event enAttente&#xA;out event increaseProgressBar&#xA;&#xA;var increaseTime: integer = 0&#xA;var timeStep1: integer = 0&#xA;var timeStep2: integer = 0&#xA;var timeStep3: integer = 0&#xA;var timeStep4: integer = 0&#xA;var timeStep5: integer = 0&#xA;// Define events&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="recette">
+  <sgraph:Statechart xmi:id="_xi2A8A-FEeu34_dgiymI_Q" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;in event beginRecipe&#xA;in event next&#xA;&#xA;out event step1&#xA;out event step2&#xA;out event step3&#xA;out event step4&#xA;out event step5&#xA;out event waiting&#xA;out event increaseProgressBar&#xA;&#xA;var increaseTime: integer = 0&#xA;var timeStep1: integer = 0&#xA;var timeStep2: integer = 0&#xA;var timeStep3: integer = 0&#xA;var timeStep4: integer = 0&#xA;var timeStep5: integer = 0&#xA;// Define events&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="recette">
     <regions xmi:id="_xi3PEw-FEeu34_dgiymI_Q" name="main region">
       <vertices xsi:type="sgraph:Entry" xmi:id="_xi6SYQ-FEeu34_dgiymI_Q">
         <outgoingTransitions xmi:id="_xi98wA-FEeu34_dgiymI_Q" target="_xi7ghA-FEeu34_dgiymI_Q"/>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_xi7ghA-FEeu34_dgiymI_Q" specification="" name="beginningReciep" incomingTransitions="_xi98wA-FEeu34_dgiymI_Q _Ink50Bg3Eeu2RZCF_j8Yqg">
+      <vertices xsi:type="sgraph:State" xmi:id="_xi7ghA-FEeu34_dgiymI_Q" specification="" name="beginningRecipe" incomingTransitions="_xi98wA-FEeu34_dgiymI_Q _Ink50Bg3Eeu2RZCF_j8Yqg">
         <outgoingTransitions xmi:id="_5m8MMBg2Eeu2RZCF_j8Yqg" specification="beginRecipe" target="_fKh-0Bg2Eeu2RZCF_j8Yqg"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_fKh-0Bg2Eeu2RZCF_j8Yqg" specification="" name="PrepareDrink" incomingTransitions="_5m8MMBg2Eeu2RZCF_j8Yqg">
         <regions xmi:id="_iafTsBg2Eeu2RZCF_j8Yqg">
-          <vertices xsi:type="sgraph:State" xmi:id="_mICjgBg2Eeu2RZCF_j8Yqg" specification="entry/raise etape1" name="Step1" incomingTransitions="_m2-tIBg2Eeu2RZCF_j8Yqg">
+          <vertices xsi:type="sgraph:State" xmi:id="_mICjgBg2Eeu2RZCF_j8Yqg" specification="entry/raise step1" name="Step1" incomingTransitions="_m2-tIBg2Eeu2RZCF_j8Yqg">
             <outgoingTransitions xmi:id="_3oqhoBg2Eeu2RZCF_j8Yqg" specification="after timeStep1 ms" target="_yJHIsBg2Eeu2RZCF_j8Yqg"/>
           </vertices>
           <vertices xsi:type="sgraph:Entry" xmi:id="_mbd10Bg2Eeu2RZCF_j8Yqg">
             <outgoingTransitions xmi:id="_m2-tIBg2Eeu2RZCF_j8Yqg" specification="" target="_mICjgBg2Eeu2RZCF_j8Yqg"/>
           </vertices>
-          <vertices xsi:type="sgraph:State" xmi:id="_yJHIsBg2Eeu2RZCF_j8Yqg" specification="entry/raise etape2" name="Step2" incomingTransitions="_3oqhoBg2Eeu2RZCF_j8Yqg">
+          <vertices xsi:type="sgraph:State" xmi:id="_yJHIsBg2Eeu2RZCF_j8Yqg" specification="entry/raise step2" name="Step2" incomingTransitions="_3oqhoBg2Eeu2RZCF_j8Yqg">
             <outgoingTransitions xmi:id="_HIklMBg3Eeu2RZCF_j8Yqg" specification="after timeStep2 ms" target="_EYfDMBg3Eeu2RZCF_j8Yqg"/>
           </vertices>
-          <vertices xsi:type="sgraph:State" xmi:id="_EYfDMBg3Eeu2RZCF_j8Yqg" specification="entry/raise etape3" name="Step3" incomingTransitions="_HIklMBg3Eeu2RZCF_j8Yqg">
+          <vertices xsi:type="sgraph:State" xmi:id="_EYfDMBg3Eeu2RZCF_j8Yqg" specification="entry/raise step3" name="Step3" incomingTransitions="_HIklMBg3Eeu2RZCF_j8Yqg">
             <outgoingTransitions xmi:id="_Q6VOoBhBEeu2RZCF_j8Yqg" specification="after timeStep3 ms" target="_K1Hj4BhBEeu2RZCF_j8Yqg"/>
           </vertices>
-          <vertices xsi:type="sgraph:State" xmi:id="_K1Hj4BhBEeu2RZCF_j8Yqg" specification="entry/raise etape4" name="Step4" incomingTransitions="_Q6VOoBhBEeu2RZCF_j8Yqg">
+          <vertices xsi:type="sgraph:State" xmi:id="_K1Hj4BhBEeu2RZCF_j8Yqg" specification="entry/raise step4" name="Step4" incomingTransitions="_Q6VOoBhBEeu2RZCF_j8Yqg">
             <outgoingTransitions xmi:id="_SkitsBhBEeu2RZCF_j8Yqg" specification="after timeStep4 ms" target="_NmuI0BhBEeu2RZCF_j8Yqg"/>
           </vertices>
-          <vertices xsi:type="sgraph:State" xmi:id="_NmuI0BhBEeu2RZCF_j8Yqg" specification="entry/raise etape5" name="Stape5" incomingTransitions="_SkitsBhBEeu2RZCF_j8Yqg">
-            <outgoingTransitions xmi:id="_Ink50Bg3Eeu2RZCF_j8Yqg" specification="after timeStep5 ms/raise enAttente" target="_xi7ghA-FEeu34_dgiymI_Q"/>
+          <vertices xsi:type="sgraph:State" xmi:id="_NmuI0BhBEeu2RZCF_j8Yqg" specification="entry/raise step5" name="Stape5" incomingTransitions="_SkitsBhBEeu2RZCF_j8Yqg">
+            <outgoingTransitions xmi:id="_Ink50Bg3Eeu2RZCF_j8Yqg" specification="after timeStep5 ms/raise waiting" target="_xi7ghA-FEeu34_dgiymI_Q"/>
           </vertices>
         </regions>
         <regions xmi:id="_kycCgBg2Eeu2RZCF_j8Yqg">
@@ -275,7 +275,7 @@
     <edges xmi:id="_3orvwBg2Eeu2RZCF_j8Yqg" type="Transition" element="_3oqhoBg2Eeu2RZCF_j8Yqg" source="_mIDxoBg2Eeu2RZCF_j8Yqg" target="_yJIW0Bg2Eeu2RZCF_j8Yqg">
       <children xsi:type="notation:DecorationNode" xmi:id="_3osW0Rg2Eeu2RZCF_j8Yqg" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_3osW0hg2Eeu2RZCF_j8Yqg"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_3osW0xg2Eeu2RZCF_j8Yqg" x="6" y="10"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_3osW0xg2Eeu2RZCF_j8Yqg" x="-2" y="42"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_3orvwRg2Eeu2RZCF_j8Yqg" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_3osW0Bg2Eeu2RZCF_j8Yqg" fontName="Verdana"/>

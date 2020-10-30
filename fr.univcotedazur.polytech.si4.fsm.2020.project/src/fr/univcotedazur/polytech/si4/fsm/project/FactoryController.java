@@ -3,7 +3,7 @@ package fr.univcotedazur.polytech.si4.fsm.project;
 
 public class FactoryController {
 
-	protected Boisson boisson;
+	protected Drink boisson;
 	protected double insertedCoin;
 	protected int sugar =1;
 	protected int size =1;
@@ -11,7 +11,7 @@ public class FactoryController {
 	protected int timeValue;
 
 	
-	public void setBoisson(Boisson boisson) {
+	public void setBoisson(Drink boisson) {
 		this.boisson=boisson;
 	
 	}

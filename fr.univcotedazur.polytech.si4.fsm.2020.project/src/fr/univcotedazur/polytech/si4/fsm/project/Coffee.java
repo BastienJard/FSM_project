@@ -3,20 +3,20 @@ package fr.univcotedazur.polytech.si4.fsm.project;
 
 import javax.swing.JLabel;
 
-public class Coffee extends Boisson{
+public class Coffee extends Drink{
 
 	public Coffee(String name, double price, JLabel messagesToUser, Boolean cupAdded) {
 		super(name, price, messagesToUser, cupAdded);
 	}
 	
 	@Override
-	public void doEtape1() {
+	public void doStep1() {
 		messagesToUser.setText("<html>Préparation dosette<br>Démarrage du chauffage de l’eau");
 		
 	}
 
 	@Override
-	public void doEtape2() {
+	public void doStep2() {
 		if(cupAdded) {
 			messagesToUser.setText("<html>Chauffage de l'eau");
 		}else {
@@ -25,14 +25,10 @@ public class Coffee extends Boisson{
 	}
 
 	@Override
-	public void doEtape3() {
+	public void doStep3() {
 		messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre");
 	}
 	
-	@Override
-	public void fin() {
-	}
-
 	@Override
 	public void calculateTime(int sugar, int size, int temp) {
 		timeStep1 = 2000;

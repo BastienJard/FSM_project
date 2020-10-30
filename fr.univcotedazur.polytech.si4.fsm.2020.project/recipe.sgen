@@ -16,9 +16,9 @@ GeneratorModel for yakindu::java {
 		}
 		
 		feature Naming{
-			typeName = "RecetteMachineStatemachine"
+			typeName = "RecipeMachineStatemachine"
 			libraryPackage = "fr.univcotedazur.polytech.si4.fsm.project"
-			basePackage = "fr.univcotedazur.polytech.si4.fsm.project.recette"
+			basePackage = "fr.univcotedazur.polytech.si4.fsm.project.recipe"
 		}
 	}
 } 

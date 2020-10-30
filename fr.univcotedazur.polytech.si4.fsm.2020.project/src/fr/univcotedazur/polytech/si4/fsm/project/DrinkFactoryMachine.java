@@ -29,7 +29,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import fr.univcotedazur.polytech.si4.fsm.project.drinkingMachine.DrinkingMachineStatemachine;
-import fr.univcotedazur.polytech.si4.fsm.project.recette.RecetteMachineStatemachine;
+import fr.univcotedazur.polytech.si4.fsm.project.recipe.RecipeMachineStatemachine;
 
 
 
@@ -40,10 +40,10 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
-	private JLabel messagesToUser, boissonChoose,coinInsert, priceLabel, recetteLabel;
+	private JLabel messagesToUser, drinkChooseLabel,moneyInsertedLabel, priceLabel, recipeLabel;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
-	protected DrinkingMachineStatemachine myFSM;
-	private RecetteMachineStatemachine recetteFSM;
+	protected DrinkingMachineStatemachine drinkingMachineFSM;
+	private RecipeMachineStatemachine recipeFSM;
 	protected FactoryController controller;
 	private Hashtable<Integer, JLabel> temperatureTable;
 	private BufferedImage myPicture;
@@ -75,43 +75,43 @@ public class DrinkFactoryMachine extends JFrame {
 		});
 	}
 	
-	public void errorPaiement() {
+	public void errorPayment() {
 		messagesToUser.setText("<html>Erreur, vous ne pouvez<br> pas changer de moyen de paiement");
 	}
 	
-	public void updateCoin() {
+	public void updateMoney() {
 		isPaiementLiquideDone=true;
 		BigDecimal bd = new BigDecimal(controller.insertedCoin);
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_DOWN);
-		coinInsert.setText("<html>Monnaie : " + bd.doubleValue() + " €");
+		moneyInsertedLabel.setText("<html>Monnaie : " + bd.doubleValue() + " €");
 		if(controller.boisson!=null) {
 			if(controller.insertedCoin>=controller.boisson.price) {
-				myFSM.raiseConfirmationLiquide();
+				drinkingMachineFSM.raiseConfirmationMoney();
 			}
 		}
 	}
 	
-	public void rendueMonnaie() {
-		double rendue = controller.insertedCoin - controller.boisson.price;
-		controller.insertedCoin = rendue;
-		BigDecimal bd = new BigDecimal(rendue);
+	public void returnMoney() {
+		double returnMoney = controller.insertedCoin - controller.boisson.price;
+		controller.insertedCoin = returnMoney;
+		BigDecimal bd = new BigDecimal(returnMoney);
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_DOWN);
 		messagesToUser.setText("<html>Rendue de monnaie : " + bd.doubleValue() + " €" );
 	}
 	
-	public void paiementNFC() {
+	public void paymentNFC() {
 		isNFCDone = true;
 		BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 		messagesToUser.setText("Paiement de " + bd + " € accepté");
 	}
 	
-	public void annulationNFC() {
+	public void cancelNFC() {
 		isNFCDone = false;
 		messagesToUser.setText("<html>Annulation du paiment NFC");
 	}
 	
-	public void annulationPaiementLiquide() {
+	public void cancelMoneyPayment() {
 		isPaiementLiquideDone=false;
 		messagesToUser.setText("<html>Rendue de monnaie : " + controller.insertedCoin + " €" );
 	}
@@ -119,16 +119,16 @@ public class DrinkFactoryMachine extends JFrame {
 	 * Create the frame.
 	 * 
 	 */
-	public void enAttente() {
+	public void waiting() {
 		controller.insertedCoin = 0.0;
 		controller.setBoisson(null);
 		messagesToUser.setText("<html>Votre Commande :");
-		boissonChoose.setText("Boisson :");
-		coinInsert.setText("<html>Monnaie : " + controller.insertedCoin + " €");
+		drinkChooseLabel.setText("Boisson :");
+		moneyInsertedLabel.setText("<html>Monnaie : " + controller.insertedCoin + " €");
 		priceLabel.setText("Prix : " + 0.0 + " €");
 	}
 	
-	public void attentePaiement() {
+	public void waitingPayment() {
 		messagesToUser.setText("<html>Votre Commande :");
 	}
 	
@@ -138,15 +138,15 @@ public class DrinkFactoryMachine extends JFrame {
 		controller.setTemperature(temperatureSlider.getValue());
 	}
 	
-	public void updateBoisson() {
-		boissonChoose.setText("Boisson : " + controller.boisson.name);
+	public void updateDrink() {
+		drinkChooseLabel.setText("Boisson : " + controller.boisson.name);
 		priceLabel.setText("Prix : " + controller.boisson.price + " €");
 		if(controller.insertedCoin>=controller.boisson.price) {
-			myFSM.raiseConfirmationLiquide();
+			drinkingMachineFSM.raiseConfirmationMoney();
 		}
 	}
 	
-	public void nettoyageText() {
+	public void cleaningText() {
 		cupAdded = false;
 		messagesToUser.setText("<html>Nettoyage de la machine<br> en cours");
 		progressBar.setValue(0);
@@ -166,16 +166,16 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	
-	public void lectureCarte() {
+	public void readCard() {
 		isNFCDone = true;
 		messagesToUser.setText("<html>Lecture de la carte<br> en cours ...");
 	}
 	
 	public void doReset() {
 		if(isNFCDone) {
-			annulationNFC();
+			cancelNFC();
 		}else if (isPaiementLiquideDone) {
-			annulationPaiementLiquide();
+			cancelMoneyPayment();
 		}else {
 			messagesToUser.setText("<html>Machine prête");
 		}
@@ -185,8 +185,8 @@ public class DrinkFactoryMachine extends JFrame {
 		controller.setBoisson(null);
 		controller.insertedCoin = 0.0;
 		
-		boissonChoose.setText("");
-		coinInsert.setText("");
+		drinkChooseLabel.setText("");
+		moneyInsertedLabel.setText("");
 		priceLabel.setText("");
 		cupAdded = false;
 		try {
@@ -198,9 +198,9 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	
-	public void prepareBoisson() {
-		boissonChoose.setText("");
-		coinInsert.setText("");
+	public void prepareDrink() {
+		drinkChooseLabel.setText("");
+		moneyInsertedLabel.setText("");
 		priceLabel.setText("");
 		isNFCDone=false;
 		isPaiementLiquideDone=false;
@@ -216,18 +216,18 @@ public class DrinkFactoryMachine extends JFrame {
 		}
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
 		}
-		recetteFSM.setIncreaseTime((int)controller.timeValue/100);
-		recetteFSM.setTimeStep1(controller.boisson.timeStep1);
-		recetteFSM.setTimeStep2(controller.boisson.timeStep2);
-		recetteFSM.setTimeStep3(controller.boisson.timeStep3);
-		recetteFSM.setTimeStep4(controller.boisson.timeStep4);
-		recetteFSM.setTimeStep5(controller.boisson.timeStep5);
-		recetteFSM.raiseBeginRecipe();
+		recipeFSM.setIncreaseTime((int)controller.timeValue/100);
+		recipeFSM.setTimeStep1(controller.boisson.timeStep1);
+		recipeFSM.setTimeStep2(controller.boisson.timeStep2);
+		recipeFSM.setTimeStep3(controller.boisson.timeStep3);
+		recipeFSM.setTimeStep4(controller.boisson.timeStep4);
+		recipeFSM.setTimeStep5(controller.boisson.timeStep5);
+		recipeFSM.raiseBeginRecipe();
 	}
 	
-	public void boissonPrete() {
+	public void drinkReady() {
 		messagesToUser.setText("<html>Votre boisson est prête");
-		recetteLabel.setText("");
+		recipeLabel.setText("");
 	}
 	
 	public void progressDrink() {
@@ -238,39 +238,38 @@ public class DrinkFactoryMachine extends JFrame {
 	public DrinkFactoryMachine() {
 		
 		controller = new FactoryController();
-		myFSM= new DrinkingMachineStatemachine();
+		drinkingMachineFSM= new DrinkingMachineStatemachine();
 		TimerService timer = new TimerService();
-		myFSM.setTimerService(timer);
-		myFSM.getNettoyageText().subscribe(e -> this.nettoyageText());
-		myFSM.getDoReset().subscribe(e -> this.doReset());
-		myFSM.getEnAttente().subscribe(e -> this.enAttente());
-		myFSM.getErreurPaiment().subscribe(e -> this.errorPaiement());
-		myFSM.getFinishText().subscribe(e -> this.boissonPrete());
-		myFSM.getIncreaseCoin().subscribe(e -> this.updateCoin());
-		myFSM.getLectureCarte().subscribe(e -> this.lectureCarte());
-		myFSM.getPaiementNFC().subscribe(e -> this.paiementNFC());
-		myFSM.getPrepareBoisson().subscribe(e -> this.prepareBoisson());
-		myFSM.getRenduMonnaie().subscribe(e -> this.rendueMonnaie());
-		myFSM.getUpdateBoisson().subscribe(e -> this.updateBoisson());
-		myFSM.getUpdateSlider().subscribe(e -> this.updateSlider());
-		myFSM.enter();
+		drinkingMachineFSM.setTimerService(timer);
+		drinkingMachineFSM.getCleaningText().subscribe(e -> this.cleaningText());
+		drinkingMachineFSM.getDoReset().subscribe(e -> this.doReset());
+		drinkingMachineFSM.getWaiting().subscribe(e -> this.waiting());
+		drinkingMachineFSM.getErrorPayment().subscribe(e -> this.errorPayment());
+		drinkingMachineFSM.getWaitingDrink().subscribe(e -> this.drinkReady());
+		drinkingMachineFSM.getIncreaseMoney().subscribe(e -> this.updateMoney());
+		drinkingMachineFSM.getReadCard().subscribe(e -> this.readCard());
+		drinkingMachineFSM.getPaymentNFC().subscribe(e -> this.paymentNFC());
+		drinkingMachineFSM.getPrepareDrink().subscribe(e -> this.prepareDrink());
+		drinkingMachineFSM.getReturnMoney().subscribe(e -> this.returnMoney());
+		drinkingMachineFSM.getUpdateDrink().subscribe(e -> this.updateDrink());
+		drinkingMachineFSM.getUpdateSlider().subscribe(e -> this.updateSlider());
+		drinkingMachineFSM.enter();
 		
 		//myFSM.getListeners().add(new DrinkFactoryMachineControlerInterface(this));
 		
-		recetteFSM = new RecetteMachineStatemachine();
+		recipeFSM = new RecipeMachineStatemachine();
 		TimerService timer2 = new TimerService();
-		recetteFSM.setTimerService(timer2);
-		recetteFSM.getEtape1().subscribe(e -> controller.boisson.doEtape1());
-		recetteFSM.getEtape2().subscribe(e -> controller.boisson.doEtape2());
-		recetteFSM.getEtape3().subscribe(e -> controller.boisson.doEtape3());
-		recetteFSM.getEtape4().subscribe(e -> controller.boisson.doEtape4());
-		recetteFSM.getEtape5().subscribe(e -> controller.boisson.doEtape5());
-		recetteFSM.getIncreaseProgressBar().subscribe(e -> this.progressDrink());
-		recetteFSM.getEnAttente().subscribe(e -> {
-			controller.boisson.fin();
-			myFSM.raiseBoissonPrete();
+		recipeFSM.setTimerService(timer2);
+		recipeFSM.getStep1().subscribe(e -> controller.boisson.doStep1());
+		recipeFSM.getStep2().subscribe(e -> controller.boisson.doStep2());
+		recipeFSM.getStep3().subscribe(e -> controller.boisson.doStep3());
+		recipeFSM.getStep4().subscribe(e -> controller.boisson.doStep4());
+		recipeFSM.getStep5().subscribe(e -> controller.boisson.doStep5());
+		recipeFSM.getIncreaseProgressBar().subscribe(e -> this.progressDrink());
+		recipeFSM.getWaiting().subscribe(e -> {
+			drinkingMachineFSM.raiseDrinkReady();
 		});
-		recetteFSM.enter();
+		recipeFSM.enter();
 		//recetteFSM.getSCInterface().getListeners().add(new RecetteMachineControllerInterface(this));
 		
 		
@@ -294,21 +293,21 @@ public class DrinkFactoryMachine extends JFrame {
 		messagesToUser.setBackground(Color.WHITE);
 		messagesToUser.setBounds(126, 34, 165, 175);
 		
-		recetteLabel = new JLabel("");
-		recetteLabel.setForeground(Color.WHITE);
-		recetteLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		recetteLabel.setVerticalAlignment(SwingConstants.TOP);
-		recetteLabel.setToolTipText("message to the user");
-		recetteLabel.setBackground(Color.WHITE);
-		recetteLabel.setBounds(126, 64, 165, 175);
+		recipeLabel = new JLabel("");
+		recipeLabel.setForeground(Color.WHITE);
+		recipeLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		recipeLabel.setVerticalAlignment(SwingConstants.TOP);
+		recipeLabel.setToolTipText("message to the user");
+		recipeLabel.setBackground(Color.WHITE);
+		recipeLabel.setBounds(126, 64, 165, 175);
 		
-		boissonChoose = new JLabel("");
-		boissonChoose.setForeground(Color.WHITE);
-		boissonChoose.setHorizontalAlignment(SwingConstants.LEFT);
-		boissonChoose.setVerticalAlignment(SwingConstants.TOP);
-		boissonChoose.setToolTipText("message to the user");
-		boissonChoose.setBackground(Color.WHITE);
-		boissonChoose.setBounds(126, 94, 165, 175);
+		drinkChooseLabel = new JLabel("");
+		drinkChooseLabel.setForeground(Color.WHITE);
+		drinkChooseLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		drinkChooseLabel.setVerticalAlignment(SwingConstants.TOP);
+		drinkChooseLabel.setToolTipText("message to the user");
+		drinkChooseLabel.setBackground(Color.WHITE);
+		drinkChooseLabel.setBounds(126, 94, 165, 175);
 		
 		priceLabel = new JLabel("");
 		priceLabel.setForeground(Color.WHITE);
@@ -318,19 +317,19 @@ public class DrinkFactoryMachine extends JFrame {
 		priceLabel.setBackground(Color.WHITE);
 		priceLabel.setBounds(126, 114, 165, 175);
 		
-		coinInsert = new JLabel("");
-		coinInsert.setForeground(Color.WHITE);
-		coinInsert.setHorizontalAlignment(SwingConstants.LEFT);
-		coinInsert.setVerticalAlignment(SwingConstants.TOP);
-		coinInsert.setToolTipText("message to the user");
-		coinInsert.setBackground(Color.WHITE);
-		coinInsert.setBounds(126, 134, 165, 175);
+		moneyInsertedLabel = new JLabel("");
+		moneyInsertedLabel.setForeground(Color.WHITE);
+		moneyInsertedLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		moneyInsertedLabel.setVerticalAlignment(SwingConstants.TOP);
+		moneyInsertedLabel.setToolTipText("message to the user");
+		moneyInsertedLabel.setBackground(Color.WHITE);
+		moneyInsertedLabel.setBounds(126, 134, 165, 175);
 		
 		contentPane.add(messagesToUser);
-		contentPane.add(recetteLabel);
-		contentPane.add(boissonChoose);
+		contentPane.add(recipeLabel);
+		contentPane.add(drinkChooseLabel);
 		contentPane.add(priceLabel);
-		contentPane.add(coinInsert);
+		contentPane.add(moneyInsertedLabel);
 
 		JLabel lblCoins = new JLabel("Coins");
 		lblCoins.setForeground(Color.WHITE);
@@ -520,7 +519,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sizeSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				myFSM.raiseSlider();
+				drinkingMachineFSM.raiseSlider();
 			}
 		});
 		
@@ -528,14 +527,14 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				myFSM.raiseSlider();
+				drinkingMachineFSM.raiseSlider();
 			}
 		});
 		
 		sugarSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				myFSM.raiseSlider();
+				drinkingMachineFSM.raiseSlider();
 			}
 		});
 		
@@ -544,22 +543,22 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Coffee("coffee", 0.35, recetteLabel, cupAdded);
+				controller.boisson = new Coffee("coffee", 0.35, recipeLabel, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.25);
 				}
-				myFSM.raiseBoissonButton();
+				drinkingMachineFSM.raiseDrinkButton();
 			}
 		});
 		
 		expressoButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Expresso("expresso", 0.50, recetteLabel, cupAdded);
+				controller.boisson = new Expresso("expresso", 0.50, recipeLabel, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.40);
 				}
-				myFSM.raiseBoissonButton();
+				drinkingMachineFSM.raiseDrinkButton();
 			}
 		});
 		
@@ -567,11 +566,11 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Tea("tea", 0.40, recetteLabel, cupAdded);
+				controller.boisson = new Tea("tea", 0.40, recipeLabel, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.30);
 				}
-				myFSM.raiseBoissonButton();
+				drinkingMachineFSM.raiseDrinkButton();
 			}
 		});
 		
@@ -584,7 +583,7 @@ public class DrinkFactoryMachine extends JFrame {
 					BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
 					bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 					priceLabel.setText("Prix : " + bd + " €");
-					updateCoin();
+					updateMoney();
 				}
 				BufferedImage myPicture = null;
 				try {
@@ -599,14 +598,14 @@ public class DrinkFactoryMachine extends JFrame {
 		cancelButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				myFSM.raiseCancelButton();
+				drinkingMachineFSM.raiseCancelButton();
 			}
 		});
 		
 		nfcBiiiipButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				myFSM.raiseNFCButton();
+				drinkingMachineFSM.raiseNFCButton();
 			}
 		});
 		
@@ -616,7 +615,7 @@ public class DrinkFactoryMachine extends JFrame {
 				if(!isNFCDone) {
 					controller.increaseCoin(0.10);
 				}
-				myFSM.raiseCoinButton();
+				drinkingMachineFSM.raiseMoneyButton();
 			}
 				
 		}); 
@@ -627,7 +626,7 @@ public class DrinkFactoryMachine extends JFrame {
 				if(!isNFCDone) {
 					controller.increaseCoin(0.50);
 				}
-				myFSM.raiseCoinButton();
+				drinkingMachineFSM.raiseMoneyButton();
 			}
 		}); 
 		
@@ -637,7 +636,7 @@ public class DrinkFactoryMachine extends JFrame {
 				if(!isNFCDone) {
 					controller.increaseCoin(0.05);
 				}
-				myFSM.raiseCoinButton();
+				drinkingMachineFSM.raiseMoneyButton();
 				
 			}
 		});
@@ -645,7 +644,7 @@ public class DrinkFactoryMachine extends JFrame {
 		buttonForPicture.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				myFSM.raiseTakeCup();
+				drinkingMachineFSM.raiseTakeCup();
 			}
 		});
 		
