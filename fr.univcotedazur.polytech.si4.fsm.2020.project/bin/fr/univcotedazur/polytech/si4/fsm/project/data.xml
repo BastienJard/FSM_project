@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><datas><stocks><sugar>49</sugar><coffee>90</coffee><tea>100</tea><expresso>100</expresso></stocks></datas>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><datas><stocks><sugar>45</sugar><coffee>70</coffee><tea>100</tea><expresso>47</expresso></stocks><customers><customer id="1"><numberOfNFCPayement>2</numberOfNFCPayement><averageCostOfDrinks>0.35</averageCostOfDrinks><listOfExpenses><expenseItem>0.35</expenseItem><expenseItem>0.35</expenseItem></listOfExpenses></customer></customers></datas>

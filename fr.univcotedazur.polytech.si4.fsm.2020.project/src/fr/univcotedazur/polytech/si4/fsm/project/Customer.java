@@ -36,4 +36,8 @@ public class Customer {
 		averageCostOfDrinks = total/listOfExpenses.size();
 		return averageCostOfDrinks;
 	}
+	
+	ArrayList<Double> getListOfExpenses(){
+		return this.listOfExpenses;
+	}
 }

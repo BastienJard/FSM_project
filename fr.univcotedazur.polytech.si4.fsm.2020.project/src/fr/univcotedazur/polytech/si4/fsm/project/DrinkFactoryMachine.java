@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -44,6 +45,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -129,6 +131,40 @@ public class DrinkFactoryMachine extends JFrame {
         Element expresso = doc.createElement("expresso");
         expresso.appendChild(doc.createTextNode(""+expressoReserve));
         stocks.appendChild(expresso);
+        
+        Element customers = doc.createElement("customers");
+        racine.appendChild(customers);
+        
+        
+        Iterator<HashMap.Entry<Object, Customer>> iterator = mapOfCustomer.entrySet().iterator();
+        while (iterator.hasNext()) {
+
+        	HashMap.Entry<Object, Customer> entry = iterator.next();
+        	Element customer = doc.createElement("customer");
+            customers.appendChild(customer);
+            
+            Attr id = doc.createAttribute("id");
+            id.setValue(""+ entry.getKey());
+            customer.setAttributeNode(id);
+            
+            Element numberOfNFCPayement = doc.createElement("numberOfNFCPayement");
+            numberOfNFCPayement.appendChild(doc.createTextNode(""+ entry.getValue().getNumberOfNFCPayement()));
+            customer.appendChild(numberOfNFCPayement);
+            
+            Element averageCostOfDrinks = doc.createElement("averageCostOfDrinks");
+            averageCostOfDrinks.appendChild(doc.createTextNode(""+entry.getValue().getAverageCost()));
+            customer.appendChild(averageCostOfDrinks);
+            
+            Element listOfExpenses = doc.createElement("listOfExpenses");
+            customer.appendChild(listOfExpenses);
+            
+            for(Double expense:entry.getValue().getListOfExpenses()) {
+            	
+            	Element expenseItem = doc.createElement("expenseItem");
+            	expenseItem.appendChild(doc.createTextNode(""+ expense));
+                listOfExpenses.appendChild(expenseItem);
+            }
+        }
         
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
