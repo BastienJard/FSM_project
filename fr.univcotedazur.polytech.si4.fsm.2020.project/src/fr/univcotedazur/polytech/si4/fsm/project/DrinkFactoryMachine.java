@@ -11,11 +11,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -72,6 +75,8 @@ public class DrinkFactoryMachine extends JFrame {
 	private int coffeeReserve = 100;
 	private int expressoReserve = 100;
 	private int teaReserve = 100;
+	private JFormattedTextField NFCField;
+	private HashMap<Object, Customer> mapOfCustomer = new HashMap<>();
 	
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -94,7 +99,6 @@ public class DrinkFactoryMachine extends JFrame {
 				}
 			}
 		});
-		
 	}
 	
 	public void saveFile() {
@@ -175,7 +179,21 @@ public class DrinkFactoryMachine extends JFrame {
 		isNFCDone = true;
 		BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-		messagesToUser.setText("Paiement de " + bd + " € accepté");
+		
+		if(!mapOfCustomer.containsKey(NFCField.getValue())) {
+			Customer customer = new Customer();
+			mapOfCustomer.put(NFCField.getValue(), customer);
+		}
+		mapOfCustomer.get(NFCField.getValue()).calculateAverageCost();
+		if(mapOfCustomer.get(NFCField.getValue()).getNumberOfNFCPayement()>10 && controller.boisson.getPrice()<mapOfCustomer.get(NFCField.getValue()).getAverageCost()) {
+			messagesToUser.setText("<html>Plus de 10 achats : <br>celui-ci est gratuit");
+			mapOfCustomer.get(NFCField.getValue()).resetNumberOfNFCPayement();
+		}else if(mapOfCustomer.get(NFCField.getValue()).getNumberOfNFCPayement()>10 && controller.boisson.getPrice()>=mapOfCustomer.get(NFCField.getValue()).getAverageCost()) {
+			messagesToUser.setText("<html>Prix trop élevé pour avoir la réduction <br> Paiement de " + bd + " € accepté");
+		}else {
+			messagesToUser.setText("Paiement de " + bd + " € accepté");
+		}
+		mapOfCustomer.get(NFCField.getValue()).increaseNFCCount(controller.boisson.getPrice());
 	}
 	
 	public void cancelNFC() {
@@ -235,6 +253,7 @@ public class DrinkFactoryMachine extends JFrame {
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
 		progressBar.setValue(0);
 		progression =0;
+		NFCField.setValue(null);
 	}
 	
 	
@@ -266,6 +285,7 @@ public class DrinkFactoryMachine extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		NFCField.setValue(null);
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
 	}
 	
@@ -625,7 +645,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.DARK_GRAY);
-		panel_1.setBounds(538, 154, 96, 40);
+		panel_1.setBounds(538, 145, 96, 40);
 		contentPane.add(panel_1);
 
 		JButton nfcBiiiipButton = new JButton("biiip");
@@ -636,8 +656,20 @@ public class DrinkFactoryMachine extends JFrame {
 		JLabel lblNfc = new JLabel("NFC");
 		lblNfc.setForeground(Color.WHITE);
 		lblNfc.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNfc.setBounds(541, 139, 41, 15);
+		lblNfc.setBounds(541, 125, 41, 15);
 		contentPane.add(lblNfc);
+		
+		JLabel idNFC = new JLabel("id (only Numbers)");
+		idNFC.setForeground(Color.WHITE);
+		idNFC.setHorizontalAlignment(SwingConstants.CENTER);
+		idNFC.setBounds(525, 182, 110, 15);
+		contentPane.add(idNFC);
+		
+		NFCField = new JFormattedTextField(NumberFormat.getNumberInstance());
+		NFCField.setForeground(Color.WHITE);
+		NFCField.setBackground(Color.DARK_GRAY);
+		NFCField.setBounds(552, 200, 65, 15);
+		contentPane.add(NFCField);
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(12, 292, 622, 15);
