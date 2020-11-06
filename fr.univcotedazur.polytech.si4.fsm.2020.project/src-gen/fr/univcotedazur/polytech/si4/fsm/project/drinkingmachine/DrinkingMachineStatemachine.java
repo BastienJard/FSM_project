@@ -561,6 +561,38 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		return errorPaymentObservable;
 	}
 	
+	private boolean updateReserves;
+	
+	
+	protected void raiseUpdateReserves() {
+		synchronized(DrinkingMachineStatemachine.this) {
+			updateReserves = true;
+			updateReservesObservable.next(null);
+		}
+	}
+	
+	private Observable<Void> updateReservesObservable = new Observable<Void>();
+	
+	public Observable<Void> getUpdateReserves() {
+		return updateReservesObservable;
+	}
+	
+	private boolean checkReserves;
+	
+	
+	protected void raiseCheckReserves() {
+		synchronized(DrinkingMachineStatemachine.this) {
+			checkReserves = true;
+			checkReservesObservable.next(null);
+		}
+	}
+	
+	private Observable<Void> checkReservesObservable = new Observable<Void>();
+	
+	public Observable<Void> getCheckReserves() {
+		return checkReservesObservable;
+	}
+	
 	private boolean isThereBoisson;
 	
 	public synchronized boolean getIsThereBoisson() {
@@ -578,6 +610,11 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	/* Entry action for state 'Start'. */
 	private void entryAction_main_region_Start() {
 		timerService.setTimer(this, 0, 3500, false);
+	}
+	
+	/* Entry action for state 'PrepareDrink'. */
+	private void entryAction_main_region_PrepareDrink() {
+		raiseUpdateReserves();
 	}
 	
 	/* Entry action for state 'reset'. */
@@ -650,6 +687,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	
 	/* 'default' enter sequence for state PrepareDrink */
 	private void enterSequence_main_region_PrepareDrink_default() {
+		entryAction_main_region_PrepareDrink();
 		nextStateIndex = 0;
 		stateVector[0] = State.MAIN_REGION_PREPAREDRINK;
 	}
@@ -949,6 +987,8 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 			if (timeEvents[0]) {
 				exitSequence_main_region_Start();
 				raiseWaiting();
+				
+				raiseCheckReserves();
 				
 				setIsThereBoisson(false);
 				

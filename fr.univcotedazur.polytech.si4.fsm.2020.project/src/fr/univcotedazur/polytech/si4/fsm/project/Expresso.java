@@ -37,7 +37,7 @@ public class Expresso extends Drink{
 		timeStep1 = (int)(Math.exp(temp)*1000 + (int) Math.exp(size)*750);
 		timeStep3 = (int) Math.exp(size)*1500;
 		timeStep2 = 3000;
-		timeStep4 =0;
+		timeStep4 = 0;
 		timeStep5 = 0;
 		totalTime= timeStep1+timeStep2 +timeStep3+timeStep4+timeStep5;
 		

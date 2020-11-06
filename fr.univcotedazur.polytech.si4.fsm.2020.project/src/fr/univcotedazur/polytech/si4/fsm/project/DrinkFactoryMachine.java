@@ -49,8 +49,9 @@ public class DrinkFactoryMachine extends JFrame {
 	private BufferedImage myPicture;
 	private Boolean isNFCDone = false, isPaiementLiquideDone = false, cupAdded = false;
 	private JProgressBar progressBar;
-	private JButton buttonForPicture;
+	private JButton buttonForPicture, coffeeButton, expressoButton, teaButton;
 	private int progression = 0;
+	private int sugarReserve = 50, coffeeReserve = 100, expressoReserve = 100, teaReserve = 100;
 	
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -197,6 +198,36 @@ public class DrinkFactoryMachine extends JFrame {
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
 	}
 	
+	public void checkReserves() {
+		if(coffeeReserve<10) {
+			coffeeButton.setEnabled(false);
+		}
+		if(expressoReserve<10) {
+			expressoButton.setEnabled(false);
+		}
+		if(teaReserve<10) {
+			teaButton.setEnabled(false);
+		}
+	}
+	
+	public void updateReserves() {
+		switch (controller.boisson.getName()) {
+			case "coffee":
+				coffeeReserve = coffeeReserve-10;
+				sugarReserve = sugarReserve - (controller.sugar*1);
+				break;
+			case "expresso":
+				expressoReserve = expressoReserve-10;
+				sugarReserve = sugarReserve - (controller.sugar*1);
+				break;
+			case "tea":
+				teaReserve = teaReserve-10;
+				sugarReserve = sugarReserve - (controller.sugar*1);
+				break;
+			default:
+				sugarReserve = sugarReserve - (controller.sugar*1);
+		}
+	}
 	
 	public void prepareDrink() {
 		drinkChooseLabel.setText("");
@@ -253,6 +284,8 @@ public class DrinkFactoryMachine extends JFrame {
 		drinkingMachineFSM.getReturnMoney().subscribe(e -> this.returnMoney());
 		drinkingMachineFSM.getUpdateDrink().subscribe(e -> this.updateDrink());
 		drinkingMachineFSM.getUpdateSlider().subscribe(e -> this.updateSlider());
+		drinkingMachineFSM.getUpdateReserves().subscribe(e -> this.updateReserves());
+		drinkingMachineFSM.getCheckReserves().subscribe(e -> this.checkReserves());
 		drinkingMachineFSM.enter();
 		
 		//myFSM.getListeners().add(new DrinkFactoryMachineControlerInterface(this));
@@ -337,7 +370,7 @@ public class DrinkFactoryMachine extends JFrame {
 		lblCoins.setBounds(538, 12, 44, 15);
 		contentPane.add(lblCoins);
 
-		JButton coffeeButton = new JButton("Coffee");
+		coffeeButton = new JButton("Coffee");
 		coffeeButton.setForeground(Color.WHITE);
 		coffeeButton.setBackground(Color.DARK_GRAY);
 		coffeeButton.setBounds(12, 34, 96, 25);
@@ -345,13 +378,13 @@ public class DrinkFactoryMachine extends JFrame {
 		contentPane.add(coffeeButton);
 	
 
-		JButton expressoButton = new JButton("Expresso");
+		expressoButton = new JButton("Expresso");
 		expressoButton.setForeground(Color.WHITE);
 		expressoButton.setBackground(Color.DARK_GRAY);
 		expressoButton.setBounds(12, 71, 96, 25);
 		contentPane.add(expressoButton);
 
-		JButton teaButton = new JButton("Tea");
+		teaButton = new JButton("Tea");
 		teaButton.setForeground(Color.WHITE);
 		teaButton.setBackground(Color.DARK_GRAY);
 		teaButton.setBounds(12, 108, 96, 25);
@@ -535,6 +568,9 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				drinkingMachineFSM.raiseSlider();
+				if(sugarReserve<sugarSlider.getValue()*1) {
+					sugarSlider.setValue(sugarReserve);
+				}
 			}
 		});
 		
