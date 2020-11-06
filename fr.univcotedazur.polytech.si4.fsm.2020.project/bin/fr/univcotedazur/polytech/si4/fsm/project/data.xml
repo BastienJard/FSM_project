@@ -1,1 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><datas><stocks><sugar>45</sugar><coffee>70</coffee><tea>100</tea><expresso>47</expresso></stocks><customers><customer id="1"><numberOfNFCPayement>2</numberOfNFCPayement><averageCostOfDrinks>0.35</averageCostOfDrinks><listOfExpenses><expenseItem>0.35</expenseItem><expenseItem>0.35</expenseItem></listOfExpenses></customer></customers></datas>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<datas>
+<stocks>
+<sugar>41</sugar>
+<coffee>60</coffee>
+<tea>90</tea>
+<expresso>25</expresso>
+</stocks>
+<customers>
+<customer id="1">
+<numberOfNFCPayement>1</numberOfNFCPayement>
+<averageCostOfDrinks>0.0</averageCostOfDrinks>
+<listOfExpenses>
+<expenseItem>0.4</expenseItem>
+</listOfExpenses>
+</customer>
+<customer id="1234">
+<numberOfNFCPayement>1</numberOfNFCPayement>
+<averageCostOfDrinks>0.0</averageCostOfDrinks>
+<listOfExpenses><expenseItem>0.5</expenseItem>
+</listOfExpenses>
+</customer>
+</customers>
+</datas>

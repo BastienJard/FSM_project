@@ -29,6 +29,9 @@ public class Customer {
 	}
 	
 	double calculateAverageCost() {
+		if(listOfExpenses.size()==0) {
+			return 0;
+		}
 		double total=0;
 		for(int i=0; i<listOfExpenses.size();i++) {
 			total += listOfExpenses.get(i);

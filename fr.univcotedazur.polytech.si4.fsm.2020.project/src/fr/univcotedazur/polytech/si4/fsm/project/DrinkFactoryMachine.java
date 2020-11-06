@@ -469,7 +469,7 @@ public class DrinkFactoryMachine extends JFrame {
 	         String coffeePath = "/datas/stocks/coffee";
 	         coffeeReserve = ((Double)path.evaluate(coffeePath, root,XPathConstants.NUMBER)).intValue();
 	         
-	         String expressoPath = "/datas/stocks/sugar";
+	         String expressoPath = "/datas/stocks/expresso";
 	         expressoReserve = ((Double)path.evaluate(expressoPath, root,XPathConstants.NUMBER)).intValue();
 	         
 
