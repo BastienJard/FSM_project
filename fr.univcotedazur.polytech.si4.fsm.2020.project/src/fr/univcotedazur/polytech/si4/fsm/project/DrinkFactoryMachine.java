@@ -27,6 +27,23 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import fr.univcotedazur.polytech.si4.fsm.project.drinkingMachine.DrinkingMachineStatemachine;
 import fr.univcotedazur.polytech.si4.fsm.project.recipe.RecipeMachineStatemachine;
@@ -51,7 +68,10 @@ public class DrinkFactoryMachine extends JFrame {
 	private JProgressBar progressBar;
 	private JButton buttonForPicture, coffeeButton, expressoButton, teaButton;
 	private int progression = 0;
-	private int sugarReserve = 50, coffeeReserve = 100, expressoReserve = 100, teaReserve = 100;
+	private int sugarReserve = 50;
+	private int coffeeReserve = 100;
+	private int expressoReserve = 100;
+	private int teaReserve = 100;
 	
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -74,6 +94,57 @@ public class DrinkFactoryMachine extends JFrame {
 				}
 			}
 		});
+		
+	}
+	
+	public void saveFile() {
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder;
+		try {
+		docBuilder = dbFactory.newDocumentBuilder();
+ 
+        Document doc = docBuilder.newDocument();
+        Element racine = doc.createElement("datas");
+        doc.appendChild(racine);
+        
+        Element stocks = doc.createElement("stocks");
+        racine.appendChild(stocks);
+        
+        Element sugar = doc.createElement("sugar");
+        sugar.appendChild(doc.createTextNode(""+sugarReserve));
+        stocks.appendChild(sugar);
+        
+        Element coffee = doc.createElement("coffee");
+        coffee.appendChild(doc.createTextNode(""+coffeeReserve));
+        stocks.appendChild(coffee);
+        
+        Element tea = doc.createElement("tea");
+        tea.appendChild(doc.createTextNode(""+teaReserve));
+        stocks.appendChild(tea);
+        
+        Element expresso = doc.createElement("expresso");
+        expresso.appendChild(doc.createTextNode(""+expressoReserve));
+        stocks.appendChild(expresso);
+        
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+        StreamResult resultat = new StreamResult(new File("src\\fr\\univcotedazur\\polytech\\si4\\fsm\\project\\data.xml"));
+        
+        transformer.transform(source, resultat);
+        
+        
+		
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void errorPayment() {
@@ -233,6 +304,7 @@ public class DrinkFactoryMachine extends JFrame {
 			default:
 				sugarReserve = sugarReserve - (controller.sugar*1);
 		}
+		saveFile();
 	}
 	
 	public void refundReserves() {
@@ -240,6 +312,7 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeReserve = 100;
 		teaReserve = 100;
 		expressoReserve = 100;
+		saveFile();
 	}
 	
 	public void prepareDrink() {
@@ -319,6 +392,41 @@ public class DrinkFactoryMachine extends JFrame {
 		recipeFSM.enter();
 		//recetteFSM.getSCInterface().getListeners().add(new RecetteMachineControllerInterface(this));
 		
+		
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		int str =0;
+		Element root =null;
+	    try {
+	         DocumentBuilder builder = factory.newDocumentBuilder();
+	         File fileXML = new File("src\\fr\\univcotedazur\\polytech\\si4\\fsm\\project\\data.xml");
+	         Document xml = builder.parse(fileXML);
+	         root = xml.getDocumentElement();
+	         XPathFactory xpf = XPathFactory.newInstance();
+	         XPath path = xpf.newXPath();
+	         
+	         String sugarPath = "/datas/stocks/sugar";
+	         sugarReserve = ((Double)path.evaluate(sugarPath, root,XPathConstants.NUMBER)).intValue();
+	         
+	         String teaPath = "/datas/stocks/tea";
+	         teaReserve = ((Double)path.evaluate(teaPath, root,XPathConstants.NUMBER)).intValue();
+	         
+	         String coffeePath = "/datas/stocks/coffee";
+	         coffeeReserve = ((Double)path.evaluate(coffeePath, root,XPathConstants.NUMBER)).intValue();
+	         
+	         String expressoPath = "/datas/stocks/sugar";
+	         expressoReserve = ((Double)path.evaluate(expressoPath, root,XPathConstants.NUMBER)).intValue();
+	         
+
+	      } catch (ParserConfigurationException e) {
+	         e.printStackTrace();
+	      } catch (SAXException e) {
+	         e.printStackTrace();
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	      } catch (XPathExpressionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+	      }
 		
 		setForeground(Color.WHITE);
 		setFont(new Font("Cantarell", Font.BOLD, 22));
