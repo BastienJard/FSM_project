@@ -201,12 +201,18 @@ public class DrinkFactoryMachine extends JFrame {
 	public void checkReserves() {
 		if(coffeeReserve<10) {
 			coffeeButton.setEnabled(false);
+		}else {
+			coffeeButton.setEnabled(true);
 		}
 		if(expressoReserve<10) {
 			expressoButton.setEnabled(false);
+		}else {
+			expressoButton.setEnabled(true);
 		}
 		if(teaReserve<10) {
 			teaButton.setEnabled(false);
+		}else {
+			teaButton.setEnabled(true);
 		}
 	}
 	
@@ -227,6 +233,13 @@ public class DrinkFactoryMachine extends JFrame {
 			default:
 				sugarReserve = sugarReserve - (controller.sugar*1);
 		}
+	}
+	
+	public void refundReserves() {
+		sugarReserve = 50;
+		coffeeReserve = 100;
+		teaReserve = 100;
+		expressoReserve = 100;
 	}
 	
 	public void prepareDrink() {
@@ -286,6 +299,7 @@ public class DrinkFactoryMachine extends JFrame {
 		drinkingMachineFSM.getUpdateSlider().subscribe(e -> this.updateSlider());
 		drinkingMachineFSM.getUpdateReserves().subscribe(e -> this.updateReserves());
 		drinkingMachineFSM.getCheckReserves().subscribe(e -> this.checkReserves());
+		drinkingMachineFSM.getRefundReserves().subscribe(e -> this.refundReserves());
 		drinkingMachineFSM.enter();
 		
 		//myFSM.getListeners().add(new DrinkFactoryMachineControlerInterface(this));
@@ -526,6 +540,12 @@ public class DrinkFactoryMachine extends JFrame {
 		addCupButton.setBackground(Color.DARK_GRAY);
 		addCupButton.setBounds(45, 336, 96, 25);
 		contentPane.add(addCupButton);
+		
+		JButton refundReservesButton = new JButton("Refund Reserves");
+		refundReservesButton.setForeground(Color.WHITE);
+		refundReservesButton.setBackground(Color.DARK_GRAY);
+		refundReservesButton.setBounds(20, 400, 150, 25);
+		contentPane.add(refundReservesButton);
 
 		myPicture = null;
 		try {
@@ -536,6 +556,7 @@ public class DrinkFactoryMachine extends JFrame {
 		buttonForPicture = new JButton(new ImageIcon(myPicture));
 		buttonForPicture.setBounds(203, 319, 230, 260);
 		contentPane.add(buttonForPicture);
+		
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.DARK_GRAY);
@@ -684,6 +705,12 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 		});
 		
+		refundReservesButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				drinkingMachineFSM.raiseRefundReservesButton();
+			}
+		});
 
 	}
 

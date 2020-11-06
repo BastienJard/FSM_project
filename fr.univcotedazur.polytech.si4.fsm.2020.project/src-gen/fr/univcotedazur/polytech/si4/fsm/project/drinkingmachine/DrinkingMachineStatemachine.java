@@ -106,6 +106,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		moneyButton = false;
 		confirmationMoney = false;
 		takeCup = false;
+		refundReservesButton = false;
 		timeEvents[0] = false;
 		timeEvents[1] = false;
 		timeEvents[2] = false;
@@ -168,7 +169,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 			
 			clearInEvents();
 			nextEvent();
-		} while ((((((((((((((cancelButton || drinkButton) || slider) || nFCButton) || drinkReady) || moneyButton) || confirmationMoney) || takeCup) || timeEvents[0]) || timeEvents[1]) || timeEvents[2]) || timeEvents[3]) || timeEvents[4]) || timeEvents[5]));
+		} while (((((((((((((((cancelButton || drinkButton) || slider) || nFCButton) || drinkReady) || moneyButton) || confirmationMoney) || takeCup) || refundReservesButton) || timeEvents[0]) || timeEvents[1]) || timeEvents[2]) || timeEvents[3]) || timeEvents[4]) || timeEvents[5]));
 		
 		isExecuting = false;
 	}
@@ -347,6 +348,21 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 				@Override
 				public void run() {
 					takeCup = true;
+				}
+			});
+			runCycle();
+		}
+	}
+	
+	private boolean refundReservesButton;
+	
+	
+	public void raiseRefundReservesButton() {
+		synchronized(DrinkingMachineStatemachine.this) {
+			inEventQueue.add(new Runnable() {
+				@Override
+				public void run() {
+					refundReservesButton = true;
 				}
 			});
 			runCycle();
@@ -591,6 +607,22 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	
 	public Observable<Void> getCheckReserves() {
 		return checkReservesObservable;
+	}
+	
+	private boolean refundReserves;
+	
+	
+	protected void raiseRefundReserves() {
+		synchronized(DrinkingMachineStatemachine.this) {
+			refundReserves = true;
+			refundReservesObservable.next(null);
+		}
+	}
+	
+	private Observable<Void> refundReservesObservable = new Observable<Void>();
+	
+	public Observable<Void> getRefundReserves() {
+		return refundReservesObservable;
 	}
 	
 	private boolean isThereBoisson;
@@ -1055,7 +1087,17 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 				enterSequence_main_region_Start_default();
 				react();
 			} else {
-				did_transition = false;
+				if (refundReservesButton) {
+					exitSequence_main_region_GestionCommande();
+					raiseDoReset();
+					
+					raiseRefundReserves();
+					
+					enterSequence_main_region_Start_default();
+					react();
+				} else {
+					did_transition = false;
+				}
 			}
 		}
 		if (did_transition==false) {

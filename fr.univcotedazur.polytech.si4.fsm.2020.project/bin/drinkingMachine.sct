@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
-  <sgraph:Statechart xmi:id="_KY_34AoEEeuzsqaUjh34MQ" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;in event cancelButton&#xA;in event drinkButton&#xA;in event slider&#xA;in event NFCButton&#xA;in event drinkReady&#xA;in event moneyButton&#xA;in event confirmationMoney&#xA;in event takeCup&#xA;&#xA;out event cleaningText&#xA;out event doReset&#xA;out event prepareDrink&#xA;out event waiting&#xA;out event updateSlider&#xA;out event updateDrink&#xA;out event  waitingDrink&#xA;out event readCard&#xA;out event increaseMoney&#xA;out event returnMoney&#xA;out event paymentNFC&#xA;out event waitingPayment&#xA;out event errorPayment&#xA;out event updateReserves&#xA;out event checkReserves&#xA;&#xA;var isThereBoisson: boolean =false&#xA;&#xA;&#xA;// Define events&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="drinkingMachine">
+  <sgraph:Statechart xmi:id="_KY_34AoEEeuzsqaUjh34MQ" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;in event cancelButton&#xA;in event drinkButton&#xA;in event slider&#xA;in event NFCButton&#xA;in event drinkReady&#xA;in event moneyButton&#xA;in event confirmationMoney&#xA;in event takeCup&#xA;in event refundReservesButton&#xA;&#xA;out event cleaningText&#xA;out event doReset&#xA;out event prepareDrink&#xA;out event waiting&#xA;out event updateSlider&#xA;out event updateDrink&#xA;out event  waitingDrink&#xA;out event readCard&#xA;out event increaseMoney&#xA;out event returnMoney&#xA;out event paymentNFC&#xA;out event waitingPayment&#xA;out event errorPayment&#xA;out event updateReserves&#xA;out event checkReserves&#xA;out event refundReserves&#xA;&#xA;var isThereBoisson: boolean =false&#xA;&#xA;&#xA;// Define events&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="drinkingMachine">
     <regions xmi:id="_KZEJUwoEEeuzsqaUjh34MQ" name="main region">
       <vertices xsi:type="sgraph:Entry" xmi:id="_KZMsMQoEEeuzsqaUjh34MQ">
         <outgoingTransitions xmi:id="_KZRksQoEEeuzsqaUjh34MQ" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_KZOhZAoEEeuzsqaUjh34MQ" name="Start" incomingTransitions="_KZRksQoEEeuzsqaUjh34MQ _3LsgEAoEEeuzsqaUjh34MQ _CAkX4AoFEeuzsqaUjh34MQ _1Wq6GQ-UEeu34_dgiymI_Q">
+      <vertices xsi:type="sgraph:State" xmi:id="_KZOhZAoEEeuzsqaUjh34MQ" name="Start" incomingTransitions="_KZRksQoEEeuzsqaUjh34MQ _3LsgEAoEEeuzsqaUjh34MQ _CAkX4AoFEeuzsqaUjh34MQ _1Wq6GQ-UEeu34_dgiymI_Q _qOZOQCAgEeuRRqBabqOhnA">
         <outgoingTransitions xmi:id="_Emw-EAoFEeuzsqaUjh34MQ" specification="after 3500ms/raise waiting;raise checkReserves;isThereBoisson=false" target="_7KpB4AoEEeuzsqaUjh34MQ"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_fh3IAAoEEeuzsqaUjh34MQ" name="WaitingTakeDrink" incomingTransitions="_17cZIAoEEeuzsqaUjh34MQ">
@@ -16,6 +16,7 @@
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_7KpB4AoEEeuzsqaUjh34MQ" specification="" name="GestionCommande" incomingTransitions="_Emw-EAoFEeuzsqaUjh34MQ">
         <outgoingTransitions xmi:id="_CAkX4AoFEeuzsqaUjh34MQ" specification="cancelButton/ raise doReset" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
+        <outgoingTransitions xmi:id="_qOZOQCAgEeuRRqBabqOhnA" specification="refundReservesButton/raise doReset; raise refundReserves" target="_KZOhZAoEEeuzsqaUjh34MQ"/>
         <regions xmi:id="_7gKl8AoEEeuzsqaUjh34MQ" name="chooseGestion">
           <vertices xsi:type="sgraph:State" xmi:id="_NEQu0AoFEeuzsqaUjh34MQ" specification="" name="Waiting" incomingTransitions="_O6kJIAoFEeuzsqaUjh34MQ _oa33cA7jEeuEG7dTszLj0w _8-mNZQ-XEeu34_dgiymI_Q">
             <outgoingTransitions xmi:id="_oa33cA7jEeuEG7dTszLj0w" specification="slider/ raise updateSlider" target="_NEQu0AoFEeuzsqaUjh34MQ"/>
@@ -616,6 +617,17 @@
       <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_ks_v4hH2Eeux-9Iro5AIgA" points="[6, 13, 6, 13]$[73, 13, 73, 13]$[73, 4, 73, 4]$[6, 4, 6, 4]"/>
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_ktF2gBH2Eeux-9Iro5AIgA" id="(0.922077922077922,0.5454545454545454)"/>
       <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_ktF2gRH2Eeux-9Iro5AIgA" id="(0.922077922077922,0.5454545454545454)"/>
+    </edges>
+    <edges xmi:id="_qOc4oCAgEeuRRqBabqOhnA" type="Transition" element="_qOZOQCAgEeuRRqBabqOhnA" source="_7Kpo8AoEEeuzsqaUjh34MQ" target="_KZPvgAoEEeuzsqaUjh34MQ">
+      <children xsi:type="notation:DecorationNode" xmi:id="_qOc4pCAgEeuRRqBabqOhnA" type="TransitionExpression">
+        <styles xsi:type="notation:ShapeStyle" xmi:id="_qOc4pSAgEeuRRqBabqOhnA"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_qOdfsCAgEeuRRqBabqOhnA" x="-13" y="10"/>
+      </children>
+      <styles xsi:type="notation:ConnectorStyle" xmi:id="_qOc4oSAgEeuRRqBabqOhnA" routing="Rectilinear" lineColor="4210752"/>
+      <styles xsi:type="notation:FontStyle" xmi:id="_qOc4oyAgEeuRRqBabqOhnA" fontName="Verdana"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_qOc4oiAgEeuRRqBabqOhnA" points="[0, 0, 699, 12]$[0, -60, 699, -48]$[-745, -60, -46, -48]$[-745, -36, -46, -24]"/>
+      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_qOet0CAgEeuRRqBabqOhnA" id="(0.43108233117483813,0.0)"/>
+      <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_qOet0SAgEeuRRqBabqOhnA" id="(0.9509803921568627,0.2926829268292683)"/>
     </edges>
   </notation:Diagram>
 </xmi:XMI>
