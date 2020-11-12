@@ -48,6 +48,8 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import fr.univcotedazur.polytech.si4.fsm.project.drinkingMachine.DrinkingMachineStatemachine;
@@ -93,14 +95,18 @@ public class DrinkFactoryMachine extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
 					DrinkFactoryMachine frame = new DrinkFactoryMachine();
 					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
 			}
+			
+		
 		});
+		
 	}
 	
 	public void saveFile() {
@@ -457,6 +463,7 @@ public class DrinkFactoryMachine extends JFrame {
 	         File fileXML = new File("src\\fr\\univcotedazur\\polytech\\si4\\fsm\\project\\data.xml");
 	         Document xml = builder.parse(fileXML);
 	         root = xml.getDocumentElement();
+	         xml.getDocumentElement().normalize();
 	         XPathFactory xpf = XPathFactory.newInstance();
 	         XPath path = xpf.newXPath();
 	         
@@ -471,6 +478,24 @@ public class DrinkFactoryMachine extends JFrame {
 	         
 	         String expressoPath = "/datas/stocks/expresso";
 	         expressoReserve = ((Double)path.evaluate(expressoPath, root,XPathConstants.NUMBER)).intValue();
+	         
+	         NodeList nList = xml.getElementsByTagName("customer");
+	         for(int i=0; i<nList.getLength(); i++) {
+	        	 Node customerNode = nList.item(i);
+	        	 Element customerElement = (Element) customerNode;
+	        	 Customer customer = new Customer();
+	        	 customer.setaverageCostOfDrinks(Double.parseDouble(customerElement.getElementsByTagName("averageCostOfDrinks").item(0).getTextContent()));
+	        	 customer.setNumberOfNFCPayment(Integer.parseInt(customerElement.getElementsByTagName("numberOfNFCPayement").item(0).getTextContent()));
+	        	 NodeList expenses = customerElement.getElementsByTagName("expenseItem");
+	        	 for(int j=0;j<expenses.getLength(); j++) {
+	        		 Node expense = expenses.item(i);
+	        		 if (expense.getNodeType() == Node.ELEMENT_NODE) {
+			        	 Element expenseElement = (Element) expense;
+			        	 customer.addExpense(Double.parseDouble(expense.getTextContent()));
+	        		 }
+	        	 }
+	        	 mapOfCustomer.put(Integer.parseInt(customerElement.getAttribute("id")),customer);
+	         }
 	         
 
 	      } catch (ParserConfigurationException e) {

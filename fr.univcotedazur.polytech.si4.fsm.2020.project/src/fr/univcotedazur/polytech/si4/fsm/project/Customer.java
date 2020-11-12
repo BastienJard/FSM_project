@@ -43,4 +43,16 @@ public class Customer {
 	ArrayList<Double> getListOfExpenses(){
 		return this.listOfExpenses;
 	}
+	
+	void setaverageCostOfDrinks(double averageCostOfDrinks) {
+		this.averageCostOfDrinks = averageCostOfDrinks;
+	}
+	
+	void setNumberOfNFCPayment(int numberOfNFCPayment) {
+		this.numberOfNFCPayement = numberOfNFCPayment;
+	}
+	
+	void addExpense(Double expense) {
+		this.listOfExpenses.add(expense);
+	}
 }
