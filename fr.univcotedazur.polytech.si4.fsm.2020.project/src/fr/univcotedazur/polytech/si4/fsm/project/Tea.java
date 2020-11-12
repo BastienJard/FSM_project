@@ -5,8 +5,8 @@ import javax.swing.JLabel;
 
 public class Tea extends Drink{
 
-	public Tea(String name, double price, JLabel messagesToUser, Boolean cupAdded) {
-		super(name, price, messagesToUser, cupAdded);
+	public Tea(String name, double price, JLabel messagesToUser, Boolean cupAdded, Boolean opt1, Boolean opt2, Boolean opt3) {
+		super(name, price, messagesToUser, cupAdded, opt1, opt2, opt3);
 	}
 	
 	@Override
@@ -27,8 +27,11 @@ public class Tea extends Drink{
 
 	@Override
 	public void doStep3() {
-		messagesToUser.setText("<html>Ajout du sucre<br>Remplissage du récipient");
-		
+		if(opt2) {
+			messagesToUser.setText("<html>Ajout du sirop d'érable<br>Remplissage du récipient");
+		}else {
+			messagesToUser.setText("<html>Ajout du sucre<br>Remplissage du récipient");
+		}
 	}
 	
 	@Override
@@ -39,8 +42,11 @@ public class Tea extends Drink{
 	
 	@Override
 	public void doStep5() {
-		messagesToUser.setText("<html>Retrait du sachet");
-		
+		if(opt1) {
+			messagesToUser.setText("<html>Retrait du sachet<br>Ajout d'un nuage de lait");
+		}else {
+			messagesToUser.setText("<html>Retrait du sachet");
+		}
 	}
 
 	@Override

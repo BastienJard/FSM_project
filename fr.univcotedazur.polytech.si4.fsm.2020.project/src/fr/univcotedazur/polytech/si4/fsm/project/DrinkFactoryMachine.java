@@ -19,6 +19,7 @@ import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -64,14 +65,14 @@ public class DrinkFactoryMachine extends JFrame {
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
-	private JLabel messagesToUser, drinkChooseLabel,moneyInsertedLabel, priceLabel, recipeLabel;
+	private JLabel messagesToUser, drinkChooseLabel,moneyInsertedLabel, priceLabel, recipeLabel, lblSugar;
 	private JSlider sugarSlider, sizeSlider, temperatureSlider;
 	protected DrinkingMachineStatemachine drinkingMachineFSM;
 	private RecipeMachineStatemachine recipeFSM;
 	protected FactoryController controller;
 	private Hashtable<Integer, JLabel> temperatureTable;
 	private BufferedImage myPicture;
-	private Boolean isNFCDone = false, isPaiementLiquideDone = false, cupAdded = false;
+	private Boolean isNFCDone = false, isPaiementLiquideDone = false, cupAdded = false, ready = false;
 	private JProgressBar progressBar;
 	private JButton buttonForPicture, coffeeButton, expressoButton, teaButton;
 	private int progression = 0;
@@ -80,6 +81,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private int expressoReserve = 100;
 	private int teaReserve = 100;
 	private JFormattedTextField NFCField;
+	private JCheckBox option, option2, option3;
 	private HashMap<Object, Customer> mapOfCustomer = new HashMap<>();
 	
 	/**
@@ -258,6 +260,7 @@ public class DrinkFactoryMachine extends JFrame {
 		drinkChooseLabel.setText("Boisson :");
 		moneyInsertedLabel.setText("<html>Monnaie : " + controller.insertedCoin + " €");
 		priceLabel.setText("Prix : " + 0.0 + " €");
+		ready = true;
 	}
 	
 	public void waitingPayment() {
@@ -287,6 +290,8 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setValue(2);
 		controller.setBoisson(null);
 		controller.insertedCoin = 0.0;
+		ready=false;
+		lblSugar.setText("Sugar");
 		try {
 			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
 		} catch (IOException e) {
@@ -296,6 +301,12 @@ public class DrinkFactoryMachine extends JFrame {
 		progressBar.setValue(0);
 		progression =0;
 		NFCField.setValue(null);
+		option.setVisible(false);
+		option.setSelected(false);
+		option2.setVisible(false);
+		option2.setSelected(false);
+		option3.setVisible(false);
+		option3.setSelected(false);
 	}
 	
 	
@@ -317,6 +328,8 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setValue(2);
 		controller.setBoisson(null);
 		controller.insertedCoin = 0.0;
+		ready = false;
+		lblSugar.setText("Sugar");
 		
 		drinkChooseLabel.setText("");
 		moneyInsertedLabel.setText("");
@@ -328,6 +341,12 @@ public class DrinkFactoryMachine extends JFrame {
 			e.printStackTrace();
 		}
 		NFCField.setValue(null);
+		option.setVisible(false);
+		option.setSelected(false);
+		option2.setVisible(false);
+		option2.setSelected(false);
+		option3.setVisible(false);
+		option3.setSelected(false);
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
 	}
 	
@@ -488,7 +507,7 @@ public class DrinkFactoryMachine extends JFrame {
 	        	 customer.setNumberOfNFCPayment(Integer.parseInt(customerElement.getElementsByTagName("numberOfNFCPayement").item(0).getTextContent()));
 	        	 NodeList expenses = customerElement.getElementsByTagName("expenseItem");
 	        	 for(int j=0;j<expenses.getLength(); j++) {
-	        		 Node expense = expenses.item(i);
+	        		 Node expense = expenses.item(j);
 	        		 if (expense.getNodeType() == Node.ELEMENT_NODE) {
 			        	 Element expenseElement = (Element) expense;
 			        	 customer.addExpense(Double.parseDouble(expense.getTextContent()));
@@ -598,6 +617,27 @@ public class DrinkFactoryMachine extends JFrame {
 		soupButton.setBackground(Color.DARK_GRAY);
 		soupButton.setBounds(12, 145, 96, 25);
 		contentPane.add(soupButton);
+		
+		option = new JCheckBox("Option (+0.60€)");
+		option.setForeground(Color.WHITE);
+		option.setBackground(Color.DARK_GRAY);
+		option.setBounds(108, 180, 190, 25);
+		option.setVisible(false);
+		contentPane.add(option);
+		
+		option2 = new JCheckBox("Option2 (+0.60€)");
+		option2.setForeground(Color.WHITE);
+		option2.setBackground(Color.DARK_GRAY);
+		option2.setBounds(108, 200, 190, 25);
+		option2.setVisible(false);
+		contentPane.add(option2);
+		
+		option3 = new JCheckBox("Option3 (+0.60€)");
+		option3.setForeground(Color.WHITE);
+		option3.setBackground(Color.DARK_GRAY);
+		option3.setBounds(108, 220, 190, 25);
+		option3.setVisible(false);
+		contentPane.add(option3);
 
 		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
@@ -662,11 +702,11 @@ public class DrinkFactoryMachine extends JFrame {
 		icedTeaButton.setBounds(12, 182, 96, 25);
 		contentPane.add(icedTeaButton);
 
-		JLabel lblSugar = new JLabel("Sugar");
+		lblSugar = new JLabel("Sugar");
 		lblSugar.setForeground(Color.WHITE);
 		lblSugar.setBackground(Color.DARK_GRAY);
 		lblSugar.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSugar.setBounds(380, 34, 44, 15);
+		lblSugar.setBounds(350, 34, 96, 15);
 		contentPane.add(lblSugar);
 
 		JLabel lblSize = new JLabel("Size");
@@ -796,15 +836,78 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 		});
 		
+		option.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				if(controller.boisson!=null) {
+					if(option.isSelected()) {
+					controller.boisson.opt1 = true;
+					controller.boisson.price += (double)0.1;
+				}else {
+					controller.boisson.opt1 = false;
+					controller.boisson.price -= (double)0.1;
+				}
+				BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
+				bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+				priceLabel.setText("Prix : " + bd + " €");
+				}
+			}
+		});
 		
+		option2.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				if(controller.boisson!=null) {
+					if(option2.isSelected()) {
+					controller.boisson.opt2 = true;
+					controller.boisson.price += (double)0.1;
+					lblSugar.setText("Sirop d'érable");
+				}else {
+					controller.boisson.opt2 = false;
+					controller.boisson.price -= (double)0.1;
+					lblSugar.setText("Sucre");
+				}
+				BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
+				bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+				priceLabel.setText("Prix : " + bd + " €");
+				}
+			}
+		});
+		
+		option3.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				if(controller.boisson!=null) {
+					if(option3.isSelected()) {
+					controller.boisson.opt3 = true;
+					controller.boisson.price += (double)0.6;
+				}else {
+					controller.boisson.opt3 = false;
+					controller.boisson.price -= (double)0.6;
+				}
+				BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
+				bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+				priceLabel.setText("Prix : " + bd + " €");
+				}
+			}
+		});
 		
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Coffee("coffee", 0.35, recipeLabel, cupAdded);
+				controller.boisson = new Coffee("coffee", 0.35, recipeLabel, cupAdded, false, false, false);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.25);
 				}
+				if(ready) {
+					option.setText("Nuage de lait (+0.10€)");
+					option.setVisible(true);
+					option2.setText("Sirop d'érable (+0.10€)");
+					option2.setVisible(true);
+					option3.setText("Glace vanillée mixée (+0.60€)");
+					option3.setVisible(true);
+				}
+				
 				drinkingMachineFSM.raiseDrinkButton();
 			}
 		});
@@ -812,11 +915,20 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Expresso("expresso", 0.50, recipeLabel, cupAdded);
+				controller.boisson = new Expresso("expresso", 0.50, recipeLabel, cupAdded, false, false, false);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.40);
 				}
-				drinkingMachineFSM.raiseDrinkButton();
+				if(ready) {
+					option.setText("Nuage de lait (+0.10€)");
+					option.setVisible(true);
+					option2.setText("Sirop d'érable (+0.10€)");
+					option2.setVisible(true);
+					option3.setText("Glace vanillée mixée (+0.60€)");
+					option3.setVisible(true);
+					drinkingMachineFSM.raiseDrinkButton();
+				}
+				
 			}
 		});
 		
@@ -824,11 +936,19 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Tea("tea", 0.40, recipeLabel, cupAdded);
+				controller.boisson = new Tea("tea", 0.40, recipeLabel, cupAdded, false, false, false);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.30);
 				}
-				drinkingMachineFSM.raiseDrinkButton();
+				if(ready) {
+					option.setText("Nuage de lait (+0.10€)");
+					option.setVisible(true);
+					option2.setText("Sirop d'érable (+0.10€)");
+					option2.setVisible(true);
+					option3.setVisible(false);
+					drinkingMachineFSM.raiseDrinkButton();
+				}
+				
 			}
 		});
 		

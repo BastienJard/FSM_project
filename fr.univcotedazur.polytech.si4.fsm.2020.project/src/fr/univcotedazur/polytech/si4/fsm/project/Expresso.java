@@ -4,8 +4,8 @@ import javax.swing.JLabel;
 
 public class Expresso extends Drink{
 	
-	public Expresso(String name, double price, JLabel messagesToUser, Boolean cupAdded) {
-		super(name, price, messagesToUser, cupAdded);
+	public Expresso(String name, double price, JLabel messagesToUser, Boolean cupAdded, Boolean opt1, Boolean opt2, Boolean opt3) {
+		super(name, price, messagesToUser, cupAdded, opt1, opt2, opt3);
 	}
 	
 
@@ -28,8 +28,23 @@ public class Expresso extends Drink{
 
 	@Override
 	public void doStep3() {
-		messagesToUser.setText("<html>Ajout du sucre, remplissage du récipient");
-		
+		if(opt1 && !opt3 && !opt2) {
+			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre<br>Ajout d'un nuage de lait");
+		}else if(opt1 && opt3 && !opt2){
+			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre<br>Ajout d'un nuage de lait<br>Ajout de la glace vanille mixée");
+		}else if(opt1 && opt3 && opt2){
+			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sirop d'érable<br>Ajout d'un nuage de lait<br>Ajout de la glace vanille mixée");
+		}else if(opt1 && !opt3 && opt2){
+			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sirop d'érable<br>Ajout d'un nuage de lait");
+		}else if(!opt1 && opt3 && !opt2){
+			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre<br>Ajout de la glace vanille mixée");
+		}else if(!opt1 && !opt3 && opt2){
+			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sirop d'érable");
+		}else if(!opt1 && opt3 && opt2){
+			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sirop d'érable<br>Ajout de la glace vanille mixée");
+		}else {
+			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre");
+		}
 	}
 
 	@Override

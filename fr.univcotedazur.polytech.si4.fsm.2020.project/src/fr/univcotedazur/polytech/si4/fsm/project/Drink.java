@@ -8,13 +8,16 @@ public abstract class Drink {
 	protected double price;
 	protected JLabel messagesToUser;
 	protected int totalTime, timeStep1, timeStep2, timeStep3, timeStep4, timeStep5;
-	protected Boolean cupAdded;
+	protected Boolean cupAdded, opt1, opt2, opt3;
 	
-	public Drink(String name, double price, JLabel messagesToUser, Boolean cupAdded) {
+	public Drink(String name, double price, JLabel messagesToUser, Boolean cupAdded, Boolean opt1, Boolean opt2, Boolean opt3) {
 		this.name = name;
 		this.price = price;
 		this.messagesToUser = messagesToUser;
 		this.cupAdded = cupAdded;
+		this.opt1=opt1;
+		this.opt2=opt2;
+		this.opt3=opt3;
 	}
 	
 	public String getName() {
