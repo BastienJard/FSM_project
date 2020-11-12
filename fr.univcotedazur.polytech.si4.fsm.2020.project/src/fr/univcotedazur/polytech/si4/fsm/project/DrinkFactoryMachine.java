@@ -74,7 +74,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private BufferedImage myPicture;
 	private Boolean isNFCDone = false, isPaiementLiquideDone = false, cupAdded = false, ready = false;
 	private JProgressBar progressBar;
-	private JButton buttonForPicture, coffeeButton, expressoButton, teaButton;
+	private JButton buttonForPicture, coffeeButton, expressoButton, teaButton, nfcBiiiipButton;
 	private int progression = 0;
 	private int sugarReserve = 50;
 	private int coffeeReserve = 100;
@@ -301,6 +301,7 @@ public class DrinkFactoryMachine extends JFrame {
 		progressBar.setValue(0);
 		progression =0;
 		NFCField.setValue(null);
+		nfcBiiiipButton.setEnabled(false);
 		option.setVisible(false);
 		option.setSelected(false);
 		option2.setVisible(false);
@@ -341,6 +342,7 @@ public class DrinkFactoryMachine extends JFrame {
 			e.printStackTrace();
 		}
 		NFCField.setValue(null);
+		nfcBiiiipButton.setEnabled(false);
 		option.setVisible(false);
 		option.setSelected(false);
 		option2.setVisible(false);
@@ -749,9 +751,10 @@ public class DrinkFactoryMachine extends JFrame {
 		panel_1.setBounds(538, 145, 96, 40);
 		contentPane.add(panel_1);
 
-		JButton nfcBiiiipButton = new JButton("biiip");
+		nfcBiiiipButton = new JButton("biiip");
 		nfcBiiiipButton.setForeground(Color.WHITE);
 		nfcBiiiipButton.setBackground(Color.DARK_GRAY);
+		nfcBiiiipButton.setEnabled(false);
 		panel_1.add(nfcBiiiipButton);
 
 		JLabel lblNfc = new JLabel("NFC");
@@ -984,6 +987,15 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
 				drinkingMachineFSM.raiseNFCButton();
+			}
+		});
+		
+		NFCField.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				if(NFCField.getValue()!=null) {
+					nfcBiiiipButton.setEnabled(true);
+				}
 			}
 		});
 		
