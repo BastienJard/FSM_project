@@ -659,6 +659,7 @@ public class DrinkFactoryMachine extends JFrame {
 		soupButton.setBackground(Color.DARK_GRAY);
 		soupButton.setBounds(12, 145, 96, 25);
 		contentPane.add(soupButton);
+		soupButton.setEnabled(false);
 		
 		option1 = new JCheckBox("Option (+0.60€)");
 		option1.setForeground(Color.WHITE);
@@ -743,6 +744,7 @@ public class DrinkFactoryMachine extends JFrame {
 		icedTeaButton.setBackground(Color.DARK_GRAY);
 		icedTeaButton.setBounds(12, 182, 96, 25);
 		contentPane.add(icedTeaButton);
+		icedTeaButton.setEnabled(false);
 
 		lblSugar = new JLabel("Sugar");
 		lblSugar.setForeground(Color.WHITE);

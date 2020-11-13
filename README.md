@@ -9,9 +9,10 @@
 ## Ce qui reste à faire :
 - Amélioration de l'ice tea avec la recette et la modificatio des sliders. 
 - Amélioration de la soupe avec la recette et les sliders. 
+- Modification de la FSM pour ajouter les options dedant de la même façon que les sliders, avec la méthode qui va avec et le modification des Listeners et de updateDrink().
+- Modification de la classe drink pour supprimer les bouléens des options et modifier les méthodes utilisant des options en rajoutant en paramètre les bouléens présents dans la classe factoryController.
+- Rajouter dans la FSM les actions pour addCup, passage du booléen dans la classe factory et modification du calcul du prix.
+- Rajouter dans la FSM le contrôle pour le boutton refund.  
 
-## Amélioration à proposer :
-- Ajout de la gestion des stocks ( permettre une vérification au moment des commandes, mise à niveau des stocks).
 
-## Refactor à faire:
-  - Passage du code français/anglais  en tout anglais. 
+
