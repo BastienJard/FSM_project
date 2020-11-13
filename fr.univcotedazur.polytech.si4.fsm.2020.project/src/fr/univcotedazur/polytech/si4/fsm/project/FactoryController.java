@@ -4,11 +4,12 @@ package fr.univcotedazur.polytech.si4.fsm.project;
 public class FactoryController {
 
 	protected Drink boisson;
-	protected double insertedCoin;
+	protected double insertedCoin, price;
 	protected int sugar =1;
 	protected int size =1;
 	protected int temperature =2 ;
 	protected int timeValue;
+	protected boolean option1, option2, option3;
 
 	
 	public void setBoisson(Drink boisson) {
@@ -35,6 +36,10 @@ public class FactoryController {
 	
 	public void increaseCoin(double coin) {		
 		this.insertedCoin += coin;
+	}
+	
+	public void calculatePrice() {
+		price = boisson.price  + (option1 ? 0.1 : 0) + (option2 ? 0.1 : 0) + (option3 ? 0.6 : 0);
 	}
 
 }

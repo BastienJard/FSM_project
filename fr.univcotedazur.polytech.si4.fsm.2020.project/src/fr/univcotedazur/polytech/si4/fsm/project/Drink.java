@@ -9,6 +9,7 @@ public abstract class Drink {
 	protected JLabel messagesToUser;
 	protected int totalTime, timeStep1, timeStep2, timeStep3, timeStep4, timeStep5;
 	protected Boolean cupAdded, opt1, opt2, opt3;
+	protected String option1, option2,option3;
 	
 	public Drink(String name, double price, JLabel messagesToUser, Boolean cupAdded, Boolean opt1, Boolean opt2, Boolean opt3) {
 		this.name = name;

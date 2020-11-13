@@ -7,6 +7,9 @@ public class Tea extends Drink{
 
 	public Tea(String name, double price, JLabel messagesToUser, Boolean cupAdded, Boolean opt1, Boolean opt2, Boolean opt3) {
 		super(name, price, messagesToUser, cupAdded, opt1, opt2, opt3);
+		super.option1 = "Nuage de lait (+0.10€)";
+		super.option2 = "Sirop d'érable (+0.10€)";
+		super.option3  = "";
 	}
 	
 	@Override

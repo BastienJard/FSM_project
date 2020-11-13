@@ -15,6 +15,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		MAIN_REGION_PREPAREDRINK,
 		MAIN_REGION_GESTIONCOMMANDE,
 		MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_WAITING,
+		MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE,
 		MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET,
 		MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT,
 		MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTNFC,
@@ -141,6 +142,9 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 				case MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_WAITING:
 					main_region_GestionCommande_chooseGestion_Waiting_react(true);
 					break;
+				case MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE:
+					main_region_GestionCommande_chooseGestion_FirstChoose_react(true);
+					break;
 				case MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET:
 					main_region_GestionCommande_resetTimer_reset_react(true);
 					break;
@@ -197,6 +201,8 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 					MAIN_REGION_GESTIONCOMMANDE.ordinal()&& stateVector[0].ordinal() <= State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTMONEY.ordinal();
 		case MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_WAITING:
 			return stateVector[0] == State.MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_WAITING;
+		case MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE:
+			return stateVector[0] == State.MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE;
 		case MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET:
 			return stateVector[1] == State.MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET;
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT:
@@ -625,6 +631,22 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		return refundReservesObservable;
 	}
 	
+	private boolean firstUpdateDrink;
+	
+	
+	protected void raiseFirstUpdateDrink() {
+		synchronized(DrinkingMachineStatemachine.this) {
+			firstUpdateDrink = true;
+			firstUpdateDrinkObservable.next(null);
+		}
+	}
+	
+	private Observable<Void> firstUpdateDrinkObservable = new Observable<Void>();
+	
+	public Observable<Void> getFirstUpdateDrink() {
+		return firstUpdateDrinkObservable;
+	}
+	
 	private boolean isThereBoisson;
 	
 	public synchronized boolean getIsThereBoisson() {
@@ -737,6 +759,12 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		stateVector[0] = State.MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_WAITING;
 	}
 	
+	/* 'default' enter sequence for state FirstChoose */
+	private void enterSequence_main_region_GestionCommande_chooseGestion_FirstChoose_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE;
+	}
+	
 	/* 'default' enter sequence for state reset */
 	private void enterSequence_main_region_GestionCommande_resetTimer_reset_default() {
 		entryAction_main_region_GestionCommande_resetTimer_reset();
@@ -837,6 +865,12 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		stateVector[0] = State.$NULLSTATE$;
 	}
 	
+	/* Default exit sequence for state FirstChoose */
+	private void exitSequence_main_region_GestionCommande_chooseGestion_FirstChoose() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NULLSTATE$;
+	}
+	
 	/* Default exit sequence for state reset */
 	private void exitSequence_main_region_GestionCommande_resetTimer_reset() {
 		nextStateIndex = 1;
@@ -904,6 +938,9 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		case MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_WAITING:
 			exitSequence_main_region_GestionCommande_chooseGestion_Waiting();
 			break;
+		case MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE:
+			exitSequence_main_region_GestionCommande_chooseGestion_FirstChoose();
+			break;
 		default:
 			break;
 		}
@@ -945,6 +982,9 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		switch (stateVector[0]) {
 		case MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_WAITING:
 			exitSequence_main_region_GestionCommande_chooseGestion_Waiting();
+			break;
+		case MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE:
+			exitSequence_main_region_GestionCommande_chooseGestion_FirstChoose();
 			break;
 		default:
 			break;
@@ -1096,7 +1136,15 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 					enterSequence_main_region_Start_default();
 					react();
 				} else {
-					did_transition = false;
+					if (slider) {
+						exitSequence_main_region_GestionCommande();
+						raiseUpdateSlider();
+						
+						enterSequence_main_region_GestionCommande_default();
+						react();
+					} else {
+						did_transition = false;
+					}
 				}
 			}
 		}
@@ -1110,22 +1158,31 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (slider) {
+			if (drinkButton) {
 				exitSequence_main_region_GestionCommande_chooseGestion_Waiting();
-				raiseUpdateSlider();
+				raiseFirstUpdateDrink();
 				
-				enterSequence_main_region_GestionCommande_chooseGestion_Waiting_default();
+				setIsThereBoisson(true);
+				
+				enterSequence_main_region_GestionCommande_chooseGestion_FirstChoose_default();
 			} else {
-				if (drinkButton) {
-					exitSequence_main_region_GestionCommande_chooseGestion_Waiting();
-					raiseUpdateDrink();
-					
-					setIsThereBoisson(true);
-					
-					enterSequence_main_region_GestionCommande_chooseGestion_Waiting_default();
-				} else {
-					did_transition = false;
-				}
+				did_transition = false;
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_GestionCommande_chooseGestion_FirstChoose_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (drinkButton) {
+				exitSequence_main_region_GestionCommande_chooseGestion_FirstChoose();
+				raiseUpdateDrink();
+				
+				enterSequence_main_region_GestionCommande_chooseGestion_FirstChoose_default();
+			} else {
+				did_transition = false;
 			}
 		}
 		return did_transition;
