@@ -9,7 +9,7 @@ public abstract class Drink {
 	protected JLabel messagesToUser;
 	protected int totalTime, timeStep1, timeStep2, timeStep3, timeStep4, timeStep5;
 	protected boolean cupAdded;
-	protected String option1, option2,option3;
+	protected String option1, option2,option3, textToPrint;
 	
 	public Drink(String name, double price, JLabel messagesToUser, boolean cupAdded) {
 		this.name = name;
@@ -41,6 +41,9 @@ public abstract class Drink {
 	public void doStep4() {}
 	public void doStep5(boolean opt1, boolean opt2, boolean opt3) {}
 	public abstract void calculateTime(int size, int sugar, int temp);
+	public void addOption1() {}
+	public void addOption2() {}
+	public void addOption3() {}
 
 	public void setPrice(double d) {
 		this.price = d;

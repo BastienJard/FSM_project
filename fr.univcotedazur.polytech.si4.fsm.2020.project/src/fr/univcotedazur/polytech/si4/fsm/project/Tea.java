@@ -10,46 +10,50 @@ public class Tea extends Drink{
 		super.option1 = "Nuage de lait (+0.10€)";
 		super.option2 = "Sirop d'érable (+0.10€)";
 		super.option3  = "";
+		super.textToPrint = "<html>Récupération et positionnement<br>d’un sachet<br>Démarrage du chauffage de l’eau";
 	}
 	
 	@Override
 	public void doStep1() {
-		messagesToUser.setText("<html>Récupération et positionnement<br>d’un sachet<br>Démarrage du chauffage de l’eau");
+		messagesToUser.setText(super.textToPrint);
+		super.textToPrint = "<html>Chauffage de l'eau";
 		
 	}
 
 	@Override
 	public void doStep2() {
-		if(cupAdded) {
-			messagesToUser.setText("<html>Chauffage de l'eau");
-		}else {
-			messagesToUser.setText("<html>Chauffage de l'eau<br>Positionnement du gobelet");
+		if(!cupAdded) {
+			super.textToPrint += "<br>Positionnement du gobelet";
 		}
-		
+		messagesToUser.setText(super.textToPrint);
+		super.textToPrint = "<html>Remplissage du récipient";
 	}
 
 	@Override
 	public void doStep3(boolean opt1, boolean opt2, boolean opt3) {
-		if(opt2) {
-			messagesToUser.setText("<html>Ajout du sirop d'érable<br>Remplissage du récipient");
-		}else {
-			messagesToUser.setText("<html>Ajout du sucre<br>Remplissage du récipient");
-		}
+		messagesToUser.setText(super.textToPrint);
+		super.textToPrint = "<html>Attente de l'infusion";
+	}
+	
+	@Override
+	public void addOption3() {
+		super.textToPrint+= "<br>Ajout du sirop d'érable";
 	}
 	
 	@Override
 	public void doStep4() {
-		messagesToUser.setText("<html>Attente de l'infusion");
+		messagesToUser.setText(super.textToPrint);
+		super.textToPrint = "<html>Retrait du sachet";
 		
+	}
+	
+	public void addOption1() {
+		super.textToPrint+= "<br>Ajout d'un nuage de lait";
 	}
 	
 	@Override
 	public void doStep5(boolean opt1, boolean opt2, boolean opt3) {
-		if(opt1) {
-			messagesToUser.setText("<html>Retrait du sachet<br>Ajout d'un nuage de lait");
-		}else {
-			messagesToUser.setText("<html>Retrait du sachet");
-		}
+		messagesToUser.setText(super.textToPrint);
 	}
 
 	@Override

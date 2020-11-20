@@ -17,6 +17,9 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		MAIN_REGION_PREPAREDRINK__REGION0_STEP3,
 		MAIN_REGION_PREPAREDRINK__REGION0_STEP4,
 		MAIN_REGION_PREPAREDRINK__REGION0_STAPE5,
+		MAIN_REGION_PREPAREDRINK__REGION0_OPTION1,
+		MAIN_REGION_PREPAREDRINK__REGION0_OPTION2,
+		MAIN_REGION_PREPAREDRINK__REGION0_OPTION3,
 		MAIN_REGION_PREPAREDRINK__REGION1_INCREASEPROGRESSBAR,
 		$NULLSTATE$
 	};
@@ -27,7 +30,7 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 	
 	private ITimerService timerService;
 	
-	private final boolean[] timeEvents = new boolean[6];
+	private final boolean[] timeEvents = new boolean[7];
 	
 	private BlockingQueue<Runnable> inEventQueue = new LinkedBlockingQueue<Runnable>();
 	private boolean isExecuting;
@@ -61,6 +64,12 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		setTimeStep4(0);
 		
 		setTimeStep5(0);
+		
+		setOption1(false);
+		
+		setOption2(false);
+		
+		setOption3(false);
 		
 		isExecuting = false;
 	}
@@ -112,6 +121,7 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		timeEvents[3] = false;
 		timeEvents[4] = false;
 		timeEvents[5] = false;
+		timeEvents[6] = false;
 	}
 	
 	private void runCycle() {
@@ -146,6 +156,15 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 				case MAIN_REGION_PREPAREDRINK__REGION0_STAPE5:
 					main_region_PrepareDrink__region0_Stape5_react(true);
 					break;
+				case MAIN_REGION_PREPAREDRINK__REGION0_OPTION1:
+					main_region_PrepareDrink__region0_Option1_react(true);
+					break;
+				case MAIN_REGION_PREPAREDRINK__REGION0_OPTION2:
+					main_region_PrepareDrink__region0_Option2_react(true);
+					break;
+				case MAIN_REGION_PREPAREDRINK__REGION0_OPTION3:
+					main_region_PrepareDrink__region0_Option3_react(true);
+					break;
 				case MAIN_REGION_PREPAREDRINK__REGION1_INCREASEPROGRESSBAR:
 					main_region_PrepareDrink__region1_IncreaseProgressBar_react(true);
 					break;
@@ -156,7 +175,7 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 			
 			clearInEvents();
 			nextEvent();
-		} while ((((((((beginRecipe || next) || timeEvents[0]) || timeEvents[1]) || timeEvents[2]) || timeEvents[3]) || timeEvents[4]) || timeEvents[5]));
+		} while (((((((((beginRecipe || next) || timeEvents[0]) || timeEvents[1]) || timeEvents[2]) || timeEvents[3]) || timeEvents[4]) || timeEvents[5]) || timeEvents[6]));
 		
 		isExecuting = false;
 	}
@@ -188,6 +207,12 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 			return stateVector[0] == State.MAIN_REGION_PREPAREDRINK__REGION0_STEP4;
 		case MAIN_REGION_PREPAREDRINK__REGION0_STAPE5:
 			return stateVector[0] == State.MAIN_REGION_PREPAREDRINK__REGION0_STAPE5;
+		case MAIN_REGION_PREPAREDRINK__REGION0_OPTION1:
+			return stateVector[0] == State.MAIN_REGION_PREPAREDRINK__REGION0_OPTION1;
+		case MAIN_REGION_PREPAREDRINK__REGION0_OPTION2:
+			return stateVector[0] == State.MAIN_REGION_PREPAREDRINK__REGION0_OPTION2;
+		case MAIN_REGION_PREPAREDRINK__REGION0_OPTION3:
+			return stateVector[0] == State.MAIN_REGION_PREPAREDRINK__REGION0_OPTION3;
 		case MAIN_REGION_PREPAREDRINK__REGION1_INCREASEPROGRESSBAR:
 			return stateVector[1] == State.MAIN_REGION_PREPAREDRINK__REGION1_INCREASEPROGRESSBAR;
 		default:
@@ -355,6 +380,54 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		return increaseProgressBarObservable;
 	}
 	
+	private boolean addOption1;
+	
+	
+	protected void raiseAddOption1() {
+		synchronized(RecipeMachineStatemachine.this) {
+			addOption1 = true;
+			addOption1Observable.next(null);
+		}
+	}
+	
+	private Observable<Void> addOption1Observable = new Observable<Void>();
+	
+	public Observable<Void> getAddOption1() {
+		return addOption1Observable;
+	}
+	
+	private boolean addOption2;
+	
+	
+	protected void raiseAddOption2() {
+		synchronized(RecipeMachineStatemachine.this) {
+			addOption2 = true;
+			addOption2Observable.next(null);
+		}
+	}
+	
+	private Observable<Void> addOption2Observable = new Observable<Void>();
+	
+	public Observable<Void> getAddOption2() {
+		return addOption2Observable;
+	}
+	
+	private boolean addOption3;
+	
+	
+	protected void raiseAddOption3() {
+		synchronized(RecipeMachineStatemachine.this) {
+			addOption3 = true;
+			addOption3Observable.next(null);
+		}
+	}
+	
+	private Observable<Void> addOption3Observable = new Observable<Void>();
+	
+	public Observable<Void> getAddOption3() {
+		return addOption3Observable;
+	}
+	
 	private long increaseTime;
 	
 	public synchronized long getIncreaseTime() {
@@ -439,6 +512,48 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		}
 	}
 	
+	private boolean option1;
+	
+	public synchronized boolean getOption1() {
+		synchronized(RecipeMachineStatemachine.this) {
+			return option1;
+		}
+	}
+	
+	public void setOption1(boolean value) {
+		synchronized(RecipeMachineStatemachine.this) {
+			this.option1 = value;
+		}
+	}
+	
+	private boolean option2;
+	
+	public synchronized boolean getOption2() {
+		synchronized(RecipeMachineStatemachine.this) {
+			return option2;
+		}
+	}
+	
+	public void setOption2(boolean value) {
+		synchronized(RecipeMachineStatemachine.this) {
+			this.option2 = value;
+		}
+	}
+	
+	private boolean option3;
+	
+	public synchronized boolean getOption3() {
+		synchronized(RecipeMachineStatemachine.this) {
+			return option3;
+		}
+	}
+	
+	public void setOption3(boolean value) {
+		synchronized(RecipeMachineStatemachine.this) {
+			this.option3 = value;
+		}
+	}
+	
 	/* Entry action for state 'Step1'. */
 	private void entryAction_main_region_PrepareDrink__region0_Step1() {
 		timerService.setTimer(this, 0, getTimeStep1(), false);
@@ -453,15 +568,10 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		raiseStep2();
 	}
 	
-	/* Entry action for state 'Step3'. */
-	private void entryAction_main_region_PrepareDrink__region0_Step3() {
-		timerService.setTimer(this, 2, getTimeStep3(), false);
-		
-		raiseStep3();
-	}
-	
 	/* Entry action for state 'Step4'. */
 	private void entryAction_main_region_PrepareDrink__region0_Step4() {
+		timerService.setTimer(this, 2, getTimeStep4(), false);
+		
 		timerService.setTimer(this, 3, getTimeStep4(), false);
 		
 		raiseStep4();
@@ -474,9 +584,16 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		raiseStep5();
 	}
 	
+	/* Entry action for state 'Option3'. */
+	private void entryAction_main_region_PrepareDrink__region0_Option3() {
+		timerService.setTimer(this, 5, getTimeStep3(), false);
+		
+		raiseStep3();
+	}
+	
 	/* Entry action for state 'IncreaseProgressBar'. */
 	private void entryAction_main_region_PrepareDrink__region1_IncreaseProgressBar() {
-		timerService.setTimer(this, 5, getIncreaseTime(), true);
+		timerService.setTimer(this, 6, getIncreaseTime(), true);
 	}
 	
 	/* Exit action for state 'Step1'. */
@@ -489,13 +606,10 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		timerService.unsetTimer(this, 1);
 	}
 	
-	/* Exit action for state 'Step3'. */
-	private void exitAction_main_region_PrepareDrink__region0_Step3() {
-		timerService.unsetTimer(this, 2);
-	}
-	
 	/* Exit action for state 'Step4'. */
 	private void exitAction_main_region_PrepareDrink__region0_Step4() {
+		timerService.unsetTimer(this, 2);
+		
 		timerService.unsetTimer(this, 3);
 	}
 	
@@ -504,9 +618,14 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		timerService.unsetTimer(this, 4);
 	}
 	
+	/* Exit action for state 'Option3'. */
+	private void exitAction_main_region_PrepareDrink__region0_Option3() {
+		timerService.unsetTimer(this, 5);
+	}
+	
 	/* Exit action for state 'IncreaseProgressBar'. */
 	private void exitAction_main_region_PrepareDrink__region1_IncreaseProgressBar() {
-		timerService.unsetTimer(this, 5);
+		timerService.unsetTimer(this, 6);
 	}
 	
 	/* 'default' enter sequence for state beginningRecipe */
@@ -537,7 +656,6 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 	
 	/* 'default' enter sequence for state Step3 */
 	private void enterSequence_main_region_PrepareDrink__region0_Step3_default() {
-		entryAction_main_region_PrepareDrink__region0_Step3();
 		nextStateIndex = 0;
 		stateVector[0] = State.MAIN_REGION_PREPAREDRINK__REGION0_STEP3;
 	}
@@ -554,6 +672,25 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		entryAction_main_region_PrepareDrink__region0_Stape5();
 		nextStateIndex = 0;
 		stateVector[0] = State.MAIN_REGION_PREPAREDRINK__REGION0_STAPE5;
+	}
+	
+	/* 'default' enter sequence for state Option1 */
+	private void enterSequence_main_region_PrepareDrink__region0_Option1_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.MAIN_REGION_PREPAREDRINK__REGION0_OPTION1;
+	}
+	
+	/* 'default' enter sequence for state Option2 */
+	private void enterSequence_main_region_PrepareDrink__region0_Option2_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.MAIN_REGION_PREPAREDRINK__REGION0_OPTION2;
+	}
+	
+	/* 'default' enter sequence for state Option3 */
+	private void enterSequence_main_region_PrepareDrink__region0_Option3_default() {
+		entryAction_main_region_PrepareDrink__region0_Option3();
+		nextStateIndex = 0;
+		stateVector[0] = State.MAIN_REGION_PREPAREDRINK__REGION0_OPTION3;
 	}
 	
 	/* 'default' enter sequence for state IncreaseProgressBar */
@@ -610,8 +747,6 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 	private void exitSequence_main_region_PrepareDrink__region0_Step3() {
 		nextStateIndex = 0;
 		stateVector[0] = State.$NULLSTATE$;
-		
-		exitAction_main_region_PrepareDrink__region0_Step3();
 	}
 	
 	/* Default exit sequence for state Step4 */
@@ -628,6 +763,26 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		stateVector[0] = State.$NULLSTATE$;
 		
 		exitAction_main_region_PrepareDrink__region0_Stape5();
+	}
+	
+	/* Default exit sequence for state Option1 */
+	private void exitSequence_main_region_PrepareDrink__region0_Option1() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NULLSTATE$;
+	}
+	
+	/* Default exit sequence for state Option2 */
+	private void exitSequence_main_region_PrepareDrink__region0_Option2() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NULLSTATE$;
+	}
+	
+	/* Default exit sequence for state Option3 */
+	private void exitSequence_main_region_PrepareDrink__region0_Option3() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NULLSTATE$;
+		
+		exitAction_main_region_PrepareDrink__region0_Option3();
 	}
 	
 	/* Default exit sequence for state IncreaseProgressBar */
@@ -659,6 +814,15 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		case MAIN_REGION_PREPAREDRINK__REGION0_STAPE5:
 			exitSequence_main_region_PrepareDrink__region0_Stape5();
 			break;
+		case MAIN_REGION_PREPAREDRINK__REGION0_OPTION1:
+			exitSequence_main_region_PrepareDrink__region0_Option1();
+			break;
+		case MAIN_REGION_PREPAREDRINK__REGION0_OPTION2:
+			exitSequence_main_region_PrepareDrink__region0_Option2();
+			break;
+		case MAIN_REGION_PREPAREDRINK__REGION0_OPTION3:
+			exitSequence_main_region_PrepareDrink__region0_Option3();
+			break;
 		default:
 			break;
 		}
@@ -689,6 +853,15 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 			break;
 		case MAIN_REGION_PREPAREDRINK__REGION0_STAPE5:
 			exitSequence_main_region_PrepareDrink__region0_Stape5();
+			break;
+		case MAIN_REGION_PREPAREDRINK__REGION0_OPTION1:
+			exitSequence_main_region_PrepareDrink__region0_Option1();
+			break;
+		case MAIN_REGION_PREPAREDRINK__REGION0_OPTION2:
+			exitSequence_main_region_PrepareDrink__region0_Option2();
+			break;
+		case MAIN_REGION_PREPAREDRINK__REGION0_OPTION3:
+			exitSequence_main_region_PrepareDrink__region0_Option3();
 			break;
 		default:
 			break;
@@ -787,11 +960,18 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[2]) {
+			if (getOption1()==false) {
 				exitSequence_main_region_PrepareDrink__region0_Step3();
-				enterSequence_main_region_PrepareDrink__region0_Step4_default();
+				enterSequence_main_region_PrepareDrink__region0_Option1_default();
 			} else {
-				did_transition = false;
+				if (getOption1()==true) {
+					exitSequence_main_region_PrepareDrink__region0_Step3();
+					raiseAddOption1();
+					
+					enterSequence_main_region_PrepareDrink__region0_Option1_default();
+				} else {
+					did_transition = false;
+				}
 			}
 		}
 		return did_transition;
@@ -801,11 +981,18 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[3]) {
+			if (((timeEvents[2]) && (addOption1==false))) {
 				exitSequence_main_region_PrepareDrink__region0_Step4();
 				enterSequence_main_region_PrepareDrink__region0_Stape5_default();
 			} else {
-				did_transition = false;
+				if (((timeEvents[3]) && (getOption1()==true))) {
+					exitSequence_main_region_PrepareDrink__region0_Step4();
+					raiseAddOption1();
+					
+					enterSequence_main_region_PrepareDrink__region0_Stape5_default();
+				} else {
+					did_transition = false;
+				}
 			}
 		}
 		return did_transition;
@@ -828,6 +1015,62 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 		return did_transition;
 	}
 	
+	private boolean main_region_PrepareDrink__region0_Option1_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (getOption2()==false) {
+				exitSequence_main_region_PrepareDrink__region0_Option1();
+				enterSequence_main_region_PrepareDrink__region0_Option2_default();
+			} else {
+				if (getOption2()==true) {
+					exitSequence_main_region_PrepareDrink__region0_Option1();
+					raiseAddOption2();
+					
+					enterSequence_main_region_PrepareDrink__region0_Option2_default();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_PrepareDrink__region0_Option2_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (getOption3()==false) {
+				exitSequence_main_region_PrepareDrink__region0_Option2();
+				enterSequence_main_region_PrepareDrink__region0_Option3_default();
+			} else {
+				if (getOption3()==true) {
+					exitSequence_main_region_PrepareDrink__region0_Option2();
+					raiseAddOption3();
+					
+					enterSequence_main_region_PrepareDrink__region0_Option3_default();
+				} else {
+					did_transition = false;
+				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_PrepareDrink__region0_Option3_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (timeEvents[5]) {
+				exitSequence_main_region_PrepareDrink__region0_Option3();
+				enterSequence_main_region_PrepareDrink__region0_Step4_default();
+			} else {
+				did_transition = false;
+			}
+		}
+		return did_transition;
+	}
+	
 	private boolean main_region_PrepareDrink__region1_IncreaseProgressBar_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
@@ -835,7 +1078,7 @@ public class RecipeMachineStatemachine implements IStatemachine, ITimed {
 			did_transition = false;
 		}
 		if (did_transition==false) {
-			if (timeEvents[5]) {
+			if (timeEvents[6]) {
 				raiseIncreaseProgressBar();
 			}
 			did_transition = main_region_PrepareDrink_react(try_transition);

@@ -9,47 +9,42 @@ public class Expresso extends Drink{
 		super.option1 = "Nuage de lait (+0.10€)";
 		super.option2 = "Sirop d'érable (+0.10€)";
 		super.option3 = "Glace vanillée mixée (+0.60€)";
-
+		super.textToPrint = "<html>Broyage des grains, chauffage de l'eau";
 	}
 	
 
 	@Override
 	public void doStep1() {
-		messagesToUser.setText("<html>Broyage des grains, chauffage de l'eau");
-		
+		super.messagesToUser.setText(textToPrint);
+		super.textToPrint = "<html>Tassage des grains";
 	}
 
 	@Override
 	public void doStep2() {
-		if(cupAdded) {
-			messagesToUser.setText("<html>Tassage des grains");
-		}else {
-			messagesToUser.setText("<html>Positionnement du goblet, tassage des grains");
+		if(!cupAdded) {
+			super.textToPrint+= "<br>Positionnement du gobelet";
 		}
-		
-		
+		messagesToUser.setText(super.textToPrint);
+		super.textToPrint = "<html>Remplissage du récipient";
 	}
 
 	@Override
 	public void doStep3(boolean opt1, boolean opt2, boolean opt3) {
-		if(opt1 && !opt3 && !opt2) {
-			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre<br>Ajout d'un nuage de lait");
-		}else if(opt1 && opt3 && !opt2){
-			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre<br>Ajout d'un nuage de lait<br>Ajout de la glace vanille mixée");
-		}else if(opt1 && opt3 && opt2){
-			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sirop d'érable<br>Ajout d'un nuage de lait<br>Ajout de la glace vanille mixée");
-		}else if(opt1 && !opt3 && opt2){
-			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sirop d'érable<br>Ajout d'un nuage de lait");
-		}else if(!opt1 && opt3 && !opt2){
-			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre<br>Ajout de la glace vanille mixée");
-		}else if(!opt1 && !opt3 && opt2){
-			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sirop d'érable");
-		}else if(!opt1 && opt3 && opt2){
-			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sirop d'érable<br>Ajout de la glace vanille mixée");
-		}else {
-			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre");
-		}
+		messagesToUser.setText(super.textToPrint);
 	}
+	
+@Override
+public void addOption1() {
+	super.textToPrint= super.textToPrint +"<br>Ajout d'un nuage de lait";
+}
+@Override
+public void addOption2() {
+	super.textToPrint+= "<br>Ajout de la glace vanille mixée";
+}
+@Override
+public void addOption3() {
+	super.textToPrint+= "<br>Ajout du sirop d'érable";
+}
 
 	@Override
 	public void calculateTime(int sugar, int size, int temp) {

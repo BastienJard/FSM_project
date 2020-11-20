@@ -707,7 +707,7 @@
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_OGLrUSWPEeug643z12NyYg" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_OGMSYCWPEeug643z12NyYg" fontName="Verdana"/>
-      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_OGLrUiWPEeug643z12NyYg" points="[-1, 266, -2, 266]$[-150, 266, -151, 266]$[-150, 125, -151, 125]$[-1, 125, -2, 125]"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_OGLrUiWPEeug643z12NyYg" points="[-1, 173, -2, 173]$[-150, 173, -151, 173]$[-150, 95, -151, 95]$[-1, 95, -2, 95]"/>
       <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_OGRK4CWPEeug643z12NyYg" id="(9.250693802035153E-4,0.2778761061946903)"/>
       <targetAnchor xsi:type="notation:IdentityAnchor" xmi:id="_OGRK4SWPEeug643z12NyYg" id="(0.8,0.3333333333333333)"/>
     </edges>

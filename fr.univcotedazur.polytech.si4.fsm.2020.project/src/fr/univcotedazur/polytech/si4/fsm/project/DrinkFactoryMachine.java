@@ -538,8 +538,10 @@ public class DrinkFactoryMachine extends JFrame {
 		recipeFSM.getWaiting().subscribe(e -> {
 			drinkingMachineFSM.raiseDrinkReady();
 		});
+		recipeFSM.getAddOption1().subscribe(e -> controller.boisson.addOption1());
+		recipeFSM.getAddOption2().subscribe(e -> controller.boisson.addOption2());
+		recipeFSM.getAddOption3().subscribe(e -> controller.boisson.addOption3());
 		recipeFSM.enter();
-		//recetteFSM.getSCInterface().getListeners().add(new RecetteMachineControllerInterface(this));
 		
 		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
