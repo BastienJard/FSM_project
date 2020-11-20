@@ -464,6 +464,27 @@ public class DrinkFactoryMachine extends JFrame {
 		recipeFSM.raiseBeginRecipe();
 	}
 	
+	public void addYourCup() {
+		if(!cupAdded) {
+			cupAdded = true;
+			if(controller.boisson != null) {
+				controller.boisson.setPrice(controller.boisson.getPrice() - 0.1);
+				BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
+				bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+				priceLabel.setText("Prix : " + bd + " €");
+				updateMoney();
+			}
+		}
+		
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File("./picts/ownCup.jpg"));
+		} catch (IOException ee) {
+			ee.printStackTrace();
+		}
+		buttonForPicture.setIcon(new ImageIcon(myPicture));
+	}
+	
 	public void drinkReady() {
 		messagesToUser.setText("<html>Votre boisson est prête");
 		recipeLabel.setText("");
@@ -496,6 +517,7 @@ public class DrinkFactoryMachine extends JFrame {
 		drinkingMachineFSM.getCheckReserves().subscribe(e -> this.checkReserves());
 		drinkingMachineFSM.getRefundReserves().subscribe(e -> this.refundReserves());
 		drinkingMachineFSM.getFirstUpdateDrink().subscribe(e -> this.firstUpdateDrink());
+		drinkingMachineFSM.getAddYourCup().subscribe(e -> this.addYourCup());
 		drinkingMachineFSM.enter();
 		
 		//myFSM.getListeners().add(new DrinkFactoryMachineControlerInterface(this));
@@ -939,21 +961,7 @@ public class DrinkFactoryMachine extends JFrame {
 		addCupButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				cupAdded = true;
-				if(controller.boisson != null) {
-					controller.boisson.setPrice(controller.boisson.getPrice() - 0.1);
-					BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
-					bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-					priceLabel.setText("Prix : " + bd + " €");
-					updateMoney();
-				}
-				BufferedImage myPicture = null;
-				try {
-					myPicture = ImageIO.read(new File("./picts/ownCup.jpg"));
-				} catch (IOException ee) {
-					ee.printStackTrace();
-				}
-				buttonForPicture.setIcon(new ImageIcon(myPicture));
+				drinkingMachineFSM.raiseAddCupButton();
 			}
 		});
 		

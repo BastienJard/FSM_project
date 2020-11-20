@@ -17,6 +17,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_WAITING,
 		MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE,
 		MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET,
+		MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP,
 		MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT,
 		MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTNFC,
 		MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_INSERTEDMONEY,
@@ -26,7 +27,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		$NULLSTATE$
 	};
 	
-	private final State[] stateVector = new State[3];
+	private final State[] stateVector = new State[4];
 	
 	private int nextStateIndex;
 	
@@ -49,7 +50,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		}
 	}
 	public DrinkingMachineStatemachine() {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			stateVector[i] = State.$NULLSTATE$;
 		}
 		
@@ -87,7 +88,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	 * @see IStatemachine#isActive()
 	 */
 	public synchronized boolean isActive() {
-		return stateVector[0] != State.$NULLSTATE$||stateVector[1] != State.$NULLSTATE$||stateVector[2] != State.$NULLSTATE$;
+		return stateVector[0] != State.$NULLSTATE$||stateVector[1] != State.$NULLSTATE$||stateVector[2] != State.$NULLSTATE$||stateVector[3] != State.$NULLSTATE$;
 	}
 	
 	/** 
@@ -107,6 +108,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		moneyButton = false;
 		confirmationMoney = false;
 		takeCup = false;
+		addCupButton = false;
 		refundReservesButton = false;
 		timeEvents[0] = false;
 		timeEvents[1] = false;
@@ -148,6 +150,9 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 				case MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET:
 					main_region_GestionCommande_resetTimer_reset_react(true);
 					break;
+				case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP:
+					main_region_GestionCommande_addCupGestion_addCup_react(true);
+					break;
 				case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT:
 					main_region_GestionCommande_paiementGestion_WaitingPayment_react(true);
 					break;
@@ -173,7 +178,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 			
 			clearInEvents();
 			nextEvent();
-		} while (((((((((((((((cancelButton || drinkButton) || slider) || nFCButton) || drinkReady) || moneyButton) || confirmationMoney) || takeCup) || refundReservesButton) || timeEvents[0]) || timeEvents[1]) || timeEvents[2]) || timeEvents[3]) || timeEvents[4]) || timeEvents[5]));
+		} while ((((((((((((((((cancelButton || drinkButton) || slider) || nFCButton) || drinkReady) || moneyButton) || confirmationMoney) || takeCup) || addCupButton) || refundReservesButton) || timeEvents[0]) || timeEvents[1]) || timeEvents[2]) || timeEvents[3]) || timeEvents[4]) || timeEvents[5]));
 		
 		isExecuting = false;
 	}
@@ -205,18 +210,20 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 			return stateVector[0] == State.MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE;
 		case MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET:
 			return stateVector[1] == State.MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET;
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP:
+			return stateVector[2] == State.MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP;
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT:
-			return stateVector[2] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT;
+			return stateVector[3] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT;
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTNFC:
-			return stateVector[2] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTNFC;
+			return stateVector[3] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTNFC;
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_INSERTEDMONEY:
-			return stateVector[2] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_INSERTEDMONEY;
+			return stateVector[3] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_INSERTEDMONEY;
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYED:
-			return stateVector[2] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYED;
+			return stateVector[3] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYED;
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_READCARD:
-			return stateVector[2] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_READCARD;
+			return stateVector[3] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_READCARD;
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTMONEY:
-			return stateVector[2] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTMONEY;
+			return stateVector[3] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTMONEY;
 		default:
 			return false;
 		}
@@ -354,6 +361,21 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 				@Override
 				public void run() {
 					takeCup = true;
+				}
+			});
+			runCycle();
+		}
+	}
+	
+	private boolean addCupButton;
+	
+	
+	public void raiseAddCupButton() {
+		synchronized(DrinkingMachineStatemachine.this) {
+			inEventQueue.add(new Runnable() {
+				@Override
+				public void run() {
+					addCupButton = true;
 				}
 			});
 			runCycle();
@@ -647,6 +669,22 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		return firstUpdateDrinkObservable;
 	}
 	
+	private boolean addYourCup;
+	
+	
+	protected void raiseAddYourCup() {
+		synchronized(DrinkingMachineStatemachine.this) {
+			addYourCup = true;
+			addYourCupObservable.next(null);
+		}
+	}
+	
+	private Observable<Void> addYourCupObservable = new Observable<Void>();
+	
+	public Observable<Void> getAddYourCup() {
+		return addYourCupObservable;
+	}
+	
 	private boolean isThereBoisson;
 	
 	public synchronized boolean getIsThereBoisson() {
@@ -750,6 +788,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	private void enterSequence_main_region_GestionCommande_default() {
 		enterSequence_main_region_GestionCommande_chooseGestion_default();
 		enterSequence_main_region_GestionCommande_resetTimer_default();
+		enterSequence_main_region_GestionCommande_addCupGestion_default();
 		enterSequence_main_region_GestionCommande_paiementGestion_default();
 	}
 	
@@ -772,44 +811,50 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		stateVector[1] = State.MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET;
 	}
 	
+	/* 'default' enter sequence for state addCup */
+	private void enterSequence_main_region_GestionCommande_addCupGestion_addCup_default() {
+		nextStateIndex = 2;
+		stateVector[2] = State.MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP;
+	}
+	
 	/* 'default' enter sequence for state WaitingPayment */
 	private void enterSequence_main_region_GestionCommande_paiementGestion_WaitingPayment_default() {
-		nextStateIndex = 2;
-		stateVector[2] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT;
+		nextStateIndex = 3;
+		stateVector[3] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT;
 	}
 	
 	/* 'default' enter sequence for state PaymentNFC */
 	private void enterSequence_main_region_GestionCommande_paiementGestion_PaymentNFC_default() {
 		entryAction_main_region_GestionCommande_paiementGestion_PaymentNFC();
-		nextStateIndex = 2;
-		stateVector[2] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTNFC;
+		nextStateIndex = 3;
+		stateVector[3] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTNFC;
 	}
 	
 	/* 'default' enter sequence for state InsertedMoney */
 	private void enterSequence_main_region_GestionCommande_paiementGestion_InsertedMoney_default() {
-		nextStateIndex = 2;
-		stateVector[2] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_INSERTEDMONEY;
+		nextStateIndex = 3;
+		stateVector[3] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_INSERTEDMONEY;
 	}
 	
 	/* 'default' enter sequence for state Payed */
 	private void enterSequence_main_region_GestionCommande_paiementGestion_Payed_default() {
 		entryAction_main_region_GestionCommande_paiementGestion_Payed();
-		nextStateIndex = 2;
-		stateVector[2] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYED;
+		nextStateIndex = 3;
+		stateVector[3] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYED;
 	}
 	
 	/* 'default' enter sequence for state ReadCard */
 	private void enterSequence_main_region_GestionCommande_paiementGestion_ReadCard_default() {
 		entryAction_main_region_GestionCommande_paiementGestion_ReadCard();
-		nextStateIndex = 2;
-		stateVector[2] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_READCARD;
+		nextStateIndex = 3;
+		stateVector[3] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_READCARD;
 	}
 	
 	/* 'default' enter sequence for state PaymentMoney */
 	private void enterSequence_main_region_GestionCommande_paiementGestion_PaymentMoney_default() {
 		entryAction_main_region_GestionCommande_paiementGestion_PaymentMoney();
-		nextStateIndex = 2;
-		stateVector[2] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTMONEY;
+		nextStateIndex = 3;
+		stateVector[3] = State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTMONEY;
 	}
 	
 	/* 'default' enter sequence for region main region */
@@ -825,6 +870,11 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	/* 'default' enter sequence for region resetTimer */
 	private void enterSequence_main_region_GestionCommande_resetTimer_default() {
 		react_main_region_GestionCommande_resetTimer__entry_Default();
+	}
+	
+	/* 'default' enter sequence for region addCupGestion */
+	private void enterSequence_main_region_GestionCommande_addCupGestion_default() {
+		react_main_region_GestionCommande_addCupGestion__entry_Default();
 	}
 	
 	/* 'default' enter sequence for region paiementGestion */
@@ -856,6 +906,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	private void exitSequence_main_region_GestionCommande() {
 		exitSequence_main_region_GestionCommande_chooseGestion();
 		exitSequence_main_region_GestionCommande_resetTimer();
+		exitSequence_main_region_GestionCommande_addCupGestion();
 		exitSequence_main_region_GestionCommande_paiementGestion();
 	}
 	
@@ -879,46 +930,52 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		exitAction_main_region_GestionCommande_resetTimer_reset();
 	}
 	
-	/* Default exit sequence for state WaitingPayment */
-	private void exitSequence_main_region_GestionCommande_paiementGestion_WaitingPayment() {
+	/* Default exit sequence for state addCup */
+	private void exitSequence_main_region_GestionCommande_addCupGestion_addCup() {
 		nextStateIndex = 2;
 		stateVector[2] = State.$NULLSTATE$;
 	}
 	
+	/* Default exit sequence for state WaitingPayment */
+	private void exitSequence_main_region_GestionCommande_paiementGestion_WaitingPayment() {
+		nextStateIndex = 3;
+		stateVector[3] = State.$NULLSTATE$;
+	}
+	
 	/* Default exit sequence for state PaymentNFC */
 	private void exitSequence_main_region_GestionCommande_paiementGestion_PaymentNFC() {
-		nextStateIndex = 2;
-		stateVector[2] = State.$NULLSTATE$;
+		nextStateIndex = 3;
+		stateVector[3] = State.$NULLSTATE$;
 		
 		exitAction_main_region_GestionCommande_paiementGestion_PaymentNFC();
 	}
 	
 	/* Default exit sequence for state InsertedMoney */
 	private void exitSequence_main_region_GestionCommande_paiementGestion_InsertedMoney() {
-		nextStateIndex = 2;
-		stateVector[2] = State.$NULLSTATE$;
+		nextStateIndex = 3;
+		stateVector[3] = State.$NULLSTATE$;
 	}
 	
 	/* Default exit sequence for state Payed */
 	private void exitSequence_main_region_GestionCommande_paiementGestion_Payed() {
-		nextStateIndex = 2;
-		stateVector[2] = State.$NULLSTATE$;
+		nextStateIndex = 3;
+		stateVector[3] = State.$NULLSTATE$;
 		
 		exitAction_main_region_GestionCommande_paiementGestion_Payed();
 	}
 	
 	/* Default exit sequence for state ReadCard */
 	private void exitSequence_main_region_GestionCommande_paiementGestion_ReadCard() {
-		nextStateIndex = 2;
-		stateVector[2] = State.$NULLSTATE$;
+		nextStateIndex = 3;
+		stateVector[3] = State.$NULLSTATE$;
 		
 		exitAction_main_region_GestionCommande_paiementGestion_ReadCard();
 	}
 	
 	/* Default exit sequence for state PaymentMoney */
 	private void exitSequence_main_region_GestionCommande_paiementGestion_PaymentMoney() {
-		nextStateIndex = 2;
-		stateVector[2] = State.$NULLSTATE$;
+		nextStateIndex = 3;
+		stateVector[3] = State.$NULLSTATE$;
 		
 		exitAction_main_region_GestionCommande_paiementGestion_PaymentMoney();
 	}
@@ -954,6 +1011,14 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		}
 		
 		switch (stateVector[2]) {
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP:
+			exitSequence_main_region_GestionCommande_addCupGestion_addCup();
+			break;
+		default:
+			break;
+		}
+		
+		switch (stateVector[3]) {
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT:
 			exitSequence_main_region_GestionCommande_paiementGestion_WaitingPayment();
 			break;
@@ -1002,9 +1067,20 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		}
 	}
 	
+	/* Default exit sequence for region addCupGestion */
+	private void exitSequence_main_region_GestionCommande_addCupGestion() {
+		switch (stateVector[2]) {
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP:
+			exitSequence_main_region_GestionCommande_addCupGestion_addCup();
+			break;
+		default:
+			break;
+		}
+	}
+	
 	/* Default exit sequence for region paiementGestion */
 	private void exitSequence_main_region_GestionCommande_paiementGestion() {
-		switch (stateVector[2]) {
+		switch (stateVector[3]) {
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT:
 			exitSequence_main_region_GestionCommande_paiementGestion_WaitingPayment();
 			break;
@@ -1041,6 +1117,11 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	/* Default react sequence for initial entry  */
 	private void react_main_region_GestionCommande_resetTimer__entry_Default() {
 		enterSequence_main_region_GestionCommande_resetTimer_reset_default();
+	}
+	
+	/* Default react sequence for initial entry  */
+	private void react_main_region_GestionCommande_addCupGestion__entry_Default() {
+		enterSequence_main_region_GestionCommande_addCupGestion_addCup_default();
 	}
 	
 	/* Default react sequence for initial entry  */
@@ -1205,6 +1286,22 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 				} else {
 					did_transition = false;
 				}
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_GestionCommande_addCupGestion_addCup_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (addCupButton) {
+				exitSequence_main_region_GestionCommande_addCupGestion_addCup();
+				raiseAddYourCup();
+				
+				enterSequence_main_region_GestionCommande_addCupGestion_addCup_default();
+			} else {
+				did_transition = false;
 			}
 		}
 		return did_transition;
