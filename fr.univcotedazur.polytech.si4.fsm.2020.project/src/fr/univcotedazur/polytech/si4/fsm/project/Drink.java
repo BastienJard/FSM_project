@@ -37,9 +37,9 @@ public abstract class Drink {
 	
 	public abstract void doStep1();
 	public abstract void doStep2();
-	public abstract void doStep3(boolean opt1, boolean opt2, boolean opt3);
+	public abstract void doStep3();
 	public void doStep4() {}
-	public void doStep5(boolean opt1, boolean opt2, boolean opt3) {}
+	public void doStep5() {}
 	public abstract void calculateTime(int size, int sugar, int temp);
 	public void addOption1() {}
 	public void addOption2() {}

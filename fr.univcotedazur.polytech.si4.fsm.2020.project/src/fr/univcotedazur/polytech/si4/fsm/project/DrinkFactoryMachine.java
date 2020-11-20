@@ -273,9 +273,9 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void updateOptions() {
-		controller.option1=option1.isSelected();
-		controller.option2=option2.isSelected();
-		controller.option3=option3.isSelected();
+		recipeFSM.setOption1(option1.isSelected());
+		recipeFSM.setOption2(option2.isSelected());
+		recipeFSM.setOption3(option3.isSelected());
 		updatePrice();
 	}
 	
@@ -290,7 +290,7 @@ public class DrinkFactoryMachine extends JFrame {
 		else {
 			option3.setVisible(false);
 			option3.setSelected(false);
-			controller.option3=false;
+			recipeFSM.setOption3(option3.isSelected());
 		}
 		updatePrice();
 		if(controller.insertedCoin>=controller.price) {
@@ -434,7 +434,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void updatePrice() {
-		controller.calculatePrice();
+		controller.calculatePrice(recipeFSM.getOption1(),recipeFSM.getOption2(),recipeFSM.getOption3());
 		BigDecimal bd = new BigDecimal(controller.price);
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 		priceLabel.setText("Prix : " + bd + " €");
@@ -531,9 +531,9 @@ public class DrinkFactoryMachine extends JFrame {
 		recipeFSM.setTimerService(timer2);
 		recipeFSM.getStep1().subscribe(e -> controller.boisson.doStep1());
 		recipeFSM.getStep2().subscribe(e -> controller.boisson.doStep2());
-		recipeFSM.getStep3().subscribe(e -> controller.boisson.doStep3(controller.option1,controller.option2, controller.option3));
+		recipeFSM.getStep3().subscribe(e -> controller.boisson.doStep3());
 		recipeFSM.getStep4().subscribe(e -> controller.boisson.doStep4());
-		recipeFSM.getStep5().subscribe(e -> controller.boisson.doStep5(controller.option1,controller.option2, controller.option3));
+		recipeFSM.getStep5().subscribe(e -> controller.boisson.doStep5());
 		recipeFSM.getIncreaseProgressBar().subscribe(e -> this.progressDrink());
 		recipeFSM.getWaiting().subscribe(e -> {
 			drinkingMachineFSM.raiseDrinkReady();

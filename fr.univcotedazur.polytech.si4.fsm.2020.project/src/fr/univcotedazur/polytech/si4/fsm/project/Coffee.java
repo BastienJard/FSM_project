@@ -29,7 +29,7 @@ public class Coffee extends Drink{
 	}
 
 	@Override
-	public void doStep3(boolean opt1, boolean opt2, boolean opt3) {
+	public void doStep3() {
 		messagesToUser.setText(super.textToPrint);
 	}
 	@Override

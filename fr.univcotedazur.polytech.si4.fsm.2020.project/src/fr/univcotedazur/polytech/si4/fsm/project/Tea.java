@@ -30,13 +30,13 @@ public class Tea extends Drink{
 	}
 
 	@Override
-	public void doStep3(boolean opt1, boolean opt2, boolean opt3) {
+	public void doStep3() {
 		messagesToUser.setText(super.textToPrint);
 		super.textToPrint = "<html>Attente de l'infusion";
 	}
 	
 	@Override
-	public void addOption3() {
+	public void addOption2() {
 		super.textToPrint+= "<br>Ajout du sirop d'érable";
 	}
 	
@@ -52,7 +52,7 @@ public class Tea extends Drink{
 	}
 	
 	@Override
-	public void doStep5(boolean opt1, boolean opt2, boolean opt3) {
+	public void doStep5() {
 		messagesToUser.setText(super.textToPrint);
 	}
 

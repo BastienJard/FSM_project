@@ -9,7 +9,6 @@ public class FactoryController {
 	protected int size =1;
 	protected int temperature =2 ;
 	protected int timeValue;
-	protected boolean option1, option2, option3;
 
 	
 	public void setBoisson(Drink boisson) {
@@ -38,7 +37,7 @@ public class FactoryController {
 		this.insertedCoin += coin;
 	}
 	
-	public void calculatePrice() {
+	public void calculatePrice(boolean option1, boolean option2,boolean option3) {
 		price = boisson.price  + (option1 ? 0.1 : 0) + (option2 ? 0.1 : 0) + (option3 ? 0.6 : 0);
 	}
 
