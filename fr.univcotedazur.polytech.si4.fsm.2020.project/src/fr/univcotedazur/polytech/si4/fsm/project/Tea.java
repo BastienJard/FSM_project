@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 
 public class Tea extends Drink{
 
+	protected boolean option1 =false;
 	public Tea(String name, double price, JLabel messagesToUser, boolean cupAdded) {
 		super(name, price, messagesToUser, cupAdded);
 		super.option1 = "Nuage de lait (+0.10€)";
@@ -48,12 +49,12 @@ public class Tea extends Drink{
 	}
 	
 	public void addOption1() {
-		super.textToPrint+= "<br>Ajout d'un nuage de lait";
+		this.option1 = true;
 	}
 	
 	@Override
 	public void doStep5() {
-		messagesToUser.setText(super.textToPrint);
+		messagesToUser.setText((option1 ? super.textToPrint + "<br>Ajout d'un nuage de lait": super.textToPrint));
 	}
 
 	@Override
