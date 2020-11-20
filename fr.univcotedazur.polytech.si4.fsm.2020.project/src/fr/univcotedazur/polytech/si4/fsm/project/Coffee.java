@@ -5,8 +5,8 @@ import javax.swing.JLabel;
 
 public class Coffee extends Drink{
 
-	public Coffee(String name, double price, JLabel messagesToUser, Boolean cupAdded, Boolean opt1, Boolean opt2, Boolean opt3) {
-		super(name, price, messagesToUser, cupAdded, opt1, opt2, opt3);
+	public Coffee(String name, double price, JLabel messagesToUser, Boolean cupAdded) {
+		super(name, price, messagesToUser, cupAdded);
 		super.option1 ="Nuage de lait (+0.10€)";
 		super.option2 = "Sirop d'érable (+0.10€)";
 		super.option3 = "Glace vanillée mixée (+0.60€)";
@@ -28,7 +28,7 @@ public class Coffee extends Drink{
 	}
 
 	@Override
-	public void doStep3() {
+	public void doStep3(boolean opt1, boolean opt2, boolean opt3) {
 		if(opt1 && !opt3 && !opt2) {
 			messagesToUser.setText("<html>Remplissage du récipient<br>Ajout du sucre<br>Ajout d'un nuage de lait");
 		}else if(opt1 && opt3 && !opt2){

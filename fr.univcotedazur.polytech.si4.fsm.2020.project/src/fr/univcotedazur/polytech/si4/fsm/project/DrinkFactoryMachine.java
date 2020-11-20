@@ -505,9 +505,9 @@ public class DrinkFactoryMachine extends JFrame {
 		recipeFSM.setTimerService(timer2);
 		recipeFSM.getStep1().subscribe(e -> controller.boisson.doStep1());
 		recipeFSM.getStep2().subscribe(e -> controller.boisson.doStep2());
-		recipeFSM.getStep3().subscribe(e -> controller.boisson.doStep3());
+		recipeFSM.getStep3().subscribe(e -> controller.boisson.doStep3(controller.option1,controller.option2, controller.option3));
 		recipeFSM.getStep4().subscribe(e -> controller.boisson.doStep4());
-		recipeFSM.getStep5().subscribe(e -> controller.boisson.doStep5());
+		recipeFSM.getStep5().subscribe(e -> controller.boisson.doStep5(controller.option1,controller.option2, controller.option3));
 		recipeFSM.getIncreaseProgressBar().subscribe(e -> this.progressDrink());
 		recipeFSM.getWaiting().subscribe(e -> {
 			drinkingMachineFSM.raiseDrinkReady();
@@ -905,7 +905,7 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Coffee("coffee", 0.35, recipeLabel, cupAdded, false, false, false);
+				controller.boisson = new Coffee("coffee", 0.35, recipeLabel, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.25);
 				}
@@ -916,7 +916,7 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Expresso("expresso", 0.50, recipeLabel, cupAdded, false, false, false);
+				controller.boisson = new Expresso("expresso", 0.50, recipeLabel, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.40);
 				}
@@ -928,7 +928,7 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Tea("tea", 0.40, recipeLabel, cupAdded, false, false, false);
+				controller.boisson = new Tea("tea", 0.40, recipeLabel, cupAdded);
 				if(cupAdded) {
 					controller.boisson.setPrice(0.30);
 				}

@@ -8,17 +8,15 @@ public abstract class Drink {
 	protected double price;
 	protected JLabel messagesToUser;
 	protected int totalTime, timeStep1, timeStep2, timeStep3, timeStep4, timeStep5;
-	protected Boolean cupAdded, opt1, opt2, opt3;
+	protected boolean cupAdded;
 	protected String option1, option2,option3;
 	
-	public Drink(String name, double price, JLabel messagesToUser, Boolean cupAdded, Boolean opt1, Boolean opt2, Boolean opt3) {
+	public Drink(String name, double price, JLabel messagesToUser, boolean cupAdded) {
 		this.name = name;
 		this.price = price;
 		this.messagesToUser = messagesToUser;
 		this.cupAdded = cupAdded;
-		this.opt1=opt1;
-		this.opt2=opt2;
-		this.opt3=opt3;
+
 	}
 	
 	public String getName() {
@@ -39,9 +37,9 @@ public abstract class Drink {
 	
 	public abstract void doStep1();
 	public abstract void doStep2();
-	public abstract void doStep3();
+	public abstract void doStep3(boolean opt1, boolean opt2, boolean opt3);
 	public void doStep4() {}
-	public void doStep5() {}
+	public void doStep5(boolean opt1, boolean opt2, boolean opt3) {}
 	public abstract void calculateTime(int size, int sugar, int temp);
 
 	public void setPrice(double d) {
