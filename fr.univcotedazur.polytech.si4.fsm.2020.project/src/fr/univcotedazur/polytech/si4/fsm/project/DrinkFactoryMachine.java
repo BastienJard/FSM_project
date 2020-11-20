@@ -272,15 +272,18 @@ public class DrinkFactoryMachine extends JFrame {
 		controller.setTemperature(temperatureSlider.getValue());
 	}
 	
+	public void updateOptions() {
+		controller.option1=option1.isSelected();
+		controller.option2=option2.isSelected();
+		controller.option3=option3.isSelected();
+		updatePrice();
+	}
+	
 	public void updateDrink() {
 		drinkChooseLabel.setText("Boisson : " + controller.boisson.name);
-		
 		option1.setText(controller.boisson.option1);
-		controller.option1=option1.isSelected();
 		option2.setText(controller.boisson.option2);
-		controller.option2=option2.isSelected();
 		if(!controller.boisson.option3.equals("")) {
-			controller.option3=option3.isSelected();
 			option3.setVisible(true);
 			option3.setText(controller.boisson.option3);
 		}
@@ -513,6 +516,7 @@ public class DrinkFactoryMachine extends JFrame {
 		drinkingMachineFSM.getReturnMoney().subscribe(e -> this.returnMoney());
 		drinkingMachineFSM.getUpdateDrink().subscribe(e -> this.updateDrink());
 		drinkingMachineFSM.getUpdateSlider().subscribe(e -> this.updateSlider());
+		drinkingMachineFSM.getUpdateOptions().subscribe(e -> this.updateOptions());
 		drinkingMachineFSM.getUpdateReserves().subscribe(e -> this.updateReserves());
 		drinkingMachineFSM.getCheckReserves().subscribe(e -> this.checkReserves());
 		drinkingMachineFSM.getRefundReserves().subscribe(e -> this.refundReserves());
@@ -906,21 +910,21 @@ public class DrinkFactoryMachine extends JFrame {
 		option1.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				updateDrink();
+				drinkingMachineFSM.raiseOptions();
 			}
 		});
 		
 		option2.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				updateDrink();
+				drinkingMachineFSM.raiseOptions();
 			}
 		});
 		
 		option3.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				updateDrink();
+				drinkingMachineFSM.raiseOptions();
 			}
 		});
 		
