@@ -72,7 +72,7 @@ public class DrinkFactoryMachine extends JFrame {
 	protected FactoryController controller;
 	private Hashtable<Integer, JLabel> temperatureTable;
 	private BufferedImage myPicture;
-	private Boolean isNFCDone = false, isPaiementLiquideDone = false, cupAdded = false;
+	private Boolean isNFCDone = false, isPaiementLiquideDone = false;
 	private JProgressBar progressBar;
 	private JButton buttonForPicture, coffeeButton, expressoButton, teaButton, nfcBiiiipButton;
 	private int progression = 0;
@@ -318,7 +318,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void cleaningText() {
-		cupAdded = false;
+		drinkingMachineFSM.setIsThereCup(false);
 		messagesToUser.setText("<html>Nettoyage de la machine<br> en cours");
 		progressBar.setValue(0);
 		sugarSlider.setValue(1);
@@ -370,7 +370,7 @@ public class DrinkFactoryMachine extends JFrame {
 		drinkChooseLabel.setText("");
 		moneyInsertedLabel.setText("");
 		priceLabel.setText("");
-		cupAdded = false;
+		drinkingMachineFSM.setIsThereCup(false);
 		try {
 			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
 		} catch (IOException e) {
@@ -450,7 +450,7 @@ public class DrinkFactoryMachine extends JFrame {
 		BigDecimal bd = new BigDecimal(controller.timeValue/1000);
 		bd = bd.setScale(0, BigDecimal.ROUND_UP);
 		messagesToUser.setText("<html>Temps de préparation : " + bd.doubleValue() + "s");
-		if(!cupAdded) {
+		if(drinkingMachineFSM.getIsThereCup()) {
 			try {
 			myPicture = ImageIO.read(new File("./picts/gobeletPolluant.jpg"));
 		} catch (IOException e) {
@@ -458,6 +458,7 @@ public class DrinkFactoryMachine extends JFrame {
 		}
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
 		}
+		controller.boisson.cupAdded = drinkingMachineFSM.getIsThereCup();
 		recipeFSM.setIncreaseTime((int)controller.timeValue/100);
 		recipeFSM.setTimeStep1(controller.boisson.timeStep1);
 		recipeFSM.setTimeStep2(controller.boisson.timeStep2);
@@ -468,7 +469,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void addYourCup() {
-		System.out.print(drinkingMachineFSM.getIsThereCup());
+		System.out.println("done");
 		updatePrice();		
 		BufferedImage myPicture = null;
 		try {
@@ -480,7 +481,6 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void removeYourCup() {
-		System.out.print(drinkingMachineFSM.getIsThereCup());
 		updatePrice();		
 		BufferedImage myPicture = null;
 		try {
@@ -535,16 +535,13 @@ public class DrinkFactoryMachine extends JFrame {
 		recipeFSM.setTimerService(timer2);
 		recipeFSM.getStep1().subscribe(e -> controller.boisson.doStep1());
 		recipeFSM.getStep2().subscribe(e -> controller.boisson.doStep2());
-		recipeFSM.getStep3().subscribe(e -> controller.boisson.doStep3());
+		recipeFSM.getStep3().subscribe(e -> controller.boisson.doStep3(recipeFSM.getOption1(),recipeFSM.getOption2(),recipeFSM.getOption3()));
 		recipeFSM.getStep4().subscribe(e -> controller.boisson.doStep4());
-		recipeFSM.getStep5().subscribe(e -> controller.boisson.doStep5());
+		recipeFSM.getStep5().subscribe(e -> controller.boisson.doStep5(recipeFSM.getOption1()));
 		recipeFSM.getIncreaseProgressBar().subscribe(e -> this.progressDrink());
 		recipeFSM.getWaiting().subscribe(e -> {
 			drinkingMachineFSM.raiseDrinkReady();
 		});
-		recipeFSM.getAddOption1().subscribe(e -> controller.boisson.addOption1());
-		recipeFSM.getAddOption2().subscribe(e -> controller.boisson.addOption2());
-		recipeFSM.getAddOption3().subscribe(e -> controller.boisson.addOption3());
 		recipeFSM.enter();
 		
 		
@@ -937,10 +934,7 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Coffee("coffee", 0.35, recipeLabel, cupAdded);
-				if(cupAdded) {
-					controller.boisson.setPrice(0.25);
-				}
+				controller.boisson = new Coffee("coffee", 0.35, recipeLabel);
 				drinkingMachineFSM.raiseDrinkButton();
 			}
 		});
@@ -948,10 +942,7 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Expresso("expresso", 0.50, recipeLabel, cupAdded);
-				if(cupAdded) {
-					controller.boisson.setPrice(0.40);
-				}
+				controller.boisson = new Expresso("expresso", 0.50, recipeLabel);
 				drinkingMachineFSM.raiseDrinkButton();
 			}
 		});
@@ -960,10 +951,7 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
-				controller.boisson = new Tea("tea", 0.40, recipeLabel, cupAdded);
-				if(cupAdded) {
-					controller.boisson.setPrice(0.30);
-				}
+				controller.boisson = new Tea("tea", 0.40, recipeLabel);
 				drinkingMachineFSM.raiseDrinkButton();
 			}
 		});

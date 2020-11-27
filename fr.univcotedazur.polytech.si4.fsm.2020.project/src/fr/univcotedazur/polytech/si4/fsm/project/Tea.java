@@ -6,23 +6,23 @@ import javax.swing.JLabel;
 public class Tea extends Drink{
 
 	protected boolean option1 =false;
-	public Tea(String name, double price, JLabel messagesToUser, boolean cupAdded) {
-		super(name, price, messagesToUser, cupAdded);
+	public Tea(String name, double price, JLabel messagesToUser) {
+		super(name, price, messagesToUser);
 		super.option1 = "Nuage de lait (+0.10€)";
 		super.option2 = "Sirop d'érable (+0.10€)";
 		super.option3  = "";
-		super.textToPrint = "<html>Récupération et positionnement<br>d’un sachet<br>Démarrage du chauffage de l’eau";
+		
 	}
 	
 	@Override
 	public void doStep1() {
-		messagesToUser.setText(super.textToPrint);
-		super.textToPrint = "<html>Chauffage de l'eau";
-		
+		super.textToPrint = "<html>Récupération et positionnement<br>d’un sachet<br>Démarrage du chauffage de l’eau";
+		messagesToUser.setText(super.textToPrint);	
 	}
 
 	@Override
 	public void doStep2() {
+		super.textToPrint = "<html>Chauffage de l'eau";
 		if(!cupAdded) {
 			super.textToPrint += "<br>Positionnement du gobelet";
 		}
@@ -30,31 +30,24 @@ public class Tea extends Drink{
 		super.textToPrint = "<html>Remplissage du récipient";
 	}
 
-	@Override
-	public void doStep3() {
-		messagesToUser.setText(super.textToPrint);
-		super.textToPrint = "<html>Attente de l'infusion";
-	}
 	
 	@Override
-	public void addOption2() {
-		super.textToPrint+= "<br>Ajout du sirop d'érable";
+	public void doStep3(boolean option1,boolean option2,boolean option3) {
+		super.textToPrint = "<html>Remplissage du récipient" + (option2 ? "<br>Ajout du sirop d'érable":"<br>Ajout du sucre");
+		messagesToUser.setText(super.textToPrint);
 	}
+	
 	
 	@Override
 	public void doStep4() {
+		super.textToPrint = "Attente de l'infusion";
 		messagesToUser.setText(super.textToPrint);
-		super.textToPrint = "<html>Retrait du sachet";
-		
 	}
-	
-	public void addOption1() {
-		this.option1 = true;
-	}
-	
+
 	@Override
-	public void doStep5() {
-		messagesToUser.setText((option1 ? super.textToPrint + "<br>Ajout d'un nuage de lait": super.textToPrint));
+	public void doStep5(boolean option1) {
+		super.textToPrint = "<html>Retrait du sachet" + (option1 ? "<br>Ajout d'un nuage de lait":"") ;
+		messagesToUser.setText(super.textToPrint);
 	}
 
 	@Override
