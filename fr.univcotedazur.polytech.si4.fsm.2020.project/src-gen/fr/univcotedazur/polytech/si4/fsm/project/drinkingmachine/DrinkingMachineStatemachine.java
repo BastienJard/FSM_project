@@ -17,7 +17,8 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_WAITING,
 		MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE,
 		MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET,
-		MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP,
+		MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHOUTCUP,
+		MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHCUP,
 		MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT,
 		MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTNFC,
 		MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_INSERTEDMONEY,
@@ -61,6 +62,8 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		clearInEvents();
 		
 		setIsThereBoisson(false);
+		
+		setIsThereCup(false);
 		
 		isExecuting = false;
 	}
@@ -155,8 +158,11 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 				case MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET:
 					main_region_GestionCommande_resetTimer_reset_react(true);
 					break;
-				case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP:
-					main_region_GestionCommande_addCupGestion_addCup_react(true);
+				case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHOUTCUP:
+					main_region_GestionCommande_addCupGestion_WithoutCup_react(true);
+					break;
+				case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHCUP:
+					main_region_GestionCommande_addCupGestion_WithCup_react(true);
 					break;
 				case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT:
 					main_region_GestionCommande_paiementGestion_WaitingPayment_react(true);
@@ -215,8 +221,10 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 			return stateVector[0] == State.MAIN_REGION_GESTIONCOMMANDE_CHOOSEGESTION_FIRSTCHOOSE;
 		case MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET:
 			return stateVector[1] == State.MAIN_REGION_GESTIONCOMMANDE_RESETTIMER_RESET;
-		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP:
-			return stateVector[2] == State.MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP;
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHOUTCUP:
+			return stateVector[2] == State.MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHOUTCUP;
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHCUP:
+			return stateVector[2] == State.MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHCUP;
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT:
 			return stateVector[3] == State.MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_WAITINGPAYMENT;
 		case MAIN_REGION_GESTIONCOMMANDE_PAIEMENTGESTION_PAYMENTNFC:
@@ -705,6 +713,22 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		return firstUpdateDrinkObservable;
 	}
 	
+	private boolean removeYourCup;
+	
+	
+	protected void raiseRemoveYourCup() {
+		synchronized(DrinkingMachineStatemachine.this) {
+			removeYourCup = true;
+			removeYourCupObservable.next(null);
+		}
+	}
+	
+	private Observable<Void> removeYourCupObservable = new Observable<Void>();
+	
+	public Observable<Void> getRemoveYourCup() {
+		return removeYourCupObservable;
+	}
+	
 	private boolean addYourCup;
 	
 	
@@ -732,6 +756,20 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	public void setIsThereBoisson(boolean value) {
 		synchronized(DrinkingMachineStatemachine.this) {
 			this.isThereBoisson = value;
+		}
+	}
+	
+	private boolean isThereCup;
+	
+	public synchronized boolean getIsThereCup() {
+		synchronized(DrinkingMachineStatemachine.this) {
+			return isThereCup;
+		}
+	}
+	
+	public void setIsThereCup(boolean value) {
+		synchronized(DrinkingMachineStatemachine.this) {
+			this.isThereCup = value;
 		}
 	}
 	
@@ -860,10 +898,18 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		historyVector[2] = stateVector[1];
 	}
 	
-	/* 'default' enter sequence for state addCup */
-	private void enterSequence_main_region_GestionCommande_addCupGestion_addCup_default() {
+	/* 'default' enter sequence for state WithoutCup */
+	private void enterSequence_main_region_GestionCommande_addCupGestion_WithoutCup_default() {
 		nextStateIndex = 2;
-		stateVector[2] = State.MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP;
+		stateVector[2] = State.MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHOUTCUP;
+		
+		historyVector[3] = stateVector[2];
+	}
+	
+	/* 'default' enter sequence for state WithCup */
+	private void enterSequence_main_region_GestionCommande_addCupGestion_WithCup_default() {
+		nextStateIndex = 2;
+		stateVector[2] = State.MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHCUP;
 		
 		historyVector[3] = stateVector[2];
 	}
@@ -997,8 +1043,11 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	/* deep enterSequence with history in child addCupGestion */
 	private void deepEnterSequence_main_region_GestionCommande_addCupGestion() {
 		switch (historyVector[3]) {
-		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP:
-			enterSequence_main_region_GestionCommande_addCupGestion_addCup_default();
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHOUTCUP:
+			enterSequence_main_region_GestionCommande_addCupGestion_WithoutCup_default();
+			break;
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHCUP:
+			enterSequence_main_region_GestionCommande_addCupGestion_WithCup_default();
 			break;
 		default:
 			break;
@@ -1084,8 +1133,14 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		exitAction_main_region_GestionCommande_resetTimer_reset();
 	}
 	
-	/* Default exit sequence for state addCup */
-	private void exitSequence_main_region_GestionCommande_addCupGestion_addCup() {
+	/* Default exit sequence for state WithoutCup */
+	private void exitSequence_main_region_GestionCommande_addCupGestion_WithoutCup() {
+		nextStateIndex = 2;
+		stateVector[2] = State.$NULLSTATE$;
+	}
+	
+	/* Default exit sequence for state WithCup */
+	private void exitSequence_main_region_GestionCommande_addCupGestion_WithCup() {
 		nextStateIndex = 2;
 		stateVector[2] = State.$NULLSTATE$;
 	}
@@ -1165,8 +1220,11 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		}
 		
 		switch (stateVector[2]) {
-		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP:
-			exitSequence_main_region_GestionCommande_addCupGestion_addCup();
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHOUTCUP:
+			exitSequence_main_region_GestionCommande_addCupGestion_WithoutCup();
+			break;
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHCUP:
+			exitSequence_main_region_GestionCommande_addCupGestion_WithCup();
 			break;
 		default:
 			break;
@@ -1224,8 +1282,11 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	/* Default exit sequence for region addCupGestion */
 	private void exitSequence_main_region_GestionCommande_addCupGestion() {
 		switch (stateVector[2]) {
-		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_ADDCUP:
-			exitSequence_main_region_GestionCommande_addCupGestion_addCup();
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHOUTCUP:
+			exitSequence_main_region_GestionCommande_addCupGestion_WithoutCup();
+			break;
+		case MAIN_REGION_GESTIONCOMMANDE_ADDCUPGESTION_WITHCUP:
+			exitSequence_main_region_GestionCommande_addCupGestion_WithCup();
 			break;
 		default:
 			break;
@@ -1275,7 +1336,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 	
 	/* Default react sequence for initial entry  */
 	private void react_main_region_GestionCommande_addCupGestion__entry_Default() {
-		enterSequence_main_region_GestionCommande_addCupGestion_addCup_default();
+		enterSequence_main_region_GestionCommande_addCupGestion_WithoutCup_default();
 	}
 	
 	/* Default react sequence for initial entry  */
@@ -1450,7 +1511,7 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 				enterSequence_main_region_Start_default();
 				react();
 			} else {
-				if ((drinkButton || (slider || (nFCButton || moneyButton)))) {
+				if ((drinkButton || (slider || (nFCButton || (moneyButton || (refundReservesButton || options)))))) {
 					exitSequence_main_region_GestionCommande_resetTimer_reset();
 					enterSequence_main_region_GestionCommande_resetTimer_reset_default();
 				} else {
@@ -1461,15 +1522,35 @@ public class DrinkingMachineStatemachine implements IStatemachine, ITimed {
 		return did_transition;
 	}
 	
-	private boolean main_region_GestionCommande_addCupGestion_addCup_react(boolean try_transition) {
+	private boolean main_region_GestionCommande_addCupGestion_WithoutCup_react(boolean try_transition) {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
 			if (addCupButton) {
-				exitSequence_main_region_GestionCommande_addCupGestion_addCup();
+				exitSequence_main_region_GestionCommande_addCupGestion_WithoutCup();
+				setIsThereCup(true);
+				
 				raiseAddYourCup();
 				
-				enterSequence_main_region_GestionCommande_addCupGestion_addCup_default();
+				enterSequence_main_region_GestionCommande_addCupGestion_WithCup_default();
+			} else {
+				did_transition = false;
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_region_GestionCommande_addCupGestion_WithCup_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if (addCupButton) {
+				exitSequence_main_region_GestionCommande_addCupGestion_WithCup();
+				setIsThereCup(false);
+				
+				raiseRemoveYourCup();
+				
+				enterSequence_main_region_GestionCommande_addCupGestion_WithoutCup_default();
 			} else {
 				did_transition = false;
 			}

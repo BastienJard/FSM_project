@@ -37,8 +37,13 @@ public class FactoryController {
 		this.insertedCoin += coin;
 	}
 	
-	public void calculatePrice(boolean option1, boolean option2,boolean option3) {
-		price = boisson.price  + (option1 ? 0.1 : 0) + (option2 ? 0.1 : 0) + (option3 ? 0.6 : 0);
+	public void calculatePrice(boolean option1, boolean option2,boolean option3, boolean cup) {
+		if(boisson!=null) {
+			price = boisson.price  + (option1 ? 0.1 : 0) + (option2 ? 0.1 : 0) + (option3 ? 0.6 : 0) - (cup ? 0.1 : 0);
+		}
+		else {
+			price=0;
+		}
 	}
 
 }

@@ -434,7 +434,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void updatePrice() {
-		controller.calculatePrice(recipeFSM.getOption1(),recipeFSM.getOption2(),recipeFSM.getOption3());
+		controller.calculatePrice(recipeFSM.getOption1(),recipeFSM.getOption2(),recipeFSM.getOption3(),drinkingMachineFSM.getIsThereCup());
 		BigDecimal bd = new BigDecimal(controller.price);
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 		priceLabel.setText("Prix : " + bd + " €");
@@ -468,20 +468,23 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void addYourCup() {
-		if(!cupAdded) {
-			cupAdded = true;
-			if(controller.boisson != null) {
-				controller.boisson.setPrice(controller.boisson.getPrice() - 0.1);
-				BigDecimal bd = new BigDecimal(controller.boisson.getPrice());
-				bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-				priceLabel.setText("Prix : " + bd + " €");
-				updateMoney();
-			}
-		}
-		
+		System.out.print(drinkingMachineFSM.getIsThereCup());
+		updatePrice();		
 		BufferedImage myPicture = null;
 		try {
 			myPicture = ImageIO.read(new File("./picts/ownCup.jpg"));
+		} catch (IOException ee) {
+			ee.printStackTrace();
+		}
+		buttonForPicture.setIcon(new ImageIcon(myPicture));
+	}
+	
+	public void removeYourCup() {
+		System.out.print(drinkingMachineFSM.getIsThereCup());
+		updatePrice();		
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
 		} catch (IOException ee) {
 			ee.printStackTrace();
 		}
@@ -522,6 +525,7 @@ public class DrinkFactoryMachine extends JFrame {
 		drinkingMachineFSM.getRefundReserves().subscribe(e -> this.refundReserves());
 		drinkingMachineFSM.getFirstUpdateDrink().subscribe(e -> this.firstUpdateDrink());
 		drinkingMachineFSM.getAddYourCup().subscribe(e -> this.addYourCup());
+		drinkingMachineFSM.getRemoveYourCup().subscribe(e -> this.removeYourCup());
 		drinkingMachineFSM.enter();
 		
 		//myFSM.getListeners().add(new DrinkFactoryMachineControlerInterface(this));
