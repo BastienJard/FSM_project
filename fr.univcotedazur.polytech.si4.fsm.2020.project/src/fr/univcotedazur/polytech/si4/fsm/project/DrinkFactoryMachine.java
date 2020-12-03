@@ -74,12 +74,13 @@ public class DrinkFactoryMachine extends JFrame {
 	private BufferedImage myPicture;
 	private Boolean isNFCDone = false, isPaiementLiquideDone = false;
 	private JProgressBar progressBar;
-	private JButton buttonForPicture, coffeeButton, expressoButton, teaButton, nfcBiiiipButton;
+	private JButton buttonForPicture, coffeeButton, expressoButton, teaButton, soupButton, nfcBiiiipButton;
 	private int progression = 0;
 	private int sugarReserve = 50;
 	private int coffeeReserve = 100;
 	private int expressoReserve = 100;
 	private int teaReserve = 100;
+	private int soupReserve = 100;
 	private JFormattedTextField NFCField;
 	private JCheckBox option1, option2, option3;
 	private HashMap<Object, Customer> mapOfCustomer = new HashMap<>();
@@ -280,6 +281,9 @@ public class DrinkFactoryMachine extends JFrame {
 		}else {
 			lblSugar.setText("Sugar");
 		}
+		if(controller.boisson.name.equals("soup")) {
+			lblSugar.setText("Epices");
+		}
 		recipeFSM.setOption3(option3.isSelected());
 		updatePrice();
 	}
@@ -287,7 +291,22 @@ public class DrinkFactoryMachine extends JFrame {
 	public void updateDrink() {
 		drinkChooseLabel.setText("Boisson : " + controller.boisson.name);
 		option1.setText(controller.boisson.option1);
-		option2.setText(controller.boisson.option2);
+		if(controller.boisson.name.equals("soup")) {
+			lblSugar.setText("Epices");
+		}else {
+			lblSugar.setText("Sugar");
+		}
+		if(!controller.boisson.option2.equals("")) {
+			option2.setVisible(true);
+			option2.setText(controller.boisson.option2);
+			if(recipeFSM.getOption2()){
+				lblSugar.setText("Sirop d'érable");
+			}
+		}else {
+			option2.setVisible(false);
+			option2.setSelected(false);
+			recipeFSM.setOption2(option2.isSelected());
+		}
 		if(!controller.boisson.option3.equals("")) {
 			option3.setVisible(true);
 			option3.setText(controller.boisson.option3);
@@ -314,8 +333,10 @@ public class DrinkFactoryMachine extends JFrame {
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
 		option1.setVisible(true);
 		option1.setText(controller.boisson.option1);
-		option2.setVisible(true);
-		option2.setText(controller.boisson.option2);
+		if(!controller.boisson.option2.equals("")) {
+			option2.setVisible(true);
+			option2.setText(controller.boisson.option2);
+		}
 		if(!controller.boisson.option3.equals("")) {
 			option3.setVisible(true);
 			option3.setText(controller.boisson.option3);
@@ -323,6 +344,9 @@ public class DrinkFactoryMachine extends JFrame {
 		updatePrice();
 		if(controller.insertedCoin>=controller.price) {
 			drinkingMachineFSM.raiseConfirmationMoney();
+		}
+		if(controller.boisson.name.equals("soup")) {
+			lblSugar.setText("Epices");
 		}
 		
 	}
@@ -413,6 +437,11 @@ public class DrinkFactoryMachine extends JFrame {
 		}else {
 			teaButton.setEnabled(true);
 		}
+		if(soupReserve<10) {
+			soupButton.setEnabled(false);
+		}else {
+			soupButton.setEnabled(true);
+		}
 	}
 	
 	public void updateReserves() {
@@ -429,6 +458,10 @@ public class DrinkFactoryMachine extends JFrame {
 				teaReserve = teaReserve-10;
 				sugarReserve = sugarReserve - (controller.sugar*1);
 				break;
+			case "soup":
+				soupReserve = soupReserve-10;
+				sugarReserve = sugarReserve - (controller.sugar*1);
+				break;
 			default:
 				sugarReserve = sugarReserve - (controller.sugar*1);
 		}
@@ -440,6 +473,7 @@ public class DrinkFactoryMachine extends JFrame {
 		coffeeReserve = 100;
 		teaReserve = 100;
 		expressoReserve = 100;
+		soupReserve = 100;
 		saveFile();
 	}
 	
@@ -693,12 +727,11 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.setBounds(12, 108, 96, 25);
 		contentPane.add(teaButton);
 
-		JButton soupButton = new JButton("Soup");
+		soupButton = new JButton("Soup");
 		soupButton.setForeground(Color.WHITE);
 		soupButton.setBackground(Color.DARK_GRAY);
 		soupButton.setBounds(12, 145, 96, 25);
 		contentPane.add(soupButton);
-		soupButton.setEnabled(false);
 		
 		option1 = new JCheckBox("Option (+0.60€)");
 		option1.setForeground(Color.WHITE);
@@ -962,6 +995,13 @@ public class DrinkFactoryMachine extends JFrame {
 			@Override 
 			public void actionPerformed( ActionEvent e) {
 				controller.boisson = new Tea("tea", 0.40, recipeLabel);
+				drinkingMachineFSM.raiseDrinkButton();
+			}
+		});
+		soupButton.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed( ActionEvent e) {
+				controller.boisson = new Soup("soup", 0.75, recipeLabel);
 				drinkingMachineFSM.raiseDrinkButton();
 			}
 		});
