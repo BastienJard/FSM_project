@@ -83,7 +83,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private int soupReserve = 100;
 	private JFormattedTextField NFCField;
 	private JCheckBox option1, option2, option3;
-	private HashMap<Object, Customer> mapOfCustomer = new HashMap<>();
+	private HashMap<Integer, Customer> mapOfCustomer = new HashMap<>();
 	
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -149,10 +149,10 @@ public class DrinkFactoryMachine extends JFrame {
         racine.appendChild(customers);
         
         
-        Iterator<HashMap.Entry<Object, Customer>> iterator = mapOfCustomer.entrySet().iterator();
+        Iterator<HashMap.Entry<Integer, Customer>> iterator = mapOfCustomer.entrySet().iterator();
         while (iterator.hasNext()) {
 
-        	HashMap.Entry<Object, Customer> entry = iterator.next();
+        	HashMap.Entry<Integer, Customer> entry = iterator.next();
         	Element customer = doc.createElement("customer");
             customers.appendChild(customer);
             
@@ -225,24 +225,26 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	
 	public void paymentNFC() {
+		int id = Integer.parseInt(NFCField.getValue().toString());
 		isNFCDone = true;
 		BigDecimal bd = new BigDecimal(controller.price);
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 		
-		if(!mapOfCustomer.containsKey(NFCField.getValue())) {
+		if(!mapOfCustomer.containsKey(id)) {
 			Customer customer = new Customer();
-			mapOfCustomer.put(NFCField.getValue(), customer);
+			mapOfCustomer.put(id, customer);
 		}
-		mapOfCustomer.get(NFCField.getValue()).calculateAverageCost();
-		if(mapOfCustomer.get(NFCField.getValue()).getNumberOfNFCPayement()>10 && controller.boisson.getPrice()<mapOfCustomer.get(NFCField.getValue()).getAverageCost()) {
+		
+		mapOfCustomer.get(id).calculateAverageCost();
+		if(mapOfCustomer.get(id).getNumberOfNFCPayement()>10 && controller.boisson.getPrice()<mapOfCustomer.get(id).getAverageCost()) {
 			messagesToUser.setText("<html>Plus de 10 achats : <br>celui-ci est gratuit");
-			mapOfCustomer.get(NFCField.getValue()).resetNumberOfNFCPayement();
-		}else if(mapOfCustomer.get(NFCField.getValue()).getNumberOfNFCPayement()>10 && controller.boisson.getPrice()>=mapOfCustomer.get(NFCField.getValue()).getAverageCost()) {
+			mapOfCustomer.get(id).resetNumberOfNFCPayement();
+		}else if(mapOfCustomer.get(id).getNumberOfNFCPayement()>10 && controller.boisson.getPrice()>=mapOfCustomer.get(id).getAverageCost()) {
 			messagesToUser.setText("<html>Prix trop élevé pour avoir la réduction <br> Paiement de " + bd + " € accepté");
 		}else {
 			messagesToUser.setText("Paiement de " + bd + " € accepté");
 		}
-		mapOfCustomer.get(NFCField.getValue()).increaseNFCCount(controller.boisson.getPrice());
+		mapOfCustomer.get(id).increaseNFCCount(controller.boisson.getPrice());
 	}
 	
 	public void cancelNFC() {
