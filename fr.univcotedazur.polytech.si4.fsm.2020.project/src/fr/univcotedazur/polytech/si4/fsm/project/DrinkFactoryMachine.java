@@ -275,6 +275,11 @@ public class DrinkFactoryMachine extends JFrame {
 	public void updateOptions() {
 		recipeFSM.setOption1(option1.isSelected());
 		recipeFSM.setOption2(option2.isSelected());
+		if(recipeFSM.getOption2()) {
+			lblSugar.setText("Sirop d'érable");
+		}else {
+			lblSugar.setText("Sugar");
+		}
 		recipeFSM.setOption3(option3.isSelected());
 		updatePrice();
 	}
@@ -301,7 +306,12 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	public void firstUpdateDrink() {
 		drinkChooseLabel.setText("Boisson : " + controller.boisson.name);
-		
+		try {
+			myPicture = ImageIO.read(new File("./picts/gobeletPolluant.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		buttonForPicture.setIcon(new ImageIcon(myPicture));
 		option1.setVisible(true);
 		option1.setText(controller.boisson.option1);
 		option2.setVisible(true);
@@ -484,7 +494,7 @@ public class DrinkFactoryMachine extends JFrame {
 		updatePrice();		
 		BufferedImage myPicture = null;
 		try {
-			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
+			myPicture = ImageIO.read(new File("./picts/gobeletPolluant.jpg"));
 		} catch (IOException ee) {
 			ee.printStackTrace();
 		}
