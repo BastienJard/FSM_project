@@ -331,11 +331,6 @@ public class DrinkFactoryMachine extends JFrame {
 	
 	public void firstUpdateDrink() {
 		drinkChooseLabel.setText("Boisson : " + controller.boisson.name);
-		try {
-			myPicture = ImageIO.read(new File("./picts/gobeletPolluant.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		buttonForPicture.setIcon(new ImageIcon(myPicture));
 		option1.setVisible(true);
 		option1.setText(controller.boisson.option1);
@@ -500,7 +495,7 @@ public class DrinkFactoryMachine extends JFrame {
 		BigDecimal bd = new BigDecimal(controller.timeValue/1000);
 		bd = bd.setScale(0, BigDecimal.ROUND_UP);
 		messagesToUser.setText("<html>Temps de préparation : " + bd.doubleValue() + "s");
-		if(drinkingMachineFSM.getIsThereCup()) {
+		if(!drinkingMachineFSM.getIsThereCup()) {
 			try {
 			myPicture = ImageIO.read(new File("./picts/gobeletPolluant.jpg"));
 		} catch (IOException e) {
@@ -534,7 +529,7 @@ public class DrinkFactoryMachine extends JFrame {
 		updatePrice();		
 		BufferedImage myPicture = null;
 		try {
-			myPicture = ImageIO.read(new File("./picts/gobeletPolluant.jpg"));
+			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
 		} catch (IOException ee) {
 			ee.printStackTrace();
 		}
