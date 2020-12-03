@@ -141,6 +141,10 @@ public class DrinkFactoryMachine extends JFrame {
         expresso.appendChild(doc.createTextNode(""+expressoReserve));
         stocks.appendChild(expresso);
         
+        Element soup = doc.createElement("soup");
+        soup.appendChild(doc.createTextNode(""+soupReserve));
+        stocks.appendChild(soup);
+        
         Element customers = doc.createElement("customers");
         racine.appendChild(customers);
         
@@ -612,6 +616,9 @@ public class DrinkFactoryMachine extends JFrame {
 	         
 	         String expressoPath = "/datas/stocks/expresso";
 	         expressoReserve = ((Double)path.evaluate(expressoPath, root,XPathConstants.NUMBER)).intValue();
+	         
+	         String soupPath = "/datas/stocks/soup";
+	         soupReserve = ((Double)path.evaluate(soupPath, root,XPathConstants.NUMBER)).intValue();
 	         
 	         NodeList nList = xml.getElementsByTagName("customer");
 	         for(int i=0; i<nList.getLength(); i++) {
