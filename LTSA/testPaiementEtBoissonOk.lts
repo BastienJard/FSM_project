@@ -1,0 +1,10 @@
+TRUE = (false -> FALSE | payeWithNFC -> FALSE | payeWithMoney -> FALSE),
+FALSE = (true ->TRUE).
+
+MONEYPAYEMENT = (true -> PAYED | false -> DRINKCHOSED | choseNFCFirst -> NFCPAYEMENT | choseDrinkFirst -> DRINKCHOSED),
+NFCPAYEMENT = (false -> DRINKCHOSED | true -> PAYED | choseMoneyFirst -> MONEYPAYEMENT | choseDrinkFirst -> DRINKCHOSED),
+DRINKCHOSED = (true -> PAYED | payeWithNFC -> NFCPAYEMENT | payeWithMoney -> MONEYPAYEMENT),
+
+PAYED=STOP.
+
+assert Prop = [] ( try1 -> (<> acquire1))
